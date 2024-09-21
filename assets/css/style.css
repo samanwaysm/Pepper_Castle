@@ -3539,3 +3539,26 @@ margin-left:0;margin-top:8px;}
 .icon-link-white{
   color: #FFF;
 }
+
+/* Desktop Styles */
+       @media (min-width: 769px) {
+        .social-media {
+            display: none; 
+        }
+        .login-signup {
+            display: block;
+        }
+        .profile-cart-btns {
+            display: block; 
+        }
+    }
+
+    /* Mobile Styles */
+    @media (max-width: 768px) {
+        .login-signup {
+            display: none;
+        }
+        .profile-cart-btns {
+            display: none;
+        }
+    }

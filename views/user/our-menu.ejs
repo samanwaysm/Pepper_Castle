@@ -122,19 +122,32 @@
          </nav>
          <!-- /MENU --> 
          <div class="social-btn-top1">
-                <ul class="social-media social-media1">
-                    <li class="menu-item menu-item-has-children">
-                        <a href="#">Sign Up</a>
-                    </li>
-                    <li class="menu-item menu-item-has-children">
-                        <a href="#"><i class="fas fa-cart-plus"></i></a>
-                    </li>
-                    <li><a class="social-facebook" href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
-                    <li><a class="social-instagram" href="https://www.instagram.com/pepper_castle_/?igshid=eddejyohhgwd" target="_blank"><i class="fab fa-instagram"></i></a></li>
-                </ul>
-                <div class="btn-header btn-header1"> <a href="#" class="view-more">Order Now</a>
-                </div>
+            <% if(!isUserAuth){ %>
+               <ul class="social-media social-media1 login-signup">
+                  <li class="menu-item menu-item-has-children">
+                      <!-- <a href="/signin">SignIn</a> -->
+                  </li>
+              </ul>
+            <% }else{ %>
+            <ul class=" menu-nav menu-nav-1"></ul>
+               <li class="menu-item menu-item-has-children list-unstyled" style="margin-left: 50px;">
+                  <a class="icon-link-white" href="#"><i class="fas fa-user"></i></a>
+               </li>
+               <li class="menu-item menu-item-has-children list-unstyled" style="margin-left: 30px;margin-right: 30px;">
+                  <a class="icon-link-white" href="/cart"><i class="fas fa-cart-plus"></i></a>
+               </li>
+            </ul>
+            <% } %>
+            <% if(!isUserAuth){ %>
+            <div class="btn-header btn-header1 profile-cart-btns"> 
+                <a href="/signin" class="view-more">Order Now</a>
             </div>
+            <% }else{ %>
+               <div class="btn-header btn-header1 profile-cart-btns"> 
+                  <a href="/our-menu" class="view-more">Order Now</a>
+              </div>
+            <% } %>
+         </div>
             <!-- /social-btn-top1 --> 
       </header>
       <!-- TOP IMAGE -->

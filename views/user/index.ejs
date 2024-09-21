@@ -21,31 +21,6 @@
       <link rel="icon" href="images/fav.png" sizes="32x32" />
       <link rel="icon" href="images/icons/favicon-192x192.png" sizes="192x192" />
       <link rel="apple-touch-icon-precomposed" href="images/icons/favicon-180x180.png" />
-      <style>
-         /* Desktop Styles */
-         @media (min-width: 769px) {
-             .social-media {
-                 display: none; /* Hide social media icons */
-             }
-             .login-signup {
-                 display: block;
-             }
-             .profile-cart-btns {
-                 display: block; /* Show profile and cart icons */
-             }
-         }
- 
-         /* Mobile Styles */
-         @media (max-width: 768px) {
-             .login-signup {
-                 display: none; /* Hide login/signup on mobile */
-             }
-             .profile-cart-btns {
-                 display: none; /* Hide profile and cart icons */
-             }
-         }
-         
-     </style>
    </head>
    <body class="home">
       <div class="menu-mask"></div>
@@ -135,14 +110,6 @@
                   </li>
               </ul>
             <% }else{ %>
-            <!-- <ul class=" profile-cart-btns">
-                <li class="menu-item menu-item-has-children">
-                    <a href="#"><i class="fas fa-user"></i></a>
-                </li>
-                <li class="menu-item menu-item-has-children">
-                    <a href="#"><i class="fas fa-cart-plus"></i></a>
-                </li>
-            </ul> -->
             <ul class=" menu-nav menu-nav-1"></ul>
                <li class="menu-item menu-item-has-children list-unstyled" style="margin-left: 50px;">
                   <a class="icon-link-white" href="#"><i class="fas fa-user"></i></a>
@@ -151,18 +118,16 @@
                   <a class="icon-link-white" href="/cart"><i class="fas fa-cart-plus"></i></a>
                </li>
             </ul>
-            <!-- <ul class="profile-cart-btns d-flex align-items-center">
-               <li class="list-unstyled menu-item menu-item-has-children mt-4">
-                  <a href="#"><i class="fas fa-user"></i></a>
-               </li>
-               <li class="list-unstyled menu-item menu-item-has-children mt-4">
-                  <a href="#"><i class="fas fa-cart-plus"></i></a>
-               </li>
-            </ul> -->
             <% } %>
+            <% if(!isUserAuth){ %>
             <div class="btn-header btn-header1 profile-cart-btns"> 
                 <a href="/signin" class="view-more">Order Now</a>
             </div>
+            <% }else{ %>
+               <div class="btn-header btn-header1 profile-cart-btns"> 
+                  <a href="/our-menu" class="view-more">Order Now</a>
+              </div>
+            <% } %>
         </div>
         <!-- /social-btn-top1 --> 
     </header>
