@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Page</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: url('/images/pages-top/slider-3.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+        .signup-container {
+            background-color: rgba(51, 51, 51, 0.8);
+            padding: 40px;
+            border-radius: 10px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h2 {
+            text-align: center;
+            color: #ff6600;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        label {
+            font-size: 16px;
+            color: #ffffff;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .form-column {
+            flex: 1;
+            min-width: 200px;
+        }
+        input[type="text"], input[type="email"], input[type="password"], input[type="tel"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #666666;
+            border-radius: 6px;
+            font-size: 16px;
+            background-color: #555555;
+            color: #ffffff;
+        }
+        input[type="text"]::placeholder,
+        input[type="email"]::placeholder,
+        input[type="password"]::placeholder,
+        input[type="tel"]::placeholder {
+            color: #999999;
+        }
+        .signup-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: #ff6600;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .signup-btn:hover {
+            background-color: #e65c00;
+        }
+        .already-have-account {
+            text-align: center;
+            margin-top: 15px;
+        }
+        .already-have-account a {
+            text-decoration: none;
+            color: #ff6600;
+        }
+        .already-have-account a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <h2>Signup</h2>
+        <div id="errorMessage" class="error-message" style="color: red; display: none;"></div>
+
+        <form id="signupForm" method="POST" action="/api/signup">
+            <div class="form-row">
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" placeholder="Enter your username" >
+                    </div>
+                </div>
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email" >
+                    </div>
+                </div>
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="phone">Phone Number:</label>
+                        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" >
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" placeholder="Enter your password" >
+                    </div>
+                </div>
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password:</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" >
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="signup-btn">Signup</button>
+            <div class="already-have-account">
+                <a href="/signin">Already have an account? SignIn</a>
+            </div>
+        </form>
+    </div>
+    <script>
+        console.log('hiii');
+        
+        document.getElementById('signupForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.style.display = 'none';
+
+            let errors = [];
+
+            if (!username || !email || !phone || !password || !confirmPassword) {
+                errors.push('All fields are required.');
+            }
+
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                errors.push('Please enter a valid email address.');
+            }
+
+            if (password !== confirmPassword) {
+                errors.push('Passwords do not match.');
+            }
+
+            if (errors.length > 0) {
+                errorMessage.innerHTML = errors.join('<br>');
+                errorMessage.style.display = 'block';
+                return false;
+            }
+
+            console.log('Form is valid and ready to submit');
+            this.submit();
+        });
+    </script>
+</body>
+</html>

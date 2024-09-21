@@ -1,0 +1,245 @@
+
+  <!DOCTYPE html> 
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="icon" type="image/x-icon" href="img/user-gear.png">
+      <!-- Boxicons -->
+      <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">    
+       <!-- My CSS -->
+       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+       <link rel="stylesheet" href="/css/dashboard.css">
+      <title>NovaNex Admin</title>
+  </head>
+  <body>
+
+
+    <!-- SIDEBAR -->
+    <section id="sidebar">
+        <a href="#" class="brand">
+            <h2 class="text p-5" style="color: black;">NovaNex</h2>
+        </a>
+        <ul class="side-menu top">
+			<li>
+				<a href="/adminDash">
+					<i class='bx bxs-dashboard' ></i>
+					<span class="text">Dashboard</span>
+				</a>
+			</li>
+			<li>
+				<a href="/adminItemManagement">
+					<i class='bx bxs-shopping-bag-alt' ></i>
+					<span class="text">Product Managment</span>
+				</a>
+			</li>
+			<li class="active">
+				<a href="/adminUserMange">
+					<i class='bx bxs-doughnut-chart' ></i>
+					<span class="text">User managment</span>
+				</a>
+			</li>
+			<li>
+				<a href="/adminOrderMange">
+					<i class='bx bxs-group' ></i>
+					<span class="text">Order Managment</span>
+				</a>
+			</li>
+            <li>
+				<a href="/adminCategoryMange">
+					<i class='bx bxs-cog' ></i>
+					<span class="text"> Category Managment</span>
+				</a>   
+			</li>
+			<li>
+				<a href="/adminCouponManage">
+					<i class='bx bxs-coupon'></i>
+					<span class="text">Coupen Managment</span>
+				</a>
+			</li>
+			<li>
+				<a href="/adminOfferManage">
+					<i class='bx bxs-offer'></i>
+					<span class="text">Offer Managment</span>
+				</a>
+			</li>
+			<li>
+				<a href="/adminRefManage">
+					<i class='bx bxs-share-alt'></i>
+					<span class="text">Referral Managment</span>
+				</a>
+			</li>
+		</ul>
+        <ul class="side-menu">
+
+            <li>
+                <a href="/admin/logout" class="logout">
+                    <i class='bx bxs-log-out-circle'></i>
+                    <span class="text">Logout</span>
+                </a>
+            </li>
+        </ul>
+    </section>
+    <!-- SIDEBAR -->
+
+
+
+    <!-- CONTENT -->
+    <section id="content">
+
+        <!-- MAIN -->
+        <main>
+            <div class="head-title">
+                <div class="left">
+                    <h1>User Managment</h1>
+                    <ul class="breadcrumb">
+						<a href="/adminDash"><li>Dashboard</li></a>
+                        <li><i class='bx bx-chevron-right' ></i></li>
+						<li>
+							<a class="active">User Management</a>
+						</li>
+					</ul>
+                </div>
+
+            </div>
+            
+        <div class="container " style="background-color: none;">
+            <div class="container-head p-2">
+               <form>
+                <input type="text" placeholder="Search">
+               </form>
+            </div>
+            
+
+                    
+                      <table class="table">
+                        <thead>
+                          <tr >
+                            <th scope="col">No</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <% for(var i = 0; i < users.length; i++) { %>
+                            <tr>
+                                <th scope="row"><%= i + 1 %></th>
+                                <th><%= users[i].name %></th>
+                                <td><%= users[i].email %></td>
+                                <td><%if(users[i].isBlocked === false){ %>
+                                    <span style="color: green;">Unblocked</span>
+                                <% }else{ %>
+                                    <span style="color: red;">Blocked</span>
+                                <% } %>
+                            </td>
+
+                                <td>
+                                    <% if (users[i].isBlocked === false) { %>
+                                        <form id="blockForm<%= users[i]._id %>" action="/admin/Block?id=<%= users[i]._id %>" method="post">
+                                            <!-- Button to trigger the modal -->
+                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#blockModal<%= users[i]._id %>">
+                                                Block
+                                            </button>
+                                
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="blockModal<%= users[i]._id %>" tabindex="-1" role="dialog" aria-labelledby="blockModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="blockModalLabel">Confirm Block</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <!-- <div class="modal-body">
+                                                            Are you sure block this user?
+                                                        </div> -->
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                            <!-- Submit the form when the user confirms -->
+                                                            <button type="submit" class="btn btn-danger">Block</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    <% } else { %>
+                                        <form id="unblockForm<%= users[i]._id %>" action="/admin/unBlock?id=<%= users[i]._id %>" method="post">
+                                            <!-- Button to trigger the modal -->
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#unblockModal<%= users[i]._id %>">
+                                                Unblock
+                                            </button>
+                                
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="unblockModal<%= users[i]._id %>" tabindex="-1" role="dialog" aria-labelledby="unblockModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="unblockModalLabel">Confirm Unblock</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <!-- <div class="modal-body">
+                                                            Are you sure unblock this user?
+                                                        </div> -->
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                            <!-- Submit the form when the user confirms -->
+                                                            <button type="submit" class="btn btn-success">Unblock</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    <% } %>
+                                </td>
+                                
+
+                            </tr>
+                            <% } %>
+                        </tbody>
+                      </table>
+                   
+        </div>
+
+
+    </section>
+    <!-- CONTENT -->
+
+
+    <script src="script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+          const $searchInput = $('input[type="text"]');
+          const $tableRows = $('.table tbody tr');
+      
+          $searchInput.on('input', function () {
+            const searchTerm = $(this).val().toLowerCase();
+      
+            $tableRows.each(function () {
+              const name = $(this).find('td:nth-child(2)').text().toLowerCase();
+              const email = $(this).find('td:nth-child(3)').text().toLowerCase();
+      
+              if (name.includes(searchTerm) || email.includes(searchTerm)) {
+                $(this).show();
+              } else {
+                $(this).hide();
+              }
+            });
+          });
+        });
+      </script>
+
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</html>

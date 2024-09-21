@@ -1,0 +1,450 @@
+
+
+
+
+    
+  <!DOCTYPE html> 
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="icon" type="image/x-icon" href="img/user-gear.png">
+      <!-- Boxicons -->
+      <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">    
+       <!-- My CSS -->
+       <link rel="stylesheet" href="/css/addProduct.css">
+      <title>NovaNex Admin</title>
+  </head>
+  <body>
+
+
+    <!-- SIDEBAR -->
+    <section id="sidebar">
+		<a href="#" class="brand">
+			<h2 class="text p-5" style="color: black;">NovaNex</h2>
+		</a>
+		<ul class="side-menu top">
+			<li>
+				<a href="/adminDash">
+					<i class='bx bxs-dashboard' ></i>
+					<span class="text">Dashboard</span>
+				</a>
+			</li>
+			<li class="active">
+				<a href="/adminItemManagement">
+					<i class='bx bxs-shopping-bag-alt' ></i>
+					<span class="text">Product Managment</span>
+				</a>
+			</li>
+			<li>
+				<a href="/adminUserMange">
+					<i class='bx bxs-doughnut-chart' ></i>
+					<span class="text">User managment</span>
+				</a>
+			</li>
+			<li>
+				<a href="/adminOrderMange">
+					<i class='bx bxs-group' ></i>
+					<span class="text">Order Managment</span>
+				</a>
+			</li>
+            <li>
+				<a href="/adminCategoryMange">
+					<i class='bx bxs-cog' ></i>
+					<span class="text">Category Managment</span>
+				</a>
+			</li>
+            <li>
+				<a href="/adminCouponManage">
+					<i class='bx bxs-coupon'></i>
+					<span class="text">Coupen Managment</span>
+				</a>
+			</li>
+			<li>
+				<a href="/adminOfferManage">
+					<i class='bx bxs-offer'></i>
+					<span class="text">Offer Managment</span>
+				</a>
+			</li>
+			<li>
+				<a href="/adminRefManage">
+					<i class='bx bxs-share-alt'></i>
+					<span class="text">Referral Managment</span>
+				</a>
+			</li>
+		</ul>
+		<ul class="side-menu">
+			<li>
+				<a href="/admin/logout" class="logout">
+					<i class='bx bxs-log-out-circle' ></i>
+					<span class="text">Logout</span>
+				</a>
+			</li>
+		</ul>
+		
+	</section>
+    <!-- SIDEBAR -->
+
+
+
+    <!-- CONTENT -->
+    <section id="content">
+
+        <!-- MAIN -->
+        <main>
+            <div class="head-title">
+                <div class="left">
+                    <h1>Edit product</h1>
+                    <ul class="breadcrumb">
+						<a href="/adminDash"><li>Dashboard</li></a>
+                        <li><i class='bx bx-chevron-right' ></i></li>
+						<a href="/adminProductMange"><li>Product Management</li></a>
+						<li><i class='bx bx-chevron-right' ></i></li>
+						<li>
+							<a class="active">Edit Product</a>
+						</li>
+					</ul>
+                </div>
+
+            </div>
+
+
+            
+                <form action="/admin/editProduct?id=<%=product._id%>" method="POST" enctype="multipart/form-data" style="background-color: none;" id="form" novalidate>
+                    <div class="container border border-dark" style="background-color: rgb(248, 248, 248);">
+                        <div class="input-box">
+                            <div>
+                                <label for="productName">Product Name</label>
+                                <input class="border border-dark" type="text" value="<%=product.productName%>" name="productName" id="productName">
+                                <p class="err-msg d-flex justify-content-end" id="errorElement1" style="color: red; font-size: 14px;"></p>
+                            </div>
+                            
+                            <div>
+                                <label for="brandName">Brand Name</label>
+                                <input class="border border-dark" type="text" value="<%=product.brandName%>"  name="brandName" id="brandName">
+                                <p class="err-msg d-flex justify-content-end" id="errorElement2" style=" color: red;font-size: 14px;"></p>
+                            </div>
+    
+                            <div>
+                                <label for="category">Category</label>
+                                <select name="category" id="category">
+                                    <% for (let i = 0; i < category.length; i++) { %>
+                                        <option value="<%= category[i].category %>" <%= product.category === category[i].category ? 'selected' : '' %>>
+                                            <%= category[i].category %>
+                                        </option>
+                                    <% } %>
+                                </select>
+                                <p class="err-msg d-flex justify-content-end" id="errorElement3" style=" color: red;font-size: 14px;"></p>
+                            </div>
+                        </div>
+        
+                        <div class="input-box">
+                            <div>
+                                <label for="subTitle">SubTitle</label>                         
+                                <input class="border border-dark" type="text" value="<%=product.subTitle%>"  name="subTitle" id="subTitle">
+                                <p class="err-msg d-flex justify-content-end" id="errorElement4" style=" color: red;font-size: 14px;"></p>
+                            </div>
+        
+                            <div>
+                                <label for="descrption-head">Description Heading</label>
+                                <input class="border border-dark" type="text" value="<%=product.descriptionHeading%>"  name="descriptionHeading" id="descriptionHeading">
+                                <p class="err-msg d-flex justify-content-end" id="errorElement5" style=" color: red;font-size: 14px;"></p>
+                            </div>
+                        </div>
+        
+                        <!-- <div class="input-box">
+                            <div>
+                                <label for="description">Description</label>
+                                <textarea name="description" rows="4" cols="50" value=""  class="description" required ></textarea>
+                            </div>
+                        </div> -->
+                        <div class="input-box">
+                            <div>
+                                <label for="description">Description</label>
+                                <textarea name="description" rows="4" cols="50" class="description" id="description"><%= product.description %></textarea>
+                                <p class="err-msg d-flex justify-content-center" id="errorElement6" style=" color: red;font-size: 14px;"></p>
+                            </div>
+                        </div>
+                        
+        
+                        <div class="input-box">
+                            <div>
+                                <label for="">First Price</label>
+                                <input class="border border-dark" type="number" value="<%=product.firstPrice%>" name="firstPrice" id="firstprice">
+                                <p class="err-msg d-flex justify-content-end" id="errorElement7" style=" color: red;font-size: 14px;"></p>
+                            </div>
+        
+                            <div>
+                                <label for="lastPrice">Last Price</label>
+                                <!-- <input type="number" name="lastprice" onkeyup="" required> -->
+                                <input class="border border-dark" type="number" name="lastPrice" value="<%=product.lastPrice%>" id="lastprice" onkeyup="calculateDiscount()" >
+                                <p class="err-msg d-flex justify-content-end" id="errorElement8" style=" color: red;font-size: 14px;"></p>
+                            </div>
+        
+                            <div>
+                                <label for="discount">Discount(%)</label>
+                                <input class="border border-dark" type="number" value="<%=product.discount%>" name="discount" id="discount">
+                                <p class="err-msg d-flex justify-content-end" id="errorElement9" style=" color: red;font-size: 14px;"></p>
+                            </div>
+                        </div>        
+                        <div class="input-box">
+                            <div>
+                                <label for="colour">Colour</label>
+                                <input class="border border-dark" type="text" value="<%=product.color%>" name="color" id="color">
+                                <p class="err-msg d-flex justify-content-end" id="errorElement10" style=" color: red;font-size: 14px;"></p>
+                            </div>
+        
+                            <div>
+                                <label for="inStock">In Stock</label>
+                                <input class="border border-dark" type="number" value="<%=product.inStock%>" name="inStock" id="inStock">
+                                <p class="err-msg d-flex justify-content-end" id="errorElement11" style=" color: red;font-size: 14px;"></p>
+                            </div>
+                        </div>
+        
+                        <div class="input-box">
+                            <div>
+                                <label for="image">Image</label>
+                                <input class="border border-dark" type="file" name="image" id="image" multiple onchange="previewImages(this)">
+                                <div id="imagePreviewContainer" class="image-preview-container"></div>
+                                <input type="hidden" name="uploadedImages" id="uploadedImages" multiple>
+                                <p class="err-msg d-flex justify-content-end" id="errorElement12" style=" color: red; font-size: 14px;"></p>
+                            </div>
+        
+                            <!-- <div>
+                                <input type="radio" name="new" value="1">
+                                <label for="new">Newly launched</label>
+                            </div> -->
+                        </div>
+        
+
+                        <!-- <div class="input-box">
+                            <div>
+                                <label for="image">Image Upload</label>
+                                <div class="image-upload">
+                                    <span class="inner">Drag & drop images here or 
+                                        <span class="select">Browse</span></span>
+                                    <input type="file" name="pImage" required multiple>
+                                </div>
+                            </div>
+        
+                        </div> -->
+                        <div class="card-body ">
+                            <% for(let n=0;n<product.image.length;n++)  { %> 
+                            <img src="<%=product.image[n] %>" alt="" style="width: 200px;">
+                            <% } %>
+                        </div>
+
+                        <div>
+                            <div id="imagePreviewContainer" class="image-preview-container"></div>
+                            <input type="hidden" name="uploadedImages" id="uploadedImages" multiple>
+                            <!-- <p class="err-msg d-flex justify-content-end" id="errorElement12" style=" color: red; font-size: 14px;"></p> -->
+                        </div>
+
+                        <div class="btn-container">
+                            <button class="btn" type="submit" id="submit">Submit</button>
+                        </div>
+                       
+
+                    </div>
+                </form>
+                
+            
+
+
+    </section>
+    <!-- CONTENT -->
+    <script>
+    //     function previewImages(input) {
+    //     var container = document.getElementById('imagePreviewContainer');
+    //     container.innerHTML = '';
+
+    //     var files = input.files;
+
+    //     for (var i = 0; i < files.length; i++) {
+    //         var reader = new FileReader();
+
+    //         reader.onload = function (e) {
+    //             var preview = document.createElement('div');
+    //             preview.className = 'image-preview';
+
+    //             var image = document.createElement('img');
+    //             image.src = e.target.result;
+    //             image.style.width = '100%';
+    //             image.style.height = '100%';
+
+    //             var deleteBtn = document.createElement('button');
+    //             deleteBtn.className = 'delete-image-btn';
+    //             deleteBtn.innerHTML = 'x';
+    //             deleteBtn.onclick = function () {
+    //                 preview.remove();
+    //                 updateUploadedImages();
+    //             };
+
+    //             preview.appendChild(image);
+    //             preview.appendChild(deleteBtn);
+    //             container.appendChild(preview);
+
+    //             updateUploadedImages();
+    //         };
+
+    //         reader.readAsDataURL(files[i]);
+    //     }
+    // }
+
+    // function updateUploadedImages() {
+    //     var container = document.getElementById('imagePreviewContainer');
+    //     var previews = container.getElementsByClassName('image-preview');
+    //     var uploadedImagesInput = document.getElementById('uploadedImages');
+
+    //     var uploadedImages = Array.from(previews).map(function (preview) {
+    //         return preview.getElementsByTagName('img')[0].src;
+    //     });
+
+    //     uploadedImagesInput.value = JSON.stringify(uploadedImages);
+    // }
+    function previewImages(input) {
+    var container = document.getElementById('imagePreviewContainer');
+    container.innerHTML = '';
+
+    var files = input.files;
+
+    for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+
+        // Check if the file is an image
+        if (!file.type.startsWith('image/')) {
+            // Display error message if the file is not an image
+            var errorMessage = document.createElement('p');
+            errorMessage.textContent = 'Only image files are allowed.';
+            errorMessage.style.color = 'red';
+            container.appendChild(errorMessage);
+            continue; // Skip to the next file
+        }
+
+        // Check file size (in bytes)
+        var maxSizeMB = 5; // Set maximum size limit to 5MB
+        if (file.size > maxSizeMB * 1024 * 1024) {
+            // Display error message if the file size exceeds the limit
+            var errorMessage = document.createElement('p');
+            errorMessage.textContent = 'File size exceeds 5MB limit.';
+            errorMessage.style.color = 'red';
+            container.appendChild(errorMessage);
+            continue; // Skip to the next file
+        }
+
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            var preview = document.createElement('div');
+            preview.className = 'image-preview';
+
+            var image = document.createElement('img');
+            image.src = e.target.result;
+            image.style.width = '100%';
+            image.style.height = '100%';
+
+            var deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-image-btn';
+            deleteBtn.innerHTML = 'x';
+            deleteBtn.onclick = function () {
+                preview.remove();
+                updateUploadedImages();
+            };
+
+            preview.appendChild(image);
+            preview.appendChild(deleteBtn);
+            container.appendChild(preview);
+
+            updateUploadedImages();
+        };
+
+        reader.readAsDataURL(file);
+    }
+}
+
+function updateUploadedImages() {
+    var container = document.getElementById('imagePreviewContainer');
+    var previews = container.getElementsByClassName('image-preview');
+    var uploadedImagesInput = document.getElementById('uploadedImages');
+
+    var uploadedImages = Array.from(previews).map(function (preview) {
+        return preview.getElementsByTagName('img')[0].src;
+    });
+
+    uploadedImagesInput.value = JSON.stringify(uploadedImages);
+}
+
+
+    </script>
+    <script>
+    //     function calculateDiscount() {
+         
+    //      var lastPriceInput = document.getElementById('lastprice').value;
+    //      var firstPriceInput = document.getElementById('firstprice').value;
+   
+    //      var lastPrice = parseFloat(lastPriceInput);
+    //      var firstPrice = parseFloat(firstPriceInput);
+   
+    //      if (!isNaN(lastPrice) && !isNaN(firstPrice)) {
+    //          // Calculate the discounted price
+   
+    //          var discountPercentage = ((firstPrice - lastPrice) / firstPrice) * 100;
+    //          console.log(discountPercentage);
+             
+   
+    //          document.getElementById('discount').value= parseInt(discountPercentage);
+    //          // Update the discount input field with the calculated discounted price
+            
+    //      }
+    //  }
+
+//     function calculateDiscount() {
+//         console.log("st");
+//     var lastPriceInput = document.getElementById('lastprice')?.value;
+//     var firstPriceInput = document.getElementById('firstprice')?.value;
+//     console.log(lastPriceInput,firstPriceInput);
+
+//     var lastPrice = lastPriceInput;
+//     var firstPrice = firstPriceInput;
+
+//     if (!isNaN(lastPrice) && !isNaN(firstPrice)) {
+//         console.log("in if");
+//         var discountPercentage = ((firstPrice - lastPrice) / firstPrice) * 100;
+//         console.log(discountPercentage);
+//         document.getElementById('discount').value = parseInt(discountPercentage);
+//     } else {
+//         document.getElementById('discount').value = '';
+//     }
+// }
+
+function calculateDiscount() {
+      
+      var lastPriceInput = document.getElementById('lastprice').value;
+      var firstPriceInput = document.getElementById('firstprice').value;
+
+      var lastPrice = parseFloat(lastPriceInput);
+      var firstPrice = parseFloat(firstPriceInput);
+
+      if (!isNaN(lastPrice) && !isNaN(firstPrice)) {
+        console.log('hiii',lastPrice);
+          // Calculate the discounted price
+
+          var discountPercentage = ((firstPrice - lastPrice) / firstPrice) * 100;
+          console.log(discountPercentage);
+            document.getElementById('discount').value= parseInt(discountPercentage);
+        }
+        else {
+        document.getElementById('discount').value = '';
+        }    
+  }
+  //hy
+
+    </script>
+    <script src="js/adminProduct.js"></script>
+
+    <script src="/js/img.js"></script>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</html>
+
