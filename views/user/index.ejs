@@ -40,26 +40,30 @@
                     <a href="/about">About</a>
                 </li>
                 <li class="menu-item menu-item-has-children">
-                    <a href="testimonials.html">Testimonials</a>
+                    <a href="/testimonials">Testimonials</a>
                 </li>
                 <li class="menu-item menu-item-has-children">
-                    <a href="our-menu.html">Our Menu</a>
+                    <a href="/our-menu">Our Menu</a>
                 </li>
                 <li class="menu-item menu-item-has-children">
-                    <a href="contact.html">Contact</a>
+                    <a href="/contact">Contact</a>
                 </li>
                 <li class="menu-item menu-item-has-children">
-                    <a href="#">Sign Up</a>
+                    <a href="/signup">Sign Up</a>
                 </li>
-                <li class="menu-item menu-item-has-children">
+                <!-- <li class="menu-item menu-item-has-children">
                     <a href="#"><i class="fas fa-cart-plus"></i></a>
-                </li>
+                </li> -->
             </ul>
             <!-- /MOBILE MENU -->
         </div>
         <!-- modal-menu-container -->
         <div class="menu-contact">
-            <div class="mobile-btn"> <a href="#" class="view-more">Order Now</a></div>
+            <% if(!isUserAuth){ %>
+               <div class="mobile-btn"> <a href="/signin" class="view-more">Order Now</a></div>
+            <% }else{ %>
+               <div class="mobile-btn"> <a href="/our-menu" class="view-more">Order Now</a></div>
+            <% } %>
             <ul class="mobile-contact">
                 <li class="mobile-address">58 Ralph Ave<br />
                     New York, New York 1111
