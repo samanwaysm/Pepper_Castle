@@ -7,11 +7,11 @@ const schema = new mongoose.Schema({
     },
     address: [
         {
-            fullName: {
+            username: {
                 type: String,
                 required: true
             },
-            phoneNum: {
+            phone: {
                 type: String,
                 required: true
             },
@@ -19,15 +19,15 @@ const schema = new mongoose.Schema({
                 type: String,
                 required: true
             },
-            apartment: {
+            block: {
                 type: String,
                 required: true   
             },
-            unitNum: {
+            unitnum: {
                 type: String,
                 required: true
             },
-            postalCode: {
+            postal: {
                 type: Number,
                 required: true
             },

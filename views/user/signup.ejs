@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+
+
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -182,5 +184,214 @@
             this.submit();
         });
     </script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Page</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: url('/images/pages-top/slider-2.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+        .signup-container {
+            background-color: rgba(51, 51, 51, 0.8); /* Semi-transparent background */
+            padding: 40px;
+            border-radius: 10px;
+            max-width: 1000px;
+            width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        h2 {
+            text-align: center;
+            color: #ff6600;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        label {
+            font-size: 16px;
+            color: #ffffff;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .form-column {
+            flex: 1;
+            min-width: 200px;
+        }
+        input[type="text"], input[type="email"], input[type="password"], input[type="tel"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #666666;
+            border-radius: 6px;
+            font-size: 16px;
+            background-color: #555555;
+            color: #ffffff;
+        }
+        input[type="text"]::placeholder,
+        input[type="email"]::placeholder,
+        input[type="password"]::placeholder,
+        input[type="tel"]::placeholder {
+            color: #999999;
+        }
+        .signup-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: #ff6600;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .signup-btn:hover {
+            background-color: #e65c00;
+        }
+        .already-have-account {
+            text-align: center;
+            margin-top: 15px;
+        }
+        .already-have-account a {
+            text-decoration: none;
+            color: #ff6600;
+        }
+        .already-have-account a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <h2>Signup</h2>
+        <form id="signupForm" method="POST" action="/api/signup">
+            <!-- User Information -->
+            <div class="form-row">
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                    </div>
+                </div>
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
+                </div>
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="phone">Phone Number:</label>
+                        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Address Information -->
+            <div class="form-row">
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="street">Street Address:</label>
+                        <input type="text" id="street" name="street" placeholder="Enter your street address" required>
+                    </div>
+                </div>
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="block">Block/Apartment/Tower:</label>
+                        <input type="text" id="block" name="block" placeholder="Enter your block or tower" required>
+                    </div>
+                </div>
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="floor">Floor/Unit Number:</label>
+                        <input type="text" id="floor" name="unitnum" placeholder="Enter your floor or unit number" required>
+                    </div>
+                </div>
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="postal">Postal Code:</label>
+                        <input type="text" id="postal" name="postal" placeholder="Enter your postal code" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Password Information -->
+            <div class="form-row">
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    </div>
+                </div>
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password:</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Signup Button -->
+            <button type="submit" class="signup-btn">Signup</button>
+
+            <!-- Link to Login Page -->
+            <div class="already-have-account">
+                <a href="#">Already have an account? Login</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function validateForm() {
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const street = document.getElementById('street').value;
+            const block = document.getElementById('block').value;
+            const floor = document.getElementById('floor').value;
+            const postal = document.getElementById('postal').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (!username || !email || !phone || !street || !block || !floor || !postal || !password || !confirmPassword) {
+                alert('All fields are required!');
+                return false;
+            }
+
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                alert('Please enter a valid email address.');
+                return false;
+            }
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match.');
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+
 </body>
 </html>

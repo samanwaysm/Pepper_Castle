@@ -44,8 +44,6 @@ exports.signIn=(req,res)=>{
 
 exports.signUp=(req,res)=>{
     const {foundEmail,isUserAuthenticated} = req.session;
-    req.session.referralLink = req.query.ref
-    console.log(req.query.ref);
     res.render("user/signUp",{isUserAuthenticated,foundEmail},(err,html)=>{
        if(err){
           console.log(err);
@@ -79,41 +77,8 @@ exports.ourMenuList = async (req, res) => {
         console.error('Error fetching menu list:', err);
         res.status(500).send('Error fetching data');
     }
-    // // const isUserAuthenticated = req.session?.isAuthenticated || false;    
-    // const category = req.query.category || 'Starters';
-    // // const userid = req.session?.userId || '';
-
-    // try {
-    //     const response = await axios.get(`http://localhost:${process.env.PORT}/api/ourMenuList?category=${category}`);
-    //         if (response && response.data) {
-    //         console.log(response.data.categories);                
-    //         res.render("user/our-menu", {
-    //             item: response.data.items,
-    //             category: response.data.categories,
-    //             selectedCategory: response.data.selectedCategory,
-    //             cartDetails: response.data.cartDetails || [],
-    //             // isUserAuthenticated: isUserAuthenticated
-    //         });
-    //     } else {
-    //         res.render("/");
-    //     }
-    // } catch (err) {
-    //     console.error(err);
-    //     res.status(500).send("Error fetching data");
-    // }
 };
 
-// exports.cart=(req,res)=>{
-//     const {isUserAuthenticated,}= req.session
-//     res.render("user/cart",{isUserAuthenticated,isUserAuth},(err,html)=>{
-//        if(err){
-//           console.log(err);
-//        }
-//        delete req.session.isUserAuthenticated
-//        delete req.session.isUserAuth
-//        res.send(html)
-//     })
-// }
 exports.cart=(req,res)=>{
     const { isUserAuthenticated, message } = req.session;
     const userId = req.session.userId;

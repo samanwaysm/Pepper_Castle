@@ -40,7 +40,7 @@ exports.addToCart = async (req, res) => {
         }
 
         await cart.save();
-        res.redirect("/cart");
+        // res.redirect("/our-menu");
 
     } catch (err) {
         console.error("Error adding to cart:", err.message);
@@ -102,21 +102,34 @@ exports.showCart = async (req, res) => {
 
 
 exports.removeCart = async (req, res) => {
-    const userId = req.session.userId
-    const productId = req.query.pid
-    console.log(productId)
+    const userId = req.session.userId;
+    const itemId = req.body.itemId; // Assuming you send the itemId in the request body
+    console.log(itemId);
     try {
-          const cart = await cartDb.findOne({ userId: userId })
-          const index = cart.cartItems.findIndex((value) => {
-                return value.productId.toString() === productId;
-          });
-          cart.cartItems.splice(index, 1)
-          await cart.save()
-          res.redirect('/userCart')
+        const cart = await cartDb.findOne({ userId: userId });
+        
+        if (!cart) {
+            return res.status(404).json({ success: false, message: 'Cart not found' });
+        }
+        
+        const index = cart.cartItems.findIndex((value) => {
+            return value.itemId.toString() === itemId;
+        });
+        
+        if (index === -1) {
+            return res.status(404).json({ success: false, message: 'Product not found in cart' });
+        }
+
+        cart.cartItems.splice(index, 1);
+        await cart.save();
+
+        // Return updated cart summary or a success message
+        res.json({ success: true, message: 'Item removed from cart' });
     } catch (err) {
-          res.status(500).send(err)
+        console.error(err); // Log the error for debugging
+        res.status(500).json({ success: false, message: 'Internal server error' });
     }
-}
+};
 
 // exports.updateCart = async (req, res) => {
 //     // console.log('Request body:', req.body);

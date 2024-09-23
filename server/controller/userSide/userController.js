@@ -3,55 +3,96 @@ const bcrypt = require("bcrypt");
 const User = require("../../model/userSchema");
 const Category = require("../../model/categorySchema");
 const Item = require("../../model/itemSchema");
+const AddressDb = require("../../model/addressSchema")
 
+
+// exports.signUp = async (req, res) => {
+//     const { username, email, password, confirmPassword, phone } = req.body;    
+//     try {
+//         const existingUser = await User.findOne({ email });
+//         if (existingUser) {
+//             req.session.signUpError = "User already exists with this email.";
+//             return res.redirect('/signup');
+//         }
+
+//         const hashedPassword = await bcrypt.hash(password, 10);
+
+//         const newUser = new User({
+//             username,
+//             email,
+//             password: hashedPassword,
+//             phone
+//         });
+
+//         await newUser.save();
+
+//         req.session.email = newUser.email;
+//         req.session.userId = newUser._id;
+//         req.session.isUserAuth = true;
+//         req.session.isUserAuthenticated = true;
+
+//         res.redirect('/');
+//     } catch (err) {
+//         console.error(err);
+//         req.session.signUpError = "An error occurred during signup.";
+//         res.redirect('/signup');
+//     }
+// };
 
 exports.signUp = async (req, res) => {
-    const { username, email, password, confirmPassword, phone } = req.body;    
-    // if (!username || !email || !password || !confirmPassword || !phone) {
-    //     req.session.signUpError = "All fields are required!";
-    //     return res.redirect('/signup');
-    // }
+  const { username, email, password, confirmPassword, phone, street, block, unitnum, postal } = req.body;
 
-    // const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    // if (!emailPattern.test(email)) {
-    //     req.session.signUpError = "Please enter a valid email address.";
-    //     return res.redirect('/signup');
-    // }
+  try {
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+          console.log('User already exists');
+          req.session.signUpError = "User already exists with this email.";
+          return res.redirect('/signup');
+      }
 
-    // if (password !== confirmPassword) {
-    //     req.session.signUpError = "Passwords do not match!";
-    //     return res.redirect('/signup');
-    // }
+      if (password !== confirmPassword) {
+          req.session.signUpError = "Passwords do not match.";
+          return res.redirect('/signup');
+      }
 
-    try {
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            req.session.signUpError = "User already exists with this email.";
-            return res.redirect('/signup');
-        }
+      const hashedPassword = await bcrypt.hash(password, 10);
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+      const newUser = new User({
+          username,
+          email,
+          password: hashedPassword,
+          phone,
+      });
 
-        const newUser = new User({
-            username,
-            email,
-            password: hashedPassword,
-            phone
-        });
+      await newUser.save();
 
-        await newUser.save();
+      const structuredAddress = `${username}, ${phone}, ${street}, ${block}, ${unitnum}, ${postal}`
+      const newAddress = new AddressDb({
+          userId: newUser._id,
+          address: {
+              username,
+              phone,
+              street,
+              block,
+              unitnum,
+              postal,
+              structuredAddress
+          },
+          defaultAddress: null,
+      });
 
-        req.session.email = newUser.email;
-        req.session.userId = newUser._id;
-        req.session.isUserAuth = true;
-        req.session.isUserAuthenticated = true;
+      await newAddress.save();
 
-        res.redirect('/');
-    } catch (err) {
-        console.error(err);
-        req.session.signUpError = "An error occurred during signup.";
-        res.redirect('/signup');
-    }
+      req.session.email = newUser.email;
+      req.session.userId = newUser._id;
+      req.session.isUserAuth = true;
+
+      res.redirect('/');
+  } catch (err) {
+      console.error(err);
+      req.session.signUpError = "An error occurred during signup.";
+      res.redirect('/signup');
+  }
 };
 
 exports.signIn = async (req, res) => {

@@ -29,5 +29,7 @@ route.get('/api/ourMenuList',categoryAndItemContoller.ourMenuList)
 route.get('/api/addToCart',cartController.addToCart)
 route.get('/api/showCart',cartController.showCart)
 route.post('/api/update-cart',cartController.updateCart)
+route.delete('/api/remove-from-cart',cartController.removeCart)
+
 
 module.exports = route;
