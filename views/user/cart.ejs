@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Full-Screen Food Order Cart</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        /* Your existing CSS styles remain unchanged */
         * {
             margin: 0;
             padding: 0;
@@ -24,7 +25,6 @@
             align-items: center;
             min-height: 100vh;
             padding: 20px;
-            background-color: #f9f9f9;
         }
 
         .cart-container {
@@ -79,22 +79,19 @@
         .quantity-selector {
             display: flex;
             align-items: center;
-            gap: 10px;
             justify-content: center;
+            gap: 5px;
         }
 
         .quantity-selector button {
             background-color: #fc5000;
             color: #fff;
             border: none;
-            width: 40px;
-            height: 40px;
+            width: 30px;
+            height: 30px;
             cursor: pointer;
             font-size: 18px;
             border-radius: 4px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             transition: background-color 0.3s;
         }
 
@@ -103,12 +100,12 @@
         }
 
         .quantity-selector input {
-            width: 50px;
+            width: 40px;
             text-align: center;
             border: 1px solid #ddd;
             border-radius: 4px;
-            padding: 5px;
-            font-size: 16px;
+            padding: 2px;
+            font-size: 14px;
         }
 
         .summary-section {
@@ -159,6 +156,25 @@
         .checkout-btn:hover {
             background-color: #e24600;
         }
+
+        .item-total-price {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            margin-left: 10px; /* Adjusted for minimum distance */
+            gap: 10px; /* Added consistent gap */
+        }
+
+        .delete-icon {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .delete-icon:hover {
+            opacity: 0.7;
+        }
     </style>
 </head>
 <body>
@@ -177,7 +193,10 @@
                                 <input type="text" class="quantity-input" value="<%= item.cartItems.quantity %>" data-item-id="<%= item.cartItems.itemId %>" readonly>
                                 <button class="increase-qty" data-item-id="<%= item.cartItems.itemId %>">+</button>
                             </div>
-                            <span class="item-total-price" data-item-id="<%= item.cartItems.itemId %>">S$<%= (item.itemDetails.price * item.cartItems.quantity).toFixed(2) %></span>
+                            <div class="item-total-price">
+                                <span>S$<%= (item.itemDetails.price * item.cartItems.quantity).toFixed(2) %></span>
+                                <i class="fas fa-trash delete-icon" data-item-id="<%= item.cartItems.itemId %>"></i>
+                            </div>
                         </div>
                     <% }); %>
                 <% } else { %>
@@ -208,7 +227,7 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        const userId = '<%= userId %>'; 
+        const userId = '<%= userId %>';
 
         function updateCartUI(itemId, newQuantity, itemPrice) {
             const itemElement = $(`.product-item[data-item-id="${itemId}"]`);
@@ -217,12 +236,12 @@
 
             // Update quantity input and item total price
             quantityInput.val(newQuantity);
-            itemTotalPrice.text(`S$${(itemPrice).toFixed(2)}`);
+            itemTotalPrice.find('span').html(`S$${(itemPrice).toFixed(2)}`);
 
             // Update subtotal and total
             let newSubtotal = 0;
-            $('.item-total-price').each(function() {
-                newSubtotal += parseFloat($(this).text().replace('S$', ''));
+            $('.item-total-price span').each(function() {
+                newSubtotal += parseFloat($(this).text().replace('S$', '').trim());
             });
 
             // Update the displayed subtotal and total
@@ -234,19 +253,14 @@
             const itemId = $(this).data('item-id');
             const action = $(this).hasClass('increase-qty') ? 'increase' : 'decrease';
 
-            // Get the current quantity from the input field
             const quantityInput = $(`.product-item[data-item-id="${itemId}"] .quantity-input`);
             let currentQuantity = parseInt(quantityInput.val(), 10);
-
-            // Determine the new quantity based on the action
             let newQuantity = action === 'increase' ? currentQuantity + 1 : currentQuantity - 1;
-            
-            // Prevent quantity from going below 1
+
             if (newQuantity < 1) {
-                newQuantity = 1; // or you can choose to disable the decrease button
+                newQuantity = 1;
             }
 
-            // AJAX request to update the cart
             $.ajax({
                 url: '/api/update-cart',
                 method: 'POST',
@@ -254,18 +268,51 @@
                 data: JSON.stringify({ itemId, action, userId }),
                 success: function(data) {
                     if (data.success) {
-                        const { newQuantity, itemPrice } = data;
+                        const { newQuantity, itemPrice } = data; // Assuming API returns new quantity and updated price
                         updateCartUI(itemId, newQuantity, itemPrice);
                     } else {
                         console.error('Error:', data.message);
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.error('Error updating cart:', error);
+                    console.error('Error updating quantity:', error);
                 }
             });
         });
+
+        $(document).on('click', '.delete-icon', function() {
+            const itemId = $(this).data('item-id');
+
+            $.ajax({
+                url: '/api/remove-from-cart',
+                method: 'DELETE',
+                contentType: 'application/json',
+                data: JSON.stringify({ itemId, userId }),
+                success: function(data) {
+                    if (data.success) {
+                        $(`.product-item[data-item-id="${itemId}"]`).remove(); // Remove item from UI
+                        // Update subtotal and total accordingly
+                        updateCartSummary();
+                    } else {
+                        console.error('Error:', data.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error removing item:', error);
+                }
+            });
+        });
+
+        function updateCartSummary() {
+            let newSubtotal = 0;
+            $('.item-total-price span').each(function() {
+                newSubtotal += parseFloat($(this).text().replace('S$', '').trim());
+            });
+
+            // Update displayed subtotal and total
+            $('.subtotal').text(`S$${newSubtotal.toFixed(2)}`);
+            $('.total').text(`S$${newSubtotal.toFixed(2)}`);
+        }
     </script>
 </body>
 </html>
-
