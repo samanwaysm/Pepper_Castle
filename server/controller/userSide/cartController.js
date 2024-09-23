@@ -1,3 +1,5 @@
+const mongoose = require("mongoose");
+
 const User = require("../../model/userSchema");
 const Category = require("../../model/categorySchema");
 const Item = require("../../model/itemSchema");
@@ -54,20 +56,43 @@ exports.showCart = async (req, res) => {
     try {
         const userId = req.query.userId;
         console.log('showcart', userId);
-        
-        const cartDetails = await cartDb.findOne({ userId: userId }).populate({
-            path: 'cartItems.itemId',
-            model: 'Item'
-        });
 
-        if (!cartDetails) {
+        const cartDetails = await cartDb.aggregate([
+            {
+                $match: { userId: new mongoose.Types.ObjectId(userId) }
+            },
+            {
+                $unwind: "$cartItems"
+            },
+            {
+                $lookup: {
+                    from: "items", // The collection name should match the MongoDB collection name
+                    localField: "cartItems.itemId",
+                    foreignField: "_id",
+                    as: "itemDetails"
+                }
+            },
+            {
+                $unwind: "$itemDetails"
+            },
+            {
+                $project: {
+                    _id: 1,
+                    "itemDetails.item": 1,
+                    "itemDetails.price": 1,
+                    "itemDetails.image": 1,
+                    "cartItems.quantity": 1,
+                    "cartItems.itemId": 1
+                }
+            }
+        ]);
+
+        if (!cartDetails.length) {
             return res.status(404).send('Cart not found');
         }
 
         console.log(cartDetails);
-        res.send(cartDetails)
-        // Render the cart.ejs view
-        // return res.render('cart', { cart: cartDetails });
+        res.send(cartDetails);
 
     } catch (error) {
         console.error("Error displaying cart:", error.message);
@@ -93,36 +118,94 @@ exports.removeCart = async (req, res) => {
     }
 }
 
+// exports.updateCart = async (req, res) => {
+//     // console.log('Request body:', req.body);
+//     try {
+//         const { itemId, action, userId } = req.body;
+//         let cart = await cartDb.findOne({ userId });
+
+//         if (!cart) {
+//             return res.status(404).json({ success: false, message: 'Cart not found' });
+//         }
+
+//         const item = cart.cartItems.find(ci => ci.itemId.toString() === itemId);
+
+//         if (!item) {
+//             return res.status(404).json({ success: false, message: 'Item not found in cart' });
+//         }
+
+//         // Update the item quantity based on the action
+//         if (action === 'increase') {
+//             item.quantity += 1;
+//         } else if (action === 'decrease' && item.quantity > 1) {
+//             item.quantity -= 1;
+//         }
+
+//         // Calculate the updated price
+//         const itemDetails = await Item.findById(item.itemId); // Assuming you have a model for item details
+//         const updatedPrice = itemDetails.price * item.quantity;
+
+//         await cart.save();
+
+//         // Send the updated quantity and price back to the client
+//         res.json({
+//             success: true,
+//             newQuantity: item.quantity,
+//             itemPrice: updatedPrice.toFixed(2) // Format the price to two decimal places
+//         });
+//     } catch (error) {
+//         console.error("Error updating cart:", error.message);
+//         res.status(500).json({ success: false, message: 'Internal Server Error' });
+//     }
+// };
+
+
+
 exports.updateCart = async (req, res) => {
+    const { itemId, action, userId } = req.body;
+
     try {
-        const { itemId, action } = req.body;
-        const userId = req.user._id;
+        const userCart = await cartDb.findOne({ userId: userId });
 
-        let cart = await cartDb.findOne({ userId });
-
-        if (!cart) {
-            return res.status(404).json({ success: false, message: 'Cart not found' });
+        if (!userCart) {
+            return res.status(404).json({ success: false, message: "Cart not found." });
         }
 
-        const item = cart.cartItems.find(ci => ci.itemId.toString() === itemId);
+        const itemIndex = userCart.cartItems.findIndex(item => item.itemId.toString() === itemId);
 
-        if (!item) {
-            return res.status(404).json({ success: false, message: 'Item not found in cart' });
+        if (itemIndex === -1) {
+            return res.status(404).json({ success: false, message: "Item not found in cart." });
         }
 
+        const cartItem = userCart.cartItems[itemIndex];
+
+        // Fetch item details from the Item collection
+        const itemDetails = await Item.findById(cartItem.itemId); // Make sure this is the correct way to fetch item details
+
+        if (!itemDetails) {
+            return res.status(404).json({ success: false, message: "Item details not found." });
+        }
+
+        // Update quantity based on action
         if (action === 'increase') {
-            item.quantity += 1;
-        } else if (action === 'decrease' && item.quantity > 1) {
-            item.quantity -= 1;
+            cartItem.quantity += 1;
+        } else if (action === 'decrease') {
+            cartItem.quantity -= 1;
         }
 
-        await cart.save();
+        // Prevent quantity from going below 1
+        if (cartItem.quantity < 1) {
+            cartItem.quantity = 1;
+        }
 
-        res.json({ success: true, cart });
+        // Save the updated cart
+        await userCart.save();
+
+        // Send back the new quantity and item price
+        const itemPrice = itemDetails.price * cartItem.quantity; // Use itemDetails to get the price
+        return res.status(200).json({ success: true, newQuantity: cartItem.quantity, itemPrice });
     } catch (error) {
-        console.error("Error updating cart:", error.message);
-        res.status(500).json({ success: false, message: 'Internal Server Error' });
+        console.error('Error updating cart:', error);
+        return res.status(500).json({ success: false, message: "An error occurred." });
     }
 };
-
-

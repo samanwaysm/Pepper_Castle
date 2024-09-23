@@ -120,7 +120,7 @@ exports.cart=(req,res)=>{
     console.log(userId);
     axios.get(`http://localhost:${process.env.PORT}/api/showCart?userId=${userId}`)
         .then((response) => {
-            res.render("user/cart", {cart:response.data,isUserAuthenticated,message});
+            res.render("user/cart", {cart:response.data,isUserAuthenticated,message,userId});
             delete req.session.message;
         })
         .catch((err) => {

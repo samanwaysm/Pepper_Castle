@@ -28,6 +28,6 @@ route.post('/api/signin',controller.signIn)   // Login
 route.get('/api/ourMenuList',categoryAndItemContoller.ourMenuList)
 route.get('/api/addToCart',cartController.addToCart)
 route.get('/api/showCart',cartController.showCart)
-
+route.post('/api/update-cart',cartController.updateCart)
 
 module.exports = route;

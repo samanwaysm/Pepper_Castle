@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Full-Screen Food Order Cart</title>
     <style>
+        /* Your existing CSS styles remain unchanged */
         * {
             margin: 0;
             padding: 0;
@@ -79,6 +80,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            justify-content: center;
         }
 
         .quantity-selector button {
@@ -157,62 +159,30 @@
         .checkout-btn:hover {
             background-color: #e24600;
         }
-
-        @media (min-width: 768px) {
-            .cart-container {
-                padding: 30px;
-            }
-
-            .product-section {
-                padding-right: 30px;
-                margin-right: 30px;
-            }
-
-            .product-item {
-                padding: 20px 0;
-            }
-
-            .product-item img {
-                width: 100px;
-                height: 100px;
-            }
-
-            .product-name {
-                font-size: 20px;
-            }
-
-            .quantity-selector button, 
-            .quantity-selector input {
-                height: 40px;
-                width: 40px;
-                font-size: 18px;
-            }
-
-            .checkout-btn {
-                padding: 18px;
-                font-size: 20px;
-            }
-        }
     </style>
 </head>
 <body>
-    <div class="container-wrapper"></div>
+    <div class="container-wrapper">
         <div class="cart-container">
             <div class="product-section">
-                <% cart.cartItems.forEach(item => { %>
-                <div class="product-item">
-                    <div class="product-details">
-                        <img src="<%= item.itemId.imagePath %>" alt="<%= item.itemId.name %>">
-                        <span class="product-name"><%= item.itemId.name %></span>
-                    </div>
-                    <div class="quantity-selector">
-                        <button class="decrease-qty" data-item-id="<%= item.itemId._id %>">-</button>
-                        <input type="text" value="<%= item.quantity %>" data-item-id="<%= item.itemId._id %>">
-                        <button class="increase-qty" data-item-id="<%= item.itemId._id %>">+</button>
-                    </div>
-                    <span>S$<%= item.itemId.price %></span>
-                </div>
-                <% }); %>
+                <% if (cart && cart.length > 0) { %>
+                    <% cart.forEach(item => { %>
+                        <div class="product-item" data-item-id="<%= item.cartItems.itemId %>">
+                            <div class="product-details">
+                                <img src="<%= item.itemDetails.image[0] %>" alt="<%= item.itemDetails.item %>">
+                                <span class="product-name"><%= item.itemDetails.item %></span>
+                            </div>
+                            <div class="quantity-selector">
+                                <button class="decrease-qty" data-item-id="<%= item.cartItems.itemId %>">-</button>
+                                <input type="text" class="quantity-input" value="<%= item.cartItems.quantity %>" data-item-id="<%= item.cartItems.itemId %>" readonly>
+                                <button class="increase-qty" data-item-id="<%= item.cartItems.itemId %>">+</button>
+                            </div>
+                            <span class="item-total-price" data-item-id="<%= item.cartItems.itemId %>">S$<%= (item.itemDetails.price * item.cartItems.quantity).toFixed(2) %></span>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <p>Your cart is empty.</p>
+                <% } %>
             </div>
 
             <div class="summary-section">
@@ -220,7 +190,7 @@
                     <h3>Order Summary</h3>
                     <div class="summary-item">
                         <span>Subtotal</span>
-                        <span>S$<%= cart.cartItems.reduce((sum, item) => sum + (item.itemId.price * item.quantity), 0) %></span>
+                        <span class="subtotal">S$<%= cart.reduce((sum, item) => sum + (item.itemDetails.price * item.cartItems.quantity), 0).toFixed(2) %></span>
                     </div>
                     <div class="summary-item">
                         <span>Shipping</span>
@@ -228,7 +198,7 @@
                     </div>
                     <div class="summary-item">
                         <strong>Total</strong>
-                        <strong>S$ <%= cart.cartItems.reduce((sum, item) => sum + (item.itemId.price * item.quantity), 0) - 100 %></strong>
+                        <strong class="total">S$<%= cart.reduce((sum, item) => sum + (item.itemDetails.price * item.cartItems.quantity), 0).toFixed(2) %></strong>
                     </div>
                     <button class="checkout-btn">Checkout</button>
                 </div>
@@ -236,28 +206,66 @@
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        document.querySelectorAll('.increase-qty, .decrease-qty').forEach(button => {
-            button.addEventListener('click', function() {
-                const itemId = this.getAttribute('data-item-id');
-                const action = this.classList.contains('increase-qty') ? 'increase' : 'decrease';
+        const userId = '<%= userId %>'; 
 
-                fetch('/update-cart', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ itemId, action })
-                })
-                .then(response => response.json())
-                .then(data => {
+        function updateCartUI(itemId, newQuantity, itemPrice) {
+            const itemElement = $(`.product-item[data-item-id="${itemId}"]`);
+            const quantityInput = itemElement.find('.quantity-input');
+            const itemTotalPrice = itemElement.find('.item-total-price');
+
+            // Update quantity input and item total price
+            quantityInput.val(newQuantity);
+            itemTotalPrice.text(`S$${(itemPrice).toFixed(2)}`);
+
+            // Update subtotal and total
+            let newSubtotal = 0;
+            $('.item-total-price').each(function() {
+                newSubtotal += parseFloat($(this).text().replace('S$', ''));
+            });
+
+            // Update the displayed subtotal and total
+            $('.subtotal').text(`S$${newSubtotal.toFixed(2)}`);
+            $('.total').text(`S$${newSubtotal.toFixed(2)}`);
+        }
+
+        $(document).on('click', '.increase-qty, .decrease-qty', function() {
+            const itemId = $(this).data('item-id');
+            const action = $(this).hasClass('increase-qty') ? 'increase' : 'decrease';
+
+            // Get the current quantity from the input field
+            const quantityInput = $(`.product-item[data-item-id="${itemId}"] .quantity-input`);
+            let currentQuantity = parseInt(quantityInput.val(), 10);
+
+            // Determine the new quantity based on the action
+            let newQuantity = action === 'increase' ? currentQuantity + 1 : currentQuantity - 1;
+            
+            // Prevent quantity from going below 1
+            if (newQuantity < 1) {
+                newQuantity = 1; // or you can choose to disable the decrease button
+            }
+
+            // AJAX request to update the cart
+            $.ajax({
+                url: '/api/update-cart',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ itemId, action, userId }),
+                success: function(data) {
                     if (data.success) {
-                        location.reload();
+                        const { newQuantity, itemPrice } = data;
+                        updateCartUI(itemId, newQuantity, itemPrice);
+                    } else {
+                        console.error('Error:', data.message);
                     }
-                })
-                .catch(err => console.error('Error updating cart:', err));
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error updating cart:', error);
+                }
             });
         });
     </script>
 </body>
 </html>
+

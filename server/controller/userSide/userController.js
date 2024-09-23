@@ -70,7 +70,7 @@ exports.signIn = async (req, res) => {
     
         if (!foundUser) {
           req.session.validEmail = "User with this email or phone number does not exist";
-          return res.redirect("/login");
+          return res.redirect("/signin");
         }
     
         const isPasswordMatch = await bcrypt.compare(log.password, foundUser.password);
@@ -86,16 +86,16 @@ exports.signIn = async (req, res) => {
           // Handle wrong password or blocked account
           if (!isPasswordMatch) {
             req.session.wrongPassword = "Wrong Password";
-            return res.redirect("/login");
+            return res.redirect("/signin");
           }
           if (foundUser.isBlocked) {
             req.session.validEmail = "User is blocked by admin";
-            return res.redirect("/login");
+            return res.redirect("/signin");
           }
         }
       } catch (err) {
         console.error(err);
-        res.redirect("/login");
+        res.redirect("/signin");
       }
 }
 
