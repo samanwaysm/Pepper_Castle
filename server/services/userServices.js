@@ -44,7 +44,7 @@ exports.signIn=(req,res)=>{
 
 exports.signUp=(req,res)=>{
     const {foundEmail,isUserAuthenticated} = req.session;
-    res.render("user/signUp",{isUserAuthenticated,foundEmail},(err,html)=>{
+    res.render("user/signup",{isUserAuthenticated,foundEmail},(err,html)=>{
        if(err){
           console.log(err);
        }
