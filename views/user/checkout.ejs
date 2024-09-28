@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Page</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        .container {
+            width: 70%;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: white;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #ff6600;
+            font-size: 2.5rem;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section h2 {
+            margin-bottom: 15px;
+            color: #ff6600;
+            font-size: 1.6rem;
+        }
+        .order-summary {
+            padding: 20px;
+            background-color: #ffe5cc;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 40px;
+        }
+        .order-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .order-item img {
+            width: 80px;
+            height: 80px;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+        .order-item-details {
+            flex-grow: 1;
+            margin-left: 20px;
+        }
+        .order-item-details p {
+            margin: 5px 0;
+            font-size: 1.1rem;
+            color: #495057;
+        }
+        .order-item-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #495057;
+        }
+        .total-price {
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: #212529;
+            text-align: right;
+        }
+        .address-display, .payment-options {
+            padding: 20px;
+            background-color: #ffe5cc;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        .address-display p {
+            font-size: 1.1rem;
+            margin: 8px 0;
+            color: #495057;
+        }
+        .address-display p span {
+            font-weight: bold;
+        }
+        .change-address-button, .submit-button {
+            margin-top: 15px;
+            padding: 12px 16px;
+            font-size: 1.1rem;
+            background-color: #ff6600;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .change-address-button:hover, .submit-button:hover {
+            background-color: #cc5200;
+        }
+        .payment-options label {
+            display: block;
+            font-size: 1.1rem;
+            margin: 8px 0;
+            color: #495057;
+        }
+        input[type="radio"] {
+            margin-right: 8px;
+        }
+        form input[type="text"], form button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 1.1rem;
+        }
+        .submit-button {
+            width: 100%;
+            padding: 16px;
+            background-color: #ff6600;
+            font-size: 1.2rem;
+        }
+        .submit-button:hover {
+            background-color: #cc5200;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Checkout</h1>
+
+    <!-- Order Summary Section -->
+    <div class="section order-summary">
+        <h2>Order Summary</h2>
+
+        <!-- Dynamically populate order items -->
+        <% cartDetails.forEach(item => { %>
+        <div class="order-item">
+            <img src="<%= item.itemDetails.image %>" alt="Product Image">
+            <div class="order-item-details">
+                <p><%= item.itemDetails.item %></p>
+                <p>Quantity: <%= item.cartItems.quantity %></p>
+            </div>
+            <p class="order-item-price">$<%= (item.itemDetails.price * item.cartItems.quantity).toFixed(2) %></p>
+        </div>
+        <% }) %>
+
+        <!-- Total -->
+        <p class="total-price">Total: $<%= cartDetails.reduce((total, item) => total + (item.itemDetails.price * item.cartItems.quantity), 0).toFixed(2) %></p>
+    </div>
+
+    <!-- Address Display Section -->
+    <div class="section">
+        <h2>Shipping Address</h2>
+        <div class="address-display">
+            <p>Full Name : <span id="username"> <%= addresses.address[0].username %></span></p>
+            <p>Phone Number : <span id="phone"><%= addresses.address[0].phone %></span></p>
+            <p>Street : <span id="street"><%= addresses.address[0].street %></span></p>
+            <p>City : <span id="block"><%= addresses.address[0].block %></span></p>
+            <p>Unit Number : <span id="unitnum"><%= addresses.address[0].unitnum %></span></p>
+            <p>Postal Code : <span id="postal"><%= addresses.address[0].postal %></span></p>
+
+            <button class="change-address-button" onclick="toggleAddressForm()">Change Address</button>
+        </div>
+
+        <!-- Address Form (Initially Hidden) -->
+        <form id="addressForm" action="/change-address" method="POST" style="display:none;">
+            <input type="text" id="newFullName" name="fullName" placeholder="Enter your full name" required>
+            <input type="text" id="newPhone" name="phone" placeholder="Enter your phone number" required>
+            <input type="text" id="newStreet" name="street" placeholder="Enter your street address" required>
+            <input type="text" id="newCity" name="city" placeholder="Enter your city" required>
+            <input type="text" id="newPostalCode" name="postalCode" placeholder="Enter your postal code" required>
+            <input type="text" id="newCountry" name="country" placeholder="Enter your country" required>
+            <button type="submit" class="change-address-button">Save Address</button>
+        </form>
+    </div>
+
+    <!-- Payment Method Section -->
+    <div class="section">
+        <h2>Payment Method</h2>
+        <div class="payment-options">
+            <label>
+                <input type="radio" name="paymentMethod" value="online" required> Online Payment
+            </label>
+            <label>
+                <input type="radio" name="paymentMethod" value="cod" required> Cash on Delivery
+            </label>
+        </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="section">
+        <button type="submit" class="submit-button" onclick="submitOrder()">Place Order</button>
+    </div>
+</div>
+
+<script>
+function submitOrder() {
+    const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+    const orderItems = `<%- JSON.stringify(cartDetails) %>`;
+    const userId = `<%= userId %>`;
+    const structuredAddress = `<%= addresses.address[0].structuredAddress %>`;
+
+    const address = {
+        username: document.getElementById('username').textContent,
+        phone: document.getElementById('phone').textContent,
+        street: document.getElementById('street').textContent,
+        block: document.getElementById('block').textContent,
+        unitnum: document.getElementById('unitnum').textContent,
+        postal: document.getElementById('postal').textContent,
+        structuredAddress: structuredAddress
+    };
+
+    const orderData = {
+        orderItems: orderItems, // Should be a JavaScript object, not a string
+        paymentMethod: paymentMethod,
+        address: address,
+        userId: userId
+    };
+
+    // Send AJAX POST request to create an order
+    fetch('/api/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            if (paymentMethod === 'online') {
+                window.location.href = data.paymentUrl; // Stripe redirect URL
+            } else {
+                alert('Order placed with Cash on Delivery!');
+            }
+        } else {
+            alert('Error placing order: ' + data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+</script>
+
+
+</body>
+</html>

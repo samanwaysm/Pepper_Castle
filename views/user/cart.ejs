@@ -219,7 +219,7 @@
                         <strong>Total</strong>
                         <strong class="total">S$<%= cart.reduce((sum, item) => sum + (item.itemDetails.price * item.cartItems.quantity), 0).toFixed(2) %></strong>
                     </div>
-                    <button class="checkout-btn">Checkout</button>
+                    <a href="/checkout"><button class="checkout-btn">Checkout</button></a>
                 </div>
             </div>
         </div>

@@ -3,7 +3,7 @@ var Category = require("../../model/categorySchema");
 var Item = require("../../model/itemSchema");
 
 
-exports.adminLoginCheck = async (req, res) => {
+exports.adminLogin = async (req, res) => {
 
 };
 
@@ -30,7 +30,7 @@ exports.userunBlock = async (req, res) => {
 // cateogary managment
 
 exports.addCategory = async (req, res) => {
-    const categoryName = req.body.categoryName;
+    const categoryName = req.body.category;
     const categoryExists = await Category.findOne({
       category: { $regex: new RegExp(categoryName, "i") },
     });
@@ -61,18 +61,49 @@ exports.CategoryManagementShow = async (req, res) => {
 };
 
 exports.UnlistCategoryShow = async (req, res) => {
-
+  const UnlistCategory = await Category.find({ status: false });
+  res.send(UnlistCategory);
 };
 
 exports.unlistCategory = async (req, res) => {
+  const id = req.query.id;
+  console.log(id);
+  
+  const categorydata = await Category.find({ _id: id });
+  if (
+    categorydata &&
+    categorydata.length > 0 &&
+    categorydata[0].status === true
+  ) {
+    await Category.updateOne({ _id: id }, { $set: { status: false } });
 
+    // await Item.updateMany(
+    //   { category: categorydata[0].category },
+    //   { $set: { isCategory: false } }
+    // );
+    res.status(200).redirect("/categoryManagement");
+  }
 };
 
 exports.listCategory = async (req, res) => {
+  const id = req.query.id;
+  const categorydata = await Category.find({ _id: id });
+  if (
+    categorydata &&
+    categorydata.length > 0 &&
+    categorydata[0].status === false
+  ) {
+    await Category.updateOne({ _id: id }, { $set: { status: true } });
+    // await Item.updateMany(
+    //   { category: categorydata[0].category },
+    //   { $set: { isCategory: true } }
+    // );
+    res.status(200).redirect("/unlistCategory");
+  }
 };
 
 exports.editCategory = async (req, res) => {
-  const categoryName = req.body.categoryName
+  const categoryName = req.body.category
   const editId = req.query.id;
   console.log(req.body, editId);
   
@@ -81,7 +112,7 @@ exports.editCategory = async (req, res) => {
       { _id: editId },
       { $set: { category: categoryName } }
     );
-    res.redirect("/adminCategoryMange");
+    res.redirect("/categoryManagement");
   } catch (err) {
     req.session.categoryerr = "Category already in use";
     const referrer = req.get("Referer");
@@ -112,6 +143,8 @@ exports.addItem = (req, res) => {
         res.status(400).send({ message: "hi you entered any thing" });
         return;
       }
+      console.log(req);
+      
       const file = req.files;
       const images = file.map((values) => `/uploads/${values.filename}`);
       console.log('dcs');
@@ -128,7 +161,7 @@ exports.addItem = (req, res) => {
         .save(item)
         .then((data) => {
           // console.log("done")
-          res.redirect("/adminItemManagement");
+          res.redirect("/itemManagement");
         })
         .catch((err) => {
           res.status(400).send({
@@ -152,14 +185,31 @@ exports.itemManagementShow = async (req, res) => {
 };
 
 exports.unlistItemShow = async (req, res) => {
-
+  const itemList = await Item.find({
+    $and: [{ listed: false }, { isCategory: true }],
+  });
+  res.send(itemList);
 };
 
-exports.unlistitem = async (req, res) => {
-
+exports.unlistItem = async (req, res) => {
+  const id = req.query.id;
+  const itemdata = await Item.find({ _id: id });
+  if (itemdata && itemdata.length > 0 && itemdata[0].listed === true) {
+    await Item.updateOne({ _id: id }, { $set: { listed: false } });
+    res.status(200).redirect("/itemManagement");
+  }
 };
 
-exports.listitem = async (req, res) => {
-
+exports.listItem = async (req, res) => {
+  const id = req.query.id;
+  const itemdata = await Item.find({ _id: id });
+  if (
+    itemdata &&
+    itemdata.length > 0 &&
+    itemdata[0].listed === false
+  ) {
+    await Item.updateOne({ _id: id }, { $set: { listed: true } });
+    res.status(200).redirect("/unlistItem");
+  }
 };
 

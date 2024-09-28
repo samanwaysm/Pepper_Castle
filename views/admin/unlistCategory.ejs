@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="apple-touch-icon" sizes="76x76" href="/admin/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="/admin/img/favicon.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Pepper Castle Admin - Item Management</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <!-- Fonts and icons -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <!-- CSS Files -->
+    <link href="/admin/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/admin/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
+    <!-- <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" /> -->
+    <link href="/admin/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link href="/admin/demo/demo.css" rel="stylesheet" />
+    <style>
+        .category-card {
+            display: flex;
+            align-items: center;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        .category-details {
+            flex-grow: 1;
+        }
+
+        .category-actions {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .category-actions button {
+            margin-top: 5px;
+        }
+
+        .category-name {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .action-buttons {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body class="">
+    <div class="wrapper">
+        <div class="sidebar" data-color="white" data-active-color="danger">
+            <div class="logo">
+                <a href="https://www.creative-tim.com" class="simple-text logo-mini">
+                    <div class="logo-image-small">
+                        <img src="/admin/img/logo-small.png">
+                    </div>
+                </a>
+                <a href="https://www.creative-tim.com" class="simple-text logo-normal">Pepper Castle</a>
+            </div>
+            <div class="sidebar-wrapper">
+                <ul class="nav">
+                    <li>
+                        <a href="/dashboard">
+                            <i class="nc-icon nc-bank"></i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/orderManagement">
+                            <i class="nc-icon nc-bag-16"></i>
+                            <p>Order Management</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/userManagement">
+                            <i class="nc-icon nc-single-02"></i>
+                            <p>User Management</p>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="/categoryManagement">
+                            <i class="nc-icon nc-minimal-down"></i>
+                            <p>Category Management</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/itemManagement">
+                            <i class="nc-icon nc-tile-56"></i>
+                            <p>Item Management</p>
+                        </a>
+                    </li>
+
+                    <li class="active-pro">
+                        <a href="./upgrade.html">
+                            <i class="nc-icon nc-simple-remove"></i>
+                            <p>Logout</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="main-panel">
+            <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
+                <div class="container-fluid">
+                    <div class="navbar-wrapper">
+                        <div class="navbar-toggle">
+                            <button type="button" class="navbar-toggler">
+                                <span class="navbar-toggler-bar bar1"></span>
+                                <span class="navbar-toggler-bar bar2"></span>
+                                <span class="navbar-toggler-bar bar3"></span>
+                            </button>
+                        </div>
+                        <a class="navbar-brand" href="javascript:;">Category Management</a>
+                    </div>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-bar navbar-kebab"></span>
+                        <span class="navbar-toggler-bar navbar-kebab"></span>
+                        <span class="navbar-toggler-bar navbar-kebab"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
+                        <form>
+                            <div class="input-group no-border">
+                                <input type="text" value="" class="form-control" placeholder="Search...">
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <i class="nc-icon nc-zoom-split"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </nav>
+            <div class="content">
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <a href="/addCategory"><button class="btn btn-primary">Add Category</button></a>
+                    <a href="/addCategory"><button class="btn btn-primary">Unlist Category</button></a>
+                </div>
+
+                <div class="row">
+                    <% categories.forEach(category => { %>
+                        <div class="col-md-12">
+                            <div class="category-card">
+                                <div class="category-details">
+                                    <div class="category-name"><%= category.category %></div>
+                                </div>
+                                <div class="category-actions">
+                                    <a href="/admin/listCategory?id=<%= category._id %>"><button class="btn btn-warning btn-sm">
+                                        <i class="nc-icon nc-ruler-pencil"></i> List
+                                    </button></a>
+                                    <a href="/admin/unlistCategory?id=<%= category._id %>"><button class="btn btn-danger btn-sm">
+                                        <i class="nc-icon nc-simple-remove"></i> Delete
+                                    </button></a>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+            </div>
+            <script src="/admin/js/core/jquery.min.js"></script>
+            <script src="/admin/js/core/popper.min.js"></script>
+            <script src="/admin/js/core/bootstrap.min.js"></script>
+            <script src="/admin/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+            <script src="/admin/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script>
+            <script src="/admin/demo/demo.js"></script>
+        </div>
+    </div>
+</body>
+
+</html>

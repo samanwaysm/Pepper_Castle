@@ -9,7 +9,7 @@ exports.addToCart = async (req, res) => {
     const itemId = req.query.id;
     const userId = req.session.userId;
 
-    console.log('item id ', itemId);
+    // console.log('item id ', itemId);
 
     if (typeof userId === "undefined") {
         return res.redirect('/signin');
@@ -55,7 +55,7 @@ exports.addToCart = async (req, res) => {
 exports.showCart = async (req, res) => {
     try {
         const userId = req.query.userId;
-        console.log('showcart', userId);
+        // console.log('showcart', userId);
 
         const cartDetails = await cartDb.aggregate([
             {
@@ -91,7 +91,7 @@ exports.showCart = async (req, res) => {
             return res.status(404).send('Cart not found');
         }
 
-        console.log(cartDetails);
+        // console.log(cartDetails);
         res.send(cartDetails);
 
     } catch (error) {
@@ -104,7 +104,7 @@ exports.showCart = async (req, res) => {
 exports.removeCart = async (req, res) => {
     const userId = req.session.userId;
     const itemId = req.body.itemId; // Assuming you send the itemId in the request body
-    console.log(itemId);
+    // console.log(itemId);
     try {
         const cart = await cartDb.findOne({ userId: userId });
         
