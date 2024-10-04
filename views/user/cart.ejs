@@ -1,232 +1,295 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Full-Screen Food Order Cart</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body, html {
-            height: 100%;
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-        }
-
-        .container-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .cart-container {
-            display: flex;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 1500px;
-            gap: 40px;
-        }
-
-        .product-section {
-            flex: 3;
-            padding-right: 20px;
-            border-right: 1px solid #eaeaea;
-        }
-
-        .product-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-            border-bottom: 1px solid #eaeaea;
-            gap: 20px;
-        }
-
-        .product-item:last-child {
-            border-bottom: none;
-        }
-
-        .product-details {
-            display: flex;
-            align-items: center;
-            flex: 1;
-            gap: 15px;
-        }
-
-        .product-item img {
-            width: 80px;
-            height: 80px;
-            border-radius: 5px;
-        }
-
-        .product-name {
-            font-size: 18px;
-            color: #333;
-            flex: 1;
-        }
-
-        .quantity-selector {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .quantity-selector button {
-            background-color: #fc5000;
-            color: #fff;
-            border: none;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            font-size: 18px;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-
-        .quantity-selector button:hover {
-            background-color: #e24600;
-        }
-
-        .quantity-selector input {
-            width: 50px;
-            text-align: center;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 5px;
-            font-size: 16px;
-        }
-
-        .summary-section {
-            flex: 1.5;
-        }
-
-        .summary {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .summary h3 {
-            color: #fc5000;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 20px;
-            border-bottom: 2px solid #fc5000;
-            padding-bottom: 5px;
-        }
-
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            margin: 15px 0;
-            font-size: 16px;
-        }
-
-        .summary-item strong {
-            font-size: 18px;
-        }
-
-        .checkout-btn {
-            width: 100%;
-            background-color: #fc5000;
-            color: #fff;
-            border: none;
-            padding: 15px;
-            font-size: 18px;
-            cursor: pointer;
-            border-radius: 6px;
-            margin-top: 20px;
-            transition: background-color 0.3s ease;
-            font-weight: bold;
-        }
-
-        .checkout-btn:hover {
-            background-color: #e24600;
-        }
-
-        .item-total-price {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex: 1;
-            margin-left: 20px;
-        }
-
-        .delete-icon {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-
-        .delete-icon:hover {
-            opacity: 0.7;
-        }
-    </style>
-</head>
-<body>
-    <div class="container-wrapper">
-        <div class="cart-container">
-            <div class="product-section">
-                <% if (cart && cart.length > 0) { %>
-                    <% cart.forEach(item => { %>
-                        <div class="product-item" data-item-id="<%= item.cartItems.itemId %>">
-                            <div class="product-details">
-                                <img src="<%= item.itemDetails.image[0] %>" alt="<%= item.itemDetails.item %>">
-                                <span class="product-name"><%= item.itemDetails.item %></span>
-                            </div>
-                            <div class="quantity-selector">
-                                <button class="decrease-qty" data-item-id="<%= item.cartItems.itemId %>">-</button>
-                                <input type="text" class="quantity-input" value="<%= item.cartItems.quantity %>" data-item-id="<%= item.cartItems.itemId %>" readonly>
-                                <button class="increase-qty" data-item-id="<%= item.cartItems.itemId %>">+</button>
-                            </div>
-                            <div class="item-total-price">
-                                <span>S$<%= (item.itemDetails.price * item.cartItems.quantity).toFixed(2) %></span>
-                                <i class="fas fa-trash delete-icon" data-item-id="<%= item.cartItems.itemId %>"></i>
-                            </div>
-                        </div>
-                    <% }); %>
-                <% } else { %>
-                    <p>Your cart is empty.</p>
-                <% } %>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Pepper Castle</title>
+      <!-- Google Fonts -->
+      <link rel="preconnect" href="https://fonts.googleapis.com/">
+      <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&amp;family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.css">
+      <link rel='stylesheet' id='bootstrap-css'  href='css/bootstrap/css/bootstrap.min.css' type='text/css' media='all' />
+      <!-- Font Awesome Icons CSS -->
+      <link rel='stylesheet' id='font-awesome'  href='css/fontawesome/css/font-awesome.min.css' type='text/css' media='all' />
+      <!-- Owl Carousel -->
+      <link rel='stylesheet' id='owl-carousel'  href='js/owl-carousel/owl.carousel.min.css' type='text/css' media='all' />
+      <!-- Main CSS File -->
+      <link rel='stylesheet' id='caverta-style-css'  href='/css/style.css' type='text/css' media='all' />
+      <!-- favicons -->
+      <link rel='stylesheet' id='caverta-style-css'  href='/css/cart.css' type='text/css' media='all' />
+      <link rel="icon" href="/images/fav.png" sizes="32x32" />
+      <link rel="icon" href="/images/icons/favicon-192x192.png" sizes="192x192" />
+      <link rel="apple-touch-icon-precomposed" href="/images/icons/favicon-180x180.png" />
+      <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMcXy8cM4lFpbpVg5gRZxY2t+GdA1sNFA1Y+" crossorigin="anonymous"> -->
+   </head>
+   <body class="home">
+      <div class="menu-mask"></div>
+      <!-- MOBILE MENU HOLDER -->
+      <div class="mobile-menu-holder">
+         <div class="modal-menu-container">
+            <div class="exit-mobile">
+               <span class="icon-bar1"></span>
+               <span class="icon-bar2"></span>
             </div>
+            <!-- MOBILE MENU -->
+            <ul class="menu-mobile">
+               <li class="menu-item menu-item-has-children">
+                    <a href="#">Home</a>
+                </li>
+                <li class="menu-item menu-item-has-children">
+                    <a href="about.html">About</a>
+                </li>
+                <li class="menu-item menu-item-has-children">
+                    <a href="testimonials.html">Testimonials</a>
+                </li>
+                <li class="menu-item menu-item-has-children current-menu-item">
+                    <a href="our-menu.html">Our Menu</a>
+                </li>
+                <li class="menu-item menu-item-has-children">
+                    <a href="contact.html">Contact</a>
+                </li>
+                <li class="menu-item menu-item-has-children">
+                    <a href="#">Sign Up</a>
+                </li>
+                <li class="menu-item menu-item-has-children">
+                    <a href="#"><i class="fas fa-cart-plus"></i></a>
+                </li>
+            </ul>
+            <!-- /MOBILE MENU -->
+         </div>
+         <!-- modal-menu-container -->
+         <div class="menu-contact">
+            <div class="mobile-btn">
+                <a href="#" class="view-more">Order Now</a>
+            </div>
+            <ul class="mobile-contact">
+               <li class="mobile-address">58 Ralph Ave<br />
+                  New York, New York 1111
+               </li>
+               <li class="mobile-phone">+1 800 000 111</li>
+               <li class="mobile-email"><a href="#" class="__cf_email__" data-cfemail="01626e6f75606275416479606c716d642f626e6c">[email&#160;protected]</a></li>
+            </ul>
+            <ul class="social-media">
+               <li><a class="social-facebook" href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+               <li><a class="social-instagram" href="https://www.instagram.com/pepper_castle_/?igshid=eddejyohhgwd" target="_blank"><i class="fab fa-instagram"></i></a></li>
+            </ul>
+         </div>
+         <!-- /menu-contact-->
+      </div>
+      <!-- /MOBILE MENU HOLDER -->
+      <!-- HEADER -->
+      <header id="header-1" class="headerHolder header-1 nav-fixed-top-cart">
+         <div class="nav-button-holder">
+            <button type="button" class="nav-button">
+            <span class="icon-bar"></span>
+            </button>
+         </div>
+         <!-- /nav-button-holder-->
+         <!-- LOGO -->
+         <div class="logo logo-1"><a href="index.html"><img class="img-fluid" src="/images/Pepper-Castle_White.png" alt="Caverta" /></a></div>
+         <!-- MENU -->
+         <nav class="nav-holder nav-holder-1">
+            <ul class="menu-nav menu-nav-1">
+               <li class="menu-item menu-item-has-children">
+                    <a href="/">Home</a>
+                </li>
+                <li class="menu-item menu-item-has-children">
+                    <a href="/about">About</a>
+                </li>
+                <li class="menu-item menu-item-has-children">
+                    <a href="/testimonials">Testimonials</a>
+                </li>
+                <li class="menu-item menu-item-has-children current-menu-item">
+                    <a href="/our-menu">Our Menu</a>
+                </li>
+                <li class="menu-item menu-item-has-children">
+                    <a href="/contact">Contact</a>
+                </li>
+            </ul>
+         </nav>
+         <!-- /MENU --> 
+         <div class="social-btn-top1">
+            <% if(!isUserAuth){ %>
+               <ul class="social-media social-media1 login-signup">
+                  <li class="menu-item menu-item-has-children">
+                      <!-- <a href="/signin">SignIn</a> -->
+                  </li>
+              </ul>
+            <% }else{ %>
+            <ul class=" menu-nav menu-nav-1"></ul>
+               <li class="menu-item menu-item-has-children list-unstyled" style="margin-left: 50px;">
+                  <a class="icon-link-white" href="#"><i class="fas fa-user"></i></a>
+               </li>
+               <li class="menu-item menu-item-has-children list-unstyled" style="margin-left: 30px;margin-right: 30px;">
+                  <a class="icon-link-white" href="/cart"><i class="fas fa-cart-plus"></i></a>
+               </li>
+            </ul>
+            <% } %>
+            <% if(!isUserAuth){ %>
+            <div class="btn-header btn-header1 profile-cart-btns"> 
+                <a href="/signin" class="view-more">Order Now</a>
+            </div>
+            <% }else{ %>
+               <div class="btn-header btn-header1 profile-cart-btns"> 
+                  <a href="/our-menu" class="view-more">Order Now</a>
+              </div>
+            <% } %>
+         </div>
+            <!-- /social-btn-top1 --> 
+      </header> 
+      <!-- WRAP CONTENT -->
+        <div class="container-wrapper">
+            <div class="cart-container">
+                <div class="product-section">
+                    <% if (cart && cart.length > 0) { %>
+                        <% cart.forEach(item => { %>
+                            <div class="product-item" data-item-id="<%= item.cartItems.itemId %>">
+                                <div class="product-details">
+                                    <img src="<%= item.itemDetails.image[0] %>" alt="<%= item.itemDetails.item %>">
+                                    <span class="product-name"><%= item.itemDetails.item %></span>
+                                </div>
+                                <div class="quantity-selector">
+                                    <button class="decrease-qty" data-item-id="<%= item.cartItems.itemId %>">-</button>
+                                    <input type="text" class="quantity-input" value="<%= item.cartItems.quantity %>" data-item-id="<%= item.cartItems.itemId %>" readonly>
+                                    <button class="increase-qty" data-item-id="<%= item.cartItems.itemId %>">+</button>
+                                </div>
+                                <div class="item-total-price">
+                                    <span>S$<%= (item.itemDetails.price * item.cartItems.quantity).toFixed(2) %></span>
+                                    <i class="fas fa-trash delete-icon" data-item-id="<%= item.cartItems.itemId %>"></i>
+                                </div>
+                            </div>
+                        <% }); %>
+                    <% } else { %>
+                        <div class="empty-cart text-center align-items-center" id="emptyCartMessage">
+                            <p>Your cart is empty.</p>
+                            <a href="products.html" class="add-products-link">Add Products</a>
+                        </div>
+                    <% } %>
+                </div>
 
-            <div class="summary-section">
-                <div class="summary">
-                    <h3>Order Summary</h3>
-                    <div class="summary-item">
-                        <span>Subtotal</span>
-                        <span class="subtotal">S$<%= cart.reduce((sum, item) => sum + (item.itemDetails.price * item.cartItems.quantity), 0).toFixed(2) %></span>
+                <div class="summary-section">
+                    <div class="summary">
+                        <h3>Order Summary</h3>
+                        <div class="summary-item">
+                            <span>Subtotal</span>
+                            <span class="subtotal">S$<%= cart.reduce((sum, item) => sum + (item.itemDetails.price * item.cartItems.quantity), 0).toFixed(2) %></span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Shipping</span>
+                            <span>Free</span>
+                        </div>
+                        <div class="summary-item">
+                            <strong>Total</strong>
+                            <strong class="total">S$<%= cart.reduce((sum, item) => sum + (item.itemDetails.price * item.cartItems.quantity), 0).toFixed(2) %></strong>
+                        </div>
+                        <a href="/checkout"><button class="checkout-btn">Checkout</button></a>
                     </div>
-                    <div class="summary-item">
-                        <span>Shipping</span>
-                        <span>Free</span>
-                    </div>
-                    <div class="summary-item">
-                        <strong>Total</strong>
-                        <strong class="total">S$<%= cart.reduce((sum, item) => sum + (item.itemDetails.price * item.cartItems.quantity), 0).toFixed(2) %></strong>
-                    </div>
-                    <a href="/checkout"><button class="checkout-btn">Checkout</button></a>
                 </div>
             </div>
         </div>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
+      <!-- /WRAP CONTENT -->
+      <!-- FOOTER -->
+      <footer>
+         <div class="container">
+            <div class="footer-widgets">
+               <div class="row">
+                  <!-- FOOTER COLUMN 1 -->
+                  <div class="col-md-4">
+                     <div class="foo-block">
+                        <div id="text-2" class="widget widget-footer widget_text">
+                           <div class="textwidget">
+                              <p><img class="size-full wp-image-665" src="/images/Pepper-Castle_White.png" alt="" width="250" height="51"></p>
+                              <p>We offer such food connoisseurs the very best of North Indian cuisine that is healthy, tasty, and free from additives.</p>
+                           </div>
+                        </div>
+                     </div>
+                     <!--foo-block-->
+                  </div>
+                  <!--col-md-3-->
+                  <!-- FOOTER COLUMN 2 -->
+                  <div class="col-md-3">
+                     <div class="foo-block">
+                        <div id="text-3" class="widget widget-footer widget_text">
+                           <h5 class="widgettitle"><span>Address</span></h5>
+                           <div class="textwidget">
+                              <p>33 Lorong liput<br> 277744 Singapore
+                              </p>
+                              <p style="white-space: nowrap;"><i class="fas fa-phone-alt"></i>+65 97440747<br>
+                                 <i class="fas fa-envelope"></i><a href="#">peppercastle@hotmail.com</a>
+                              </p>
+                           </div>
+                        </div>
+                     </div>
+                     <!--foo-block-->
+                  </div>
+                  <!--col-md-3-->
+                  
+                   <div class="col-md-3">
+                     <div class="foo-block foo-last">
+                        <div id="text-5" class="widget widget-footer widget_text">
+                           <h5 class="widgettitle"><span>Quick Links</span></h5>
+                           <div class="textwidget ftr-menu">
+                              <ul>
+                                 <li><a href="index.html">-Home</a></li>
+                                 <li><a href="about.html">-About</a></li>
+                                 <li><a href="testimonials.html">-Testimonials</a></li>
+                                 <li><a href="#">-Our Menu</a></li>
+                                 <li><a href="contact.html">-Contact</a></li>
+                              </ul>
+                           </div>
+                        </div>
+                     </div>
+                     <!--foo-block-->
+                  </div>
+                  <!-- FOOTER COLUMN 3 -->
+                  <div class="col-md-2">
+                     <div class="foo-block">
+                        <div id="text-4" class="widget widget-footer widget_text">
+                           <h5 class="widgettitle"><span>Hours</span></h5>
+                           <div class="textwidget">
+                              <p style="white-space: nowrap;">Monday – Sunday<br>
+                                 11:00 AM - 11:00 PM
+                              </p>
+                           </div>
+                           <ul class="footer-social">
+                              <li><a class="social-facebook" href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                              <li><a class="social-instagram" href="https://www.instagram.com/pepper_castle_/?igshid=eddejyohhgwd" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                           </ul>
+                        </div>
+                     </div>
+                     <!--foo-block-->
+                  </div>
+                  <!--col-md-3-->
+                  <!-- FOOTER COLUMN 4 -->
+                 
+                  <!--col-md-3-->
+               </div>
+               <!--row-->
+            </div>
+            <!-- footer-widgets -->
+            <div class="copyright">
+               <!-- COPYRIGHT -->
+               <div class="footer-copy">
+                  <p>© 2023 - Pepper Castle. All Rights Reserved.</p>
+               </div>
+               <!-- SOCIAL ICONS -->
+               
+            </div>
+            <!--copyright-->
+         </div>
+         <!--container-->
+      </footer>
+        <!-- /FOOTER -->
+        <div class="scrollup">
+            <a class="scrolltop" href="#">
+            <i class="fa fa-chevron-up"></i>
+            </a>
+        </div>
+        <!-- JS --> 
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script>
         const userId = '<%= userId %>';
 
         function updateCartUI(itemId, newQuantity, itemPrice) {
@@ -314,5 +377,22 @@
             $('.total').text(`S$${newSubtotal.toFixed(2)}`);
         }
     </script>
-</body>
+      
+      <!-- Removed redundant jQuery script -->
+      <!-- <script src='js/jquery.js'></script> -->
+      <script src='js/jquery-migrate.min.js'></script>
+      <script src='css/bootstrap/js/popper.min.js'></script>
+      <script src='css/bootstrap/js/bootstrap.min.js'></script>
+      <script src='js/jquery.easing.min.js'></script>
+      <script src='js/jquery.fitvids.js'></script>
+      <script src='js/owl-carousel/owl.carousel.min.js'></script>
+      <script src='js/jquery.magnific-popup.min.js'></script>
+      <!-- MAIN JS -->
+      <script src='js/init.js'></script>
+      <!-- CONTACT FORM JS -->
+      <script src='js/jquery.form.min.js'></script>
+      <script src='js/contactform-home.js'></script>
+
+    </body>
+
 </html>

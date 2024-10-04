@@ -187,3 +187,28 @@
   outline: none;
   display: none;
 }
+
+.breadcrumb {
+  display: flex;
+  align-items: center; /* Center items vertically */
+  margin: 10px 0; /* Add margin for spacing */
+  font-size: 16px; /* Adjust font size */
+}
+
+.breadcrumb-link {
+  color: #007bff; /* Bootstrap primary color */
+  text-decoration: none; /* Remove underline */
+  transition: color 0.2s; /* Smooth color transition on hover */
+}
+
+.breadcrumb-link:hover {
+  color: #0056b3; /* Darker shade on hover */
+}
+
+.breadcrumb-separator {
+  margin: 0 5px; /* Space around the separator */
+}
+
+.breadcrumb-current {
+  color: #6c757d; /* Secondary text color for current page */
+}

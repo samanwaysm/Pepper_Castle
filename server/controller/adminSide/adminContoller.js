@@ -56,9 +56,11 @@ exports.addCategory = async (req, res) => {
 };
 
 exports.CategoryManagementShow = async (req, res) => {
-    const categoryList = await Category.find({ status: true });
-    res.send(categoryList);
+  const categoryList = await Category.find({ status: true });
+  res.send(categoryList);
 };
+
+
 
 exports.UnlistCategoryShow = async (req, res) => {
   const UnlistCategory = await Category.find({ status: false });

@@ -1,5 +1,6 @@
 
 const OrderDb = require("../../model/orderSchema");
+const cartDb = require("../../model/cartSchema");
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
@@ -89,9 +90,20 @@ exports.createOrder = async (req, res) => {
           savedOrder.stripeSessionId = session.id;
           await savedOrder.save();
 
+          // Remove items from the user's cart
+          await cartDb.updateOne(
+            { userId }, 
+            { $set: { cartItems: [] } }
+        );        
+
           return res.json({ success: true, paymentUrl: session.url, sessionId: session.id });
       } else {
-          return res.json({ success: true, message: 'Order placed successfully with cash on delivery.' });
+            // Remove items from the user's cart
+            await cartDb.updateOne(
+                { userId }, 
+                { $set: { cartItems: [] } }
+            );            
+            return res.json({ success: true, message: 'Order placed successfully with cash on delivery.' });
       }
 
   } catch (error) {

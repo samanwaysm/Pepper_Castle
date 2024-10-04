@@ -99,12 +99,12 @@ exports.cart = (req, res) => {
     const userId = req.session.userId;
     axios.get(`http://localhost:${process.env.PORT}/api/showCart?userId=${userId}`)
         .then((response) => {
-            res.render("user/cart", { cart: response.data, isUserAuthenticated, message, userId });
+            res.render("user/cart", { cart: response.data, isUserAuthenticated, message, userId,isUserAuth });
             delete req.session.message;
         })
         .catch((err) => {
-            console.error("Error fetching cart details:", err.message);
-            res.status(err.response?.status || 500).send('Failed to load cart. Please try again later.');
+            res.render("user/cart", { cart: [], isUserAuthenticated, err, userId,isUserAuth });
+            // res.status(err.response?.status || 500).send('Failed to load cart. Please try again later.');
         });
 }
 

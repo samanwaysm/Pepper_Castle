@@ -14,7 +14,7 @@ exports.adminCategoryMangement=(req,res)=>{
 exports.categoryManagement=(req,res)=>{
     axios.get(`http://localhost:${process.env.PORT}/admin/categoryShow`)
     .then(function (response){
-        res.render("admin/categoryManagement",{categories: response.data });
+        res.render("admin/categoryManagement",{categories: response.data});
     })
     .catch(err => {
         res.send(err);
