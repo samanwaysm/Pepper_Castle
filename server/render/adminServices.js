@@ -1,14 +1,24 @@
 const session = require('express-session');
 const axios = require('axios')
 
-exports.adminCategoryMangement=(req,res)=>{
-    axios.get(`http://localhost:${process.env.PORT}/admin/categoryShow`)
-    .then(function (response){
-        res.render("admin/adminCategoryManagement",{category: response.data });
+// exports.adminCategoryMangement=(req,res)=>{
+//     axios.get(`http://localhost:${process.env.PORT}/admin/categoryShow`)
+//     .then(function (response){
+//         res.render("admin/adminCategoryManagement",{category: response.data });
+//     })
+//     .catch(err => {
+//         res.send(err);
+//     });
+// }
+
+exports.adminSignIn = (req, res) => {
+    // const { validEmail, wrongPassword, isUserAuthenticated } = req.session
+    res.render("admin/adminSignIn", (err, html) => {
+        if (err) {
+            console.log(err);
+        }
+        res.send(html)
     })
-    .catch(err => {
-        res.send(err);
-    });
 }
 
 exports.categoryManagement=(req,res)=>{
@@ -21,15 +31,15 @@ exports.categoryManagement=(req,res)=>{
     });
 }
 
-exports.adminAddCategory=(req,res)=>{
-    res.render("admin/adminAddCategory",(err,html)=>{
-        if(err){
-            console.log('render err',err);
-            return res.send('Internal server  err');
-        }
-        res.send(html);
-    });
-}
+// exports.adminAddCategory=(req,res)=>{
+//     res.render("admin/adminAddCategory",(err,html)=>{
+//         if(err){
+//             console.log('render err',err);
+//             return res.send('Internal server  err');
+//         }
+//         res.send(html);
+//     });
+// }
 
 exports.addCategory=(req,res)=>{
     res.render("admin/addCategory",(err,html)=>{
@@ -64,16 +74,16 @@ exports.editCategory=(req,res)=>{
     });
 }
 
-exports.adminItemMangement=(req,res)=>{
-    axios.get(`http://localhost:${process.env.PORT}/admin/itemShow`)
-    .then(function (response){
-        res.render("admin/adminItemManagement",{item: response.data });
-    })
-    .catch(err => {
-        res.render('error', { error: err });
-        res.send(err);
-    });
-}
+// exports.adminItemMangement=(req,res)=>{
+//     axios.get(`http://localhost:${process.env.PORT}/admin/itemShow`)
+//     .then(function (response){
+//         res.render("admin/adminItemManagement",{item: response.data });
+//     })
+//     .catch(err => {
+//         res.render('error', { error: err });
+//         res.send(err);
+//     });
+// }
 
 exports.itemMangement=(req,res)=>{
     axios.get(`http://localhost:${process.env.PORT}/admin/itemShow`)

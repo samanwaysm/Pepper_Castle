@@ -123,7 +123,7 @@
                   <a class="icon-link-white" href="#"><i class="fas fa-user"></i></a>
                </li>
                <li class="menu-item menu-item-has-children list-unstyled" style="margin-left: 30px;margin-right: 30px;">
-                  <a class="icon-link-white" href="/cart"><i class="fas fa-cart-plus"></i></a>
+                  <a class="icon-link-white" href="/cart"><i class="fas fa-cart-plus" id="cartIcon"></i></a>
                </li>
             </ul>
             <% } %>
@@ -291,6 +291,7 @@
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       <script>
         const userId = '<%= userId %>';
+        
 
         function updateCartUI(itemId, newQuantity, itemPrice) {
             const itemElement = $(`.product-item[data-item-id="${itemId}"]`);
@@ -343,6 +344,11 @@
             });
         });
 
+        $(document).ready(function () {
+            // Fetch and display the initial cart count on page load
+            updateCartCount();
+        });
+
         $(document).on('click', '.delete-icon', function() {
             const itemId = $(this).data('item-id');
 
@@ -356,6 +362,7 @@
                         $(`.product-item[data-item-id="${itemId}"]`).remove(); // Remove item from UI
                         // Update subtotal and total accordingly
                         updateCartSummary();
+                        updateCartCount();
                     } else {
                         console.error('Error:', data.message);
                     }
@@ -376,6 +383,56 @@
             $('.subtotal').text(`S$${newSubtotal.toFixed(2)}`);
             $('.total').text(`S$${newSubtotal.toFixed(2)}`);
         }
+
+        function updateCartCount() {
+         const userId = `<%= userId %>`;  // Make sure userId is defined here
+         if (!userId) {
+            console.error("userId is not defined!");
+            return;
+         }
+
+         $.ajax({
+            url: '/api/itemCount',
+            method: 'GET',
+            data: { userId: userId },
+            success: function (response) {
+               console.log("Cart Count Response:", response);
+               cartCountDisplay(response.cartItemCount);  // Pass the cart item count directly
+            },
+            error: function () {
+               console.error("Error fetching cart count");
+            }
+         });
+      }
+
+        function cartCountDisplay(cartItemCount) {
+            const cartIcon = document.getElementById('cartIcon');
+
+            // Remove any existing counter to avoid duplication
+            const existingCounter = cartIcon.querySelector('span');
+            if (existingCounter) {
+                cartIcon.removeChild(existingCounter);
+            }
+
+            // Create a new span element for the cart count
+            const counter = document.createElement('span');
+            counter.style.position = 'absolute';
+            counter.style.borderRadius = '50%';
+            counter.style.backgroundColor = 'var(--headings-color)';
+            counter.style.width = '14px';
+            counter.style.height = '14px';
+            counter.style.top = '20px';
+            // counter.style.right = '0'; 
+            counter.style.textAlign = 'center';
+            counter.style.lineHeight = '15px';
+            counter.style.fontSize = '10px';
+            counter.style.color = '#fff';
+            counter.textContent = cartItemCount;  // Use the count returned from the server
+
+            // Append the counter to the cart icon
+            cartIcon.appendChild(counter);
+        }
+
     </script>
       
       <!-- Removed redundant jQuery script -->

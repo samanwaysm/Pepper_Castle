@@ -22,6 +22,7 @@ route.get('/contact',services.contact)
 route.get('/our-menu',services.ourMenuList)
 route.get('/cart',isUserAuthenticated,services.cart)
 route.get('/checkout',isUserAuthenticated,services.checkout)
+route.get('/orderSuccess',services.orderSuccess)
 
 // APIs
 route.post('/api/signup',controller.signUp)
@@ -29,11 +30,14 @@ route.post('/api/signin',controller.signIn)   // Login
 // route.post('/api/logout',controller.userLogout)   // Logout
 
 route.post('/api/create-order',orderController.createOrder)
+route.get('/api/success',orderController.handlePaymentSuccess)
 // route.post('/create-checkout-session',orderController.redirectStrip)
 
 // route.get('/api/',categoryAndItemContoller.homeCategoryShow)
 route.get('/api/ourMenuList',categoryAndItemContoller.ourMenuList)
 
+
+route.get('/api/itemCount',cartController.getCartItemCount)
 route.get('/api/addToCart',cartController.addToCart)
 route.get('/api/showCart',cartController.showCart)
 route.post('/api/update-cart',cartController.updateCart)

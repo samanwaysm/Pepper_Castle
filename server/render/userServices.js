@@ -2,16 +2,31 @@ const axios = require('axios');
 const { render } = require('ejs');
 
 exports.homeRoutes = (req, res, next) => {
-    const { isUserAuthenticated, isUserAuth } = req.session
-    axios.get(`http://localhost:${process.env.PORT}/admin/categoryShow`)
-        .then(function (response) {
-            console.log(response.data);
-            res.render("user/index", { categories: response.data, isUserAuthenticated, isUserAuth });
+    const { isUserAuthenticated, isUserAuth, userId } = req.session
+    axios.all([
+        axios.get(`http://localhost:${process.env.PORT}/admin/categoryShow`),
+        axios.get(`http://localhost:${process.env.PORT}/api/itemCount?userId=${userId}`),
+    ])
+        .then(axios.spread((data1, data2) => {
+            res.render("user/index", { categories: data1.data, cartCount: data2.data, isUserAuthenticated, isUserAuth }, (err, html) => {
+                if (err) {
+                    console.log(err);
+                }
+                res.send(html)
+            })
+
+        })).catch(err => {
+            res.send(err)
         })
-        .catch(err => {
-            res.render('error', { error: err });
-            res.send(err);
-        });
+    // axios.get(`http://localhost:${process.env.PORT}/admin/categoryShow`)
+    //     .then(function (response) {
+    //         console.log(response.data);
+    //         res.render("user/index", { categories: response.data, isUserAuthenticated, isUserAuth });
+    //     })
+    //     .catch(err => {
+    //         res.render('error', { error: err });
+    //         res.send(err);
+    //     });
 }
 exports.about = (req, res, next) => {
     res.render("user/about", (err, html) => {
@@ -56,27 +71,32 @@ exports.signUp = (req, res) => {
 
 
 exports.ourMenuList = async (req, res) => {
-    try {
-        const { isUserAuthenticated, isUserAuth } = req.session
-        const category = req.query.category || 'Starters';
-        const response = await axios.get(`http://localhost:${process.env.PORT}/api/ourMenuList?category=${category}`);
-
-        if (response && response.data) {
-            res.render('user/our-menu', {
-                item: response.data.items,
-                category: response.data.categories,
-                selectedCategory: response.data.selectedCategory,
-                cartDetails: response.data.cartDetails || [],
+    const { isUserAuthenticated, isUserAuth, userId } = req.session
+    const category = req.query.category || 'Starters';
+    axios.all([
+        axios.get(`http://localhost:${process.env.PORT}/api/ourMenuList?category=${category}`),
+        axios.get(`http://localhost:${process.env.PORT}/api/itemCount?userId=${userId}`),
+    ])
+        .then(axios.spread((data1, data2) => {
+            res.render("user/our-menu", {
+                item: data1.data.items,
+                category: data1.data.categories,
+                selectedCategory: data1.data.selectedCategory,
+                cartDetails: data1.data.cartDetails || [],
+                cartCount: data2.data,
                 isUserAuthenticated,
-                isUserAuth
-            });
-        } else {
-            res.redirect('/'); // Redirect if no data
-        }
-    } catch (err) {
-        console.error('Error fetching menu list:', err);
-        res.status(500).send('Error fetching data');
-    }
+                isUserAuth,
+                userId
+            }, (err, html) => {
+                if (err) {
+                    console.log(err);
+                }
+                res.send(html)
+            })
+
+        })).catch(err => {
+            res.send(err)
+        })
 };
 
 // exports.cart = (req, res) => {
@@ -95,27 +115,27 @@ exports.ourMenuList = async (req, res) => {
 
 
 exports.cart = (req, res) => {
-    const { isUserAuthenticated,isUserAuth, message } = req.session;
+    const { isUserAuthenticated, isUserAuth, message } = req.session;
     const userId = req.session.userId;
     axios.get(`http://localhost:${process.env.PORT}/api/showCart?userId=${userId}`)
         .then((response) => {
-            res.render("user/cart", { cart: response.data, isUserAuthenticated, message, userId,isUserAuth });
+            res.render("user/cart", { cart: response.data, isUserAuthenticated, message, userId, isUserAuth });
             delete req.session.message;
         })
         .catch((err) => {
-            res.render("user/cart", { cart: [], isUserAuthenticated, err, userId,isUserAuth });
+            res.render("user/cart", { cart: [], isUserAuthenticated, err, userId, isUserAuth });
             // res.status(err.response?.status || 500).send('Failed to load cart. Please try again later.');
         });
 }
 
 exports.checkout = (req, res) => {
-    const { isUserAuthenticated,isUserAuth, userId } = req.session
+    const { isUserAuthenticated, isUserAuth, userId } = req.session
     axios.all([
         axios.get(`http://localhost:${process.env.PORT}/api/showCart?userId=${userId}`),
         axios.get(`http://localhost:${process.env.PORT}/api/showAddress?userId=${userId}`),
     ])
-        .then(axios.spread((data1, data2) => {            
-            res.render("user/checkout", { cartDetails: data1.data, addresses: data2.data, isUserAuthenticated,userId}, (err, html) => {
+        .then(axios.spread((data1, data2) => {
+            res.render("user/checkout", { cartDetails: data1.data, addresses: data2.data, isUserAuthenticated, userId }, (err, html) => {
                 if (err) {
                     console.log(err);
                 }
@@ -125,4 +145,16 @@ exports.checkout = (req, res) => {
         })).catch(err => {
             res.send(err)
         })
+}
+
+
+exports.orderSuccess = (req, res) => {
+    res.render("user/orderSuccess", (err, html) => {
+        if (err) {
+            console.log(err);
+        }
+        delete req.session.validEmail
+        delete req.session.wrongPassword
+        res.send(html)
+    })
 }

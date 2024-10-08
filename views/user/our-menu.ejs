@@ -1,399 +1,422 @@
 <!DOCTYPE html>
 <html lang="en-US">
+
 <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Pepper Castle</title>
-      <!-- Google Fonts -->
-      <link rel="preconnect" href="https://fonts.googleapis.com/">
-      <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&amp;family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
-      <!-- Bootstrap CSS -->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.css">
-      <link rel='stylesheet' id='bootstrap-css'  href='css/bootstrap/css/bootstrap.min.css' type='text/css' media='all' />
-      <!-- Font Awesome Icons CSS -->
-      <link rel='stylesheet' id='font-awesome'  href='css/fontawesome/css/font-awesome.min.css' type='text/css' media='all' />
-      <!-- Owl Carousel -->
-      <link rel='stylesheet' id='owl-carousel'  href='js/owl-carousel/owl.carousel.min.css' type='text/css' media='all' />
-      <!-- Main CSS File -->
-      <link rel='stylesheet' id='caverta-style-css'  href='/css/style.css' type='text/css' media='all' />
-      <!-- favicons -->
-      <link rel="icon" href="/images/fav.png" sizes="32x32" />
-      <link rel="icon" href="/images/icons/favicon-192x192.png" sizes="192x192" />
-      <link rel="apple-touch-icon-precomposed" href="/images/icons/favicon-180x180.png" />
-      <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMcXy8cM4lFpbpVg5gRZxY2t+GdA1sNFA1Y+" crossorigin="anonymous"> -->
-      <style>
-         .food-card {
-    opacity: 0; /* Initially hidden */
-    transform: translateY(20px); /* Start slightly below */
-    transition: opacity 0.5s ease, transform 0.5s ease; /* Smooth transition */
-}
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Pepper Castle</title>
+   <!-- Google Fonts -->
+   <link rel="preconnect" href="https://fonts.googleapis.com/">
+   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+   <link
+      href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&amp;family=Work+Sans:wght@300;400;500;600;700&amp;display=swap"
+      rel="stylesheet">
+   <!-- Bootstrap CSS -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.css">
+   <link rel='stylesheet' id='bootstrap-css' href='css/bootstrap/css/bootstrap.min.css' type='text/css' media='all' />
+   <!-- Font Awesome Icons CSS -->
+   <link rel='stylesheet' id='font-awesome' href='css/fontawesome/css/font-awesome.min.css' type='text/css'
+      media='all' />
+   <!-- Owl Carousel -->
+   <link rel='stylesheet' id='owl-carousel' href='js/owl-carousel/owl.carousel.min.css' type='text/css' media='all' />
+   <!-- Main CSS File -->
+   <link rel='stylesheet' id='caverta-style-css' href='/css/style.css' type='text/css' media='all' />
+   <!-- favicons -->
+   <link rel="icon" href="/images/fav.png" sizes="32x32" />
+   <link rel="icon" href="/images/icons/favicon-192x192.png" sizes="192x192" />
+   <link rel="apple-touch-icon-precomposed" href="/images/icons/favicon-180x180.png" />
+   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMcXy8cM4lFpbpVg5gRZxY2t+GdA1sNFA1Y+" crossorigin="anonymous"> -->
+   <style>
+      .food-card {
+         opacity: 0;
+         /* Initially hidden */
+         transform: translateY(20px);
+         /* Start slightly below */
+         transition: opacity 0.5s ease, transform 0.5s ease;
+         /* Smooth transition */
+      }
 
-.food-card.show {
-    opacity: 1; /* Fully visible */
-    transform: translateY(0); /* Move to original position */
-}
+      .food-card.show {
+         opacity: 1;
+         /* Fully visible */
+         transform: translateY(0);
+         /* Move to original position */
+      }
 
-      </style>
-   </head>
-   <body class="home">
-      <div class="menu-mask"></div>
-      <!-- MOBILE MENU HOLDER -->
-      <div class="mobile-menu-holder">
-         <div class="modal-menu-container">
-            <div class="exit-mobile">
-               <span class="icon-bar1"></span>
-               <span class="icon-bar2"></span>
-            </div>
-            <!-- MOBILE MENU -->
-            <ul class="menu-mobile">
-               <li class="menu-item menu-item-has-children">
-                    <a href="#">Home</a>
-                </li>
-                <li class="menu-item menu-item-has-children">
-                    <a href="about.html">About</a>
-                </li>
-                <li class="menu-item menu-item-has-children">
-                    <a href="testimonials.html">Testimonials</a>
-                </li>
-                <li class="menu-item menu-item-has-children current-menu-item">
-                    <a href="our-menu.html">Our Menu</a>
-                </li>
-                <li class="menu-item menu-item-has-children">
-                    <a href="contact.html">Contact</a>
-                </li>
-                <li class="menu-item menu-item-has-children">
-                    <a href="#">Sign Up</a>
-                </li>
-                <li class="menu-item menu-item-has-children">
-                    <a href="#"><i class="fas fa-cart-plus"></i></a>
-                </li>
-            </ul>
-            <!-- /MOBILE MENU -->
+      .add-btn i {
+         font-size: 14px;
+      }
+   </style>
+</head>
+
+<body class="home">
+   <div class="menu-mask"></div>
+   <!-- MOBILE MENU HOLDER -->
+   <div class="mobile-menu-holder">
+      <div class="modal-menu-container">
+         <div class="exit-mobile">
+            <span class="icon-bar1"></span>
+            <span class="icon-bar2"></span>
          </div>
-         <!-- modal-menu-container -->
-         <div class="menu-contact">
-            <div class="mobile-btn">
-                <a href="#" class="view-more">Order Now</a>
-            </div>
-            <ul class="mobile-contact">
-               <li class="mobile-address">58 Ralph Ave<br />
-                  New York, New York 1111
-               </li>
-               <li class="mobile-phone">+1 800 000 111</li>
-               <li class="mobile-email"><a href="#" class="__cf_email__" data-cfemail="01626e6f75606275416479606c716d642f626e6c">[email&#160;protected]</a></li>
-            </ul>
-            <ul class="social-media">
-               <li><a class="social-facebook" href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
-               <li><a class="social-instagram" href="https://www.instagram.com/pepper_castle_/?igshid=eddejyohhgwd" target="_blank"><i class="fab fa-instagram"></i></a></li>
-            </ul>
-         </div>
-         <!-- /menu-contact-->
+         <!-- MOBILE MENU -->
+         <ul class="menu-mobile">
+            <li class="menu-item menu-item-has-children">
+               <a href="#">Home</a>
+            </li>
+            <li class="menu-item menu-item-has-children">
+               <a href="about.html">About</a>
+            </li>
+            <li class="menu-item menu-item-has-children">
+               <a href="testimonials.html">Testimonials</a>
+            </li>
+            <li class="menu-item menu-item-has-children current-menu-item">
+               <a href="our-menu.html">Our Menu</a>
+            </li>
+            <li class="menu-item menu-item-has-children">
+               <a href="contact.html">Contact</a>
+            </li>
+            <li class="menu-item menu-item-has-children">
+               <a href="#">Sign Up</a>
+            </li>
+            <li class="menu-item menu-item-has-children">
+               <a href="#"><i class="fas fa-cart-plus"></i></a>
+            </li>
+         </ul>
+         <!-- /MOBILE MENU -->
       </div>
-      <!-- /MOBILE MENU HOLDER -->
-      <!-- HEADER -->
-      <header id="header-1" class="headerHolder header-1">
-         <div class="nav-button-holder">
-            <button type="button" class="nav-button">
-            <span class="icon-bar"></span>
-            </button>
+      <!-- modal-menu-container -->
+      <div class="menu-contact">
+         <div class="mobile-btn">
+            <a href="#" class="view-more">Order Now</a>
          </div>
-         <!-- /nav-button-holder-->
-         <!-- LOGO -->
-         <div class="logo logo-1"><a href="index.html"><img class="img-fluid" src="/images/Pepper-Castle_White.png" alt="Caverta" /></a></div>
-         <!-- MENU -->
-         <nav class="nav-holder nav-holder-1">
-            <ul class="menu-nav menu-nav-1">
+         <ul class="mobile-contact">
+            <li class="mobile-address">58 Ralph Ave<br />
+               New York, New York 1111
+            </li>
+            <li class="mobile-phone">+1 800 000 111</li>
+            <li class="mobile-email"><a href="#" class="__cf_email__"
+                  data-cfemail="01626e6f75606275416479606c716d642f626e6c">[email&#160;protected]</a></li>
+         </ul>
+         <ul class="social-media">
+            <li><a class="social-facebook" href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+            <li><a class="social-instagram" href="https://www.instagram.com/pepper_castle_/?igshid=eddejyohhgwd"
+                  target="_blank"><i class="fab fa-instagram"></i></a></li>
+         </ul>
+      </div>
+      <!-- /menu-contact-->
+   </div>
+   <!-- /MOBILE MENU HOLDER -->
+   <!-- HEADER -->
+   <header id="header-1" class="headerHolder header-1">
+      <div class="nav-button-holder">
+         <button type="button" class="nav-button">
+            <span class="icon-bar"></span>
+         </button>
+      </div>
+      <!-- /nav-button-holder-->
+      <!-- LOGO -->
+      <div class="logo logo-1"><a href="index.html"><img class="img-fluid" src="/images/Pepper-Castle_White.png"
+               alt="Caverta" /></a></div>
+      <!-- MENU -->
+      <nav class="nav-holder nav-holder-1">
+         <ul class="menu-nav menu-nav-1">
+            <li class="menu-item menu-item-has-children">
+               <a href="/">Home</a>
+            </li>
+            <li class="menu-item menu-item-has-children">
+               <a href="/about">About</a>
+            </li>
+            <li class="menu-item menu-item-has-children">
+               <a href="/testimonials">Testimonials</a>
+            </li>
+            <li class="menu-item menu-item-has-children current-menu-item">
+               <a href="/our-menu">Our Menu</a>
+            </li>
+            <li class="menu-item menu-item-has-children">
+               <a href="/contact">Contact</a>
+            </li>
+         </ul>
+      </nav>
+      <!-- /MENU -->
+      <div class="social-btn-top1">
+         <% if(!isUserAuth){ %>
+            <ul class="social-media social-media1 login-signup">
                <li class="menu-item menu-item-has-children">
-                    <a href="/">Home</a>
-                </li>
-                <li class="menu-item menu-item-has-children">
-                    <a href="/about">About</a>
-                </li>
-                <li class="menu-item menu-item-has-children">
-                    <a href="/testimonials">Testimonials</a>
-                </li>
-                <li class="menu-item menu-item-has-children current-menu-item">
-                    <a href="/our-menu">Our Menu</a>
-                </li>
-                <li class="menu-item menu-item-has-children">
-                    <a href="/contact">Contact</a>
-                </li>
+                  <!-- <a href="/signin">SignIn</a> -->
+               </li>
             </ul>
-         </nav>
-         <!-- /MENU --> 
-         <div class="social-btn-top1">
-            <% if(!isUserAuth){ %>
-               <ul class="social-media social-media1 login-signup">
-                  <li class="menu-item menu-item-has-children">
-                      <!-- <a href="/signin">SignIn</a> -->
-                  </li>
-              </ul>
             <% }else{ %>
-            <ul class=" menu-nav menu-nav-1"></ul>
+               <ul class=" menu-nav menu-nav-1"></ul>
                <li class="menu-item menu-item-has-children list-unstyled" style="margin-left: 50px;">
                   <a class="icon-link-white" href="#"><i class="fas fa-user"></i></a>
                </li>
                <li class="menu-item menu-item-has-children list-unstyled" style="margin-left: 30px;margin-right: 30px;">
-                  <a class="icon-link-white" href="/cart"><i class="fas fa-cart-plus"></i></a>
+                  <a class="icon-link-white" href="/cart"><i class="fa fa-cart-plus" id="cartIcon"></i></a>
                </li>
-            </ul>
-            <% } %>
-            <% if(!isUserAuth){ %>
-            <div class="btn-header btn-header1 profile-cart-btns"> 
-                <a href="/signin" class="view-more">Order Now</a>
-            </div>
-            <% }else{ %>
-               <div class="btn-header btn-header1 profile-cart-btns"> 
-                  <a href="/our-menu" class="view-more">Order Now</a>
-              </div>
-            <% } %>
-         </div>
-            <!-- /social-btn-top1 --> 
-      </header>
-      <!-- TOP IMAGE -->
-      <section class="topSingleBkg topPageBkg">
-         <div class="item-img top-menu-2col"></div>
-         <div class="inner-desc">
-            <h1 class="post-title single-post-title">Our Menu</h1>
-            <breadcrumbs>
-                <ol>
-                    <li>Home</li>
-                    <li>/</li>
-                    <li><a class="active" href="#">Our Menu</a></li>
-                </ol>
-            </breadcrumbs>
-         </div>
-      </section>
-      <!-- /TOP IMAGE --> 
-      <!-- WRAP CONTENT -->
+               </ul>
+               <% } %>
+                  <% if(!isUserAuth){ %>
+                     <div class="btn-header btn-header1 profile-cart-btns">
+                        <a href="/signin" class="view-more">Order Now</a>
+                     </div>
+                     <% }else{ %>
+                        <div class="btn-header btn-header1 profile-cart-btns">
+                           <a href="/our-menu" class="view-more">Order Now</a>
+                        </div>
+                        <% } %>
+      </div>
+      <!-- /social-btn-top1 -->
+   </header>
+   <!-- TOP IMAGE -->
+   <section class="topSingleBkg topPageBkg">
+      <div class="item-img top-menu-2col"></div>
+      <div class="inner-desc">
+         <h1 class="post-title single-post-title">Our Menu</h1>
+         <breadcrumbs>
+            <ol>
+               <li>Home</li>
+               <li>/</li>
+               <li><a class="active" href="#">Our Menu</a></li>
+            </ol>
+         </breadcrumbs>
+      </div>
+   </section>
+   <!-- /TOP IMAGE -->
+   <!-- WRAP CONTENT -->
+   <div class="container">
+      <!-- Category Tabs -->
+      <ul class="nav nav-tabs menuTab" id="menuTab" role="tablist">
+         <% category.forEach(cat=> { %>
+            <li class="nav-item">
+               <a class="nav-link <%= cat.category === selectedCategory ? 'active' : '' %>" href="#"
+                  data-category="<%= cat.category %>" role="tab" aria-controls="<%= cat.category %>"
+                  aria-selected="<%= cat.category === selectedCategory %>">
+                  <%= cat.category %>
+               </a>
+            </li>
+            <% }); %>
+      </ul>
+
+      <!-- Container for Menu Items -->
+      <div class="card-container">
+         <% if (item.length> 0) { %>
+            <% item.forEach(function(item) { %>
+               <div class="food-card">
+                  <img src="<%= item.image %>" alt="<%= item.item %>" class="food-img">
+                  <div class="food-info">
+                     <h3 class="food-title">
+                        <%= item.item %>
+                     </h3>
+                     <p class="food-description">
+                        <%= item.description %>
+                     </p>
+                     <div class="food-footer">
+                        <span class="food-price">S$ <%= item.price %></span>
+                        <button class="add-btn" data-item-id="<%= item._id %>"> Add <i class="fas fa-plus"></i></button>
+                     </div>
+                  </div>
+               </div>
+               <% }); %>
+                  <% } else { %>
+                     <div class="d-flex justify-content-center align-items-center"
+                        style="height: 100vh; color: #ff6347;">
+                        <h3 class="text-center">No items available in this category.</h3>
+                     </div>
+                     <% } %>
+      </div>
+
+   </div>
+   <!-- /WRAP CONTENT -->
+   <!-- FOOTER -->
+   <footer>
       <div class="container">
-         <i class="fa-solid fa-plus"></i>
-         <!-- Category Tabs -->
-         <ul class="nav nav-tabs menuTab" id="menuTab" role="tablist">
-             <% category.forEach(cat => { %>
-                 <li class="nav-item">
-                     <a class="nav-link <%= cat.category === selectedCategory ? 'active' : '' %>" 
-                        href="#" 
-                        data-category="<%= cat.category %>" 
-                        role="tab" 
-                        aria-controls="<%= cat.category %>" 
-                        aria-selected="<%= cat.category === selectedCategory %>">
-                         <%= cat.category %>
-                     </a>
-                 </li>
-             <% }); %>
-         </ul>
-     
-         <!-- Container for Menu Items -->
-         <div class="card-container">
-            <% if (item.length > 0) { %>
-                <% item.forEach(function(item) { %>
-                    <div class="food-card">
-                        <img src="<%= item.image %>" alt="<%= item.item %>" class="food-img">
-                        <div class="food-info">
-                            <h3 class="food-title"><%= item.item %></h3>
-                            <p class="food-description">
-                                <%= item.description %>
-                            </p>
-                            <div class="food-footer">
-                                <span class="food-price">S$ <%= item.price %></span>
-                                <a href="/api/addToCart?id=<%= item._id %>"><button class="add-btn" data-item-id="<%= item._id %>">Add</button></a>
-                            </div>
-                        </div>
-                    </div>
-                <% }); %>
-            <% } else { %>
-                <div style="text-align: center; color: #ff6347; margin: 20px 0;">
-                    <h3>No items available in this category.</h3>
-                </div>
-            <% } %>
-        </div>
-        
-          
-     </div>
-      <!-- /WRAP CONTENT -->
-      <!-- FOOTER -->
-      <footer>
-         <div class="container">
-            <div class="footer-widgets">
-               <div class="row">
-                  <!-- FOOTER COLUMN 1 -->
-                  <div class="col-md-4">
-                     <div class="foo-block">
-                        <div id="text-2" class="widget widget-footer widget_text">
-                           <div class="textwidget">
-                              <p><img class="size-full wp-image-665" src="/images/Pepper-Castle_White.png" alt="" width="250" height="51"></p>
-                              <p>We offer such food connoisseurs the very best of North Indian cuisine that is healthy, tasty, and free from additives.</p>
-                           </div>
+         <div class="footer-widgets">
+            <div class="row">
+               <!-- FOOTER COLUMN 1 -->
+               <div class="col-md-4">
+                  <div class="foo-block">
+                     <div id="text-2" class="widget widget-footer widget_text">
+                        <div class="textwidget">
+                           <p><img class="size-full wp-image-665" src="/images/Pepper-Castle_White.png" alt=""
+                                 width="250" height="51"></p>
+                           <p>We offer such food connoisseurs the very best of North Indian cuisine that is healthy,
+                              tasty, and free from additives.</p>
                         </div>
                      </div>
-                     <!--foo-block-->
                   </div>
-                  <!--col-md-3-->
-                  <!-- FOOTER COLUMN 2 -->
-                  <div class="col-md-3">
-                     <div class="foo-block">
-                        <div id="text-3" class="widget widget-footer widget_text">
-                           <h5 class="widgettitle"><span>Address</span></h5>
-                           <div class="textwidget">
-                              <p>33 Lorong liput<br> 277744 Singapore
-                              </p>
-                              <p style="white-space: nowrap;"><i class="fas fa-phone-alt"></i>+65 97440747<br>
-                                 <i class="fas fa-envelope"></i><a href="#">peppercastle@hotmail.com</a>
-                              </p>
-                           </div>
+                  <!--foo-block-->
+               </div>
+               <!--col-md-3-->
+               <!-- FOOTER COLUMN 2 -->
+               <div class="col-md-3">
+                  <div class="foo-block">
+                     <div id="text-3" class="widget widget-footer widget_text">
+                        <h5 class="widgettitle"><span>Address</span></h5>
+                        <div class="textwidget">
+                           <p>33 Lorong liput<br> 277744 Singapore
+                           </p>
+                           <p style="white-space: nowrap;"><i class="fas fa-phone-alt"></i>+65 97440747<br>
+                              <i class="fas fa-envelope"></i><a href="#">peppercastle@hotmail.com</a>
+                           </p>
                         </div>
                      </div>
-                     <!--foo-block-->
                   </div>
-                  <!--col-md-3-->
-                  
-                   <div class="col-md-3">
-                     <div class="foo-block foo-last">
-                        <div id="text-5" class="widget widget-footer widget_text">
-                           <h5 class="widgettitle"><span>Quick Links</span></h5>
-                           <div class="textwidget ftr-menu">
-                              <ul>
-                                 <li><a href="index.html">-Home</a></li>
-                                 <li><a href="about.html">-About</a></li>
-                                 <li><a href="testimonials.html">-Testimonials</a></li>
-                                 <li><a href="#">-Our Menu</a></li>
-                                 <li><a href="contact.html">-Contact</a></li>
-                              </ul>
-                           </div>
-                        </div>
-                     </div>
-                     <!--foo-block-->
-                  </div>
-                  <!-- FOOTER COLUMN 3 -->
-                  <div class="col-md-2">
-                     <div class="foo-block">
-                        <div id="text-4" class="widget widget-footer widget_text">
-                           <h5 class="widgettitle"><span>Hours</span></h5>
-                           <div class="textwidget">
-                              <p style="white-space: nowrap;">Monday – Sunday<br>
-                                 11:00 AM - 11:00 PM
-                              </p>
-                           </div>
-                           <ul class="footer-social">
-                              <li><a class="social-facebook" href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
-                              <li><a class="social-instagram" href="https://www.instagram.com/pepper_castle_/?igshid=eddejyohhgwd" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                  <!--foo-block-->
+               </div>
+               <!--col-md-3-->
+
+               <div class="col-md-3">
+                  <div class="foo-block foo-last">
+                     <div id="text-5" class="widget widget-footer widget_text">
+                        <h5 class="widgettitle"><span>Quick Links</span></h5>
+                        <div class="textwidget ftr-menu">
+                           <ul>
+                              <li><a href="index.html">-Home</a></li>
+                              <li><a href="about.html">-About</a></li>
+                              <li><a href="testimonials.html">-Testimonials</a></li>
+                              <li><a href="#">-Our Menu</a></li>
+                              <li><a href="contact.html">-Contact</a></li>
                            </ul>
                         </div>
                      </div>
-                     <!--foo-block-->
                   </div>
-                  <!--col-md-3-->
-                  <!-- FOOTER COLUMN 4 -->
-                 
-                  <!--col-md-3-->
+                  <!--foo-block-->
                </div>
-               <!--row-->
-            </div>
-            <!-- footer-widgets -->
-            <div class="copyright">
-               <!-- COPYRIGHT -->
-               <div class="footer-copy">
-                  <p>© 2023 - Pepper Castle. All Rights Reserved.</p>
+               <!-- FOOTER COLUMN 3 -->
+               <div class="col-md-2">
+                  <div class="foo-block">
+                     <div id="text-4" class="widget widget-footer widget_text">
+                        <h5 class="widgettitle"><span>Hours</span></h5>
+                        <div class="textwidget">
+                           <p style="white-space: nowrap;">Monday – Sunday<br>
+                              11:00 AM - 11:00 PM
+                           </p>
+                        </div>
+                        <ul class="footer-social">
+                           <li><a class="social-facebook" href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                           </li>
+                           <li><a class="social-instagram"
+                                 href="https://www.instagram.com/pepper_castle_/?igshid=eddejyohhgwd" target="_blank"><i
+                                    class="fab fa-instagram"></i></a></li>
+                        </ul>
+                     </div>
+                  </div>
+                  <!--foo-block-->
                </div>
-               <!-- SOCIAL ICONS -->
-               
+               <!--col-md-3-->
+               <!-- FOOTER COLUMN 4 -->
+
+               <!--col-md-3-->
             </div>
-            <!--copyright-->
+            <!--row-->
          </div>
-         <!--container-->
-      </footer>
-        <!-- /FOOTER -->
-        <div class="scrollup">
-            <a class="scrolltop" href="#">
-            <i class="fa fa-chevron-up"></i>
-            </a>
-        </div>
-        <!-- JS --> 
-      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-      
-      <!-- Removed redundant jQuery script -->
-      <!-- <script src='js/jquery.js'></script> -->
-      <script src='js/jquery-migrate.min.js'></script>
-      <script src='css/bootstrap/js/popper.min.js'></script>
-      <script src='css/bootstrap/js/bootstrap.min.js'></script>
-      <script src='js/jquery.easing.min.js'></script>
-      <script src='js/jquery.fitvids.js'></script>
-      <script src='js/owl-carousel/owl.carousel.min.js'></script>
-      <script src='js/jquery.magnific-popup.min.js'></script>
-      <!-- MAIN JS -->
-      <script src='js/init.js'></script>
-      <!-- CONTACT FORM JS -->
-      <script src='js/jquery.form.min.js'></script>
-      <script src='js/contactform-home.js'></script>
+         <!-- footer-widgets -->
+         <div class="copyright">
+            <!-- COPYRIGHT -->
+            <div class="footer-copy">
+               <p>© 2023 - Pepper Castle. All Rights Reserved.</p>
+            </div>
+            <!-- SOCIAL ICONS -->
 
-        <!-- AJAX Script for Fetching Category Items -->
-    <script type="text/javascript">
-        $(document).ready(function() {
-            // Handle category tab clicks
-            $('#menuTab').on('click', '.nav-link', function(event) {
-                event.preventDefault(); // Prevent default anchor behavior
+         </div>
+         <!--copyright-->
+      </div>
+      <!--container-->
+   </footer>
+   <!-- /FOOTER -->
+   <div class="scrollup">
+      <a class="scrolltop" href="#">
+         <i class="fa fa-chevron-up"></i>
+      </a>
+   </div>
 
-                const category = $(this).data('category'); // Get the category from the data attribute
+   <div id="toastContainer" style="position: fixed; top: 70px; right: 20px; z-index: 9999;"></div>
 
-                // Update active category
-                $('#menuTab .nav-link').removeClass('active'); // Remove active class from all
-                $(this).addClass('active'); // Add active class to the clicked tab
+   <!-- JS -->
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-                // Fetch and update category items
-                fetchCategoryData(category);
+   <!-- Removed redundant jQuery script -->
+   <!-- <script src='js/jquery.js'></script> -->
+   <script src='js/jquery-migrate.min.js'></script>
+   <script src='css/bootstrap/js/popper.min.js'></script>
+   <script src='css/bootstrap/js/bootstrap.min.js'></script>
+   <script src='js/jquery.easing.min.js'></script>
+   <script src='js/jquery.fitvids.js'></script>
+   <script src='js/owl-carousel/owl.carousel.min.js'></script>
+   <script src='js/jquery.magnific-popup.min.js'></script>
+   <!-- MAIN JS -->
+   <script src='js/init.js'></script>
+   <!-- CONTACT FORM JS -->
+   <script src='js/jquery.form.min.js'></script>
+   <script src='js/contactform-home.js'></script>
+
+   <!-- AJAX Script for Fetching Category Items -->
+   <script type="text/javascript">
+      const userId = `<%= userId %>`
+      $(document).ready(function () {
+         // Handle category tab clicks
+         $('#menuTab').on('click', '.nav-link', function (event) {
+            event.preventDefault(); // Prevent default anchor behavior
+
+            const category = $(this).data('category'); // Get the category from the data attribute
+
+            // Update active category
+            $('#menuTab .nav-link').removeClass('active'); // Remove active class from all
+            $(this).addClass('active'); // Add active class to the clicked tab
+
+            // Fetch and update category items
+            fetchCategoryData(category);
+         });
+
+         function fetchCategoryData(category) {
+            $.ajax({
+               type: 'GET',
+               url: '/api/ourMenuList',
+               data: { category: category },
+               success: function (response) {
+                  updateMenuItems(response); // Update menu items
+                  // Optionally update the URL without reloading
+                  history.pushState(null, null, `?category=${category}`);
+               },
+               error: function (xhr, status, error) {
+                  console.error('Error fetching data:', error);
+                  $('.card-container').html('<p>Failed to load items. Try again later.</p>');
+               }
             });
+         }
 
-            function fetchCategoryData(category) {
-                $.ajax({
-                    type: 'GET',
-                    url: '/api/ourMenuList',
-                    data: { category: category },
-                    success: function(response) {
-                        updateMenuItems(response); // Update menu items
-                        // Optionally update the URL without reloading
-                        history.pushState(null, null, `?category=${category}`);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error fetching data:', error);
-                        $('.card-container').html('<p>Failed to load items. Try again later.</p>');
-                    }
-                });
-            }
+         // function updateMenuItems(data) {
+         //     let menuCards = '';
+         //     if (data.items && data.items.length > 0) {
+         //         data.items.forEach(function(item) {
+         //             menuCards += `
+         //                 <div class="food-card">
+         //                     <img src="${item.image || '/path/to/default-image.jpg'}" alt="${item.item}" class="food-img">
+         //                     <div class="food-info">
+         //                         <h3 class="food-title">${item.item}</h3>
+         //                         <p class="food-description">${item.description}</p>
+         //                         <div class="food-footer">
+         //                             <span class="food-price">S$ ${item.price}</span>
+         //                             <button class="add-btn" data-item-id="${item._id}">Add</button>
+         //                         </div>
+         //                     </div>
+         //                 </div>`;
+         //         });
+         //     } else {
+         //       menuCards = `
+         //       <div style="text-align: center; color: #ff6347; margin: 20px 0;">
+         //          <h3>No items available in this category.</h3>
+         //       </div>`;
 
-            // function updateMenuItems(data) {
-            //     let menuCards = '';
-            //     if (data.items && data.items.length > 0) {
-            //         data.items.forEach(function(item) {
-            //             menuCards += `
-            //                 <div class="food-card">
-            //                     <img src="${item.image || '/path/to/default-image.jpg'}" alt="${item.item}" class="food-img">
-            //                     <div class="food-info">
-            //                         <h3 class="food-title">${item.item}</h3>
-            //                         <p class="food-description">${item.description}</p>
-            //                         <div class="food-footer">
-            //                             <span class="food-price">S$ ${item.price}</span>
-            //                             <button class="add-btn" data-item-id="${item._id}">Add</button>
-            //                         </div>
-            //                     </div>
-            //                 </div>`;
-            //         });
-            //     } else {
-            //       menuCards = `
-            //       <div style="text-align: center; color: #ff6347; margin: 20px 0;">
-            //          <h3>No items available in this category.</h3>
-            //       </div>`;
+         //     }
+         //     $('.card-container').html(menuCards); // Replace the menu items
+         // }
 
-            //     }
-            //     $('.card-container').html(menuCards); // Replace the menu items
-            // }
-
-            function updateMenuItems(data) {
-               let menuCards = '';
-               if (data.items && data.items.length > 0) {
-                  data.items.forEach(function(item) {
-                        menuCards += `
+         function updateMenuItems(data) {
+            let menuCards = '';
+            if (data.items && data.items.length > 0) {
+               data.items.forEach(function (item) {
+                  menuCards += `
                            <div class="food-card">
                               <img src="${item.image || '/path/to/default-image.jpg'}" alt="${item.item}" class="food-img">
                               <div class="food-info">
@@ -401,37 +424,262 @@
                                     <p class="food-description">${item.description}</p>
                                     <div class="food-footer">
                                        <span class="food-price">S$${item.price}</span>
-                                       <a href="/api/addToCart?id=${item._id}"><button class="add-btn" data-item-id="<%= item._id %>"> Add <i class="fa-solid fa-plus"></i></button></a>
+                                       <button class="add-btn" data-item-id="${item._id}"> Add <i class="fas fa-plus"></i></button>
                                     </div>
                               </div>
                            </div>`;
-                  });
-               } else {
-                  menuCards = `
+               });
+            } else {
+               menuCards = `
                   <div style="text-align: center; color: #ff6347; margin: 20px 0;">
                         <h3>No items available in this category.</h3>
                   </div>`;
-               }
-               $('.card-container').html(menuCards); // Replace the menu items
+            }
+            $('.card-container').html(menuCards); // Replace the menu items
 
-               // Trigger the sliding animation
-               $('.food-card').each(function(index) {
-                  $(this).delay(index * 100).queue(function(next) {
-                        $(this).addClass('show'); // Add class to trigger animation
-                        next();
-                  });
+            // Trigger the sliding animation
+            $('.food-card').each(function (index) {
+               $(this).delay(index * 100).queue(function (next) {
+                  $(this).addClass('show'); // Add class to trigger animation
+                  next();
                });
-            }
+            });
+         }
+         // Optionally, load the default category on page load
+         // Assuming 'selectedCategory' is defined server-side
+         const defaultCategory = "<%= selectedCategory %>";
+         if (defaultCategory) {
+            fetchCategoryData(defaultCategory);
+         }
+      });
 
 
-            // Optionally, load the default category on page load
-            // Assuming 'selectedCategory' is defined server-side
-            const defaultCategory = "<%= selectedCategory %>";
-            if (defaultCategory) {
-                fetchCategoryData(defaultCategory);
+      //   $(document).on('click', '.add-btn', function() {
+      //       const itemId = $(this).data('item-id');
+      //       console.log("Item ID:", itemId); 
+
+      //       $.ajax({
+      //          url: `/api/addToCart?id=${itemId}`,
+      //          method: 'GET',
+      //          success: function(response) {
+      //             alert(response.message);
+      //             updateCartCount();
+      //          },
+      //          error: function(jqXHR) {
+      //                alert(jqXHR.responseJSON.message || "An error occurred!");
+      //          }
+      //       });
+
+
+      //       function updateCartCount() {
+      //       $.ajax({
+      //             url: '/api/itemCount',
+      //             method: 'GET',
+      //             data: { userId: userId },
+      //             success: function(response) {
+      //                console.log(response);
+
+      //                cartCount(response)
+      //             },
+      //             error: function() {
+      //                console.error("Error fetching cart count");
+      //             }
+      //       });
+      //    }
+      //    });
+
+      //    function cartCount(cartCount){
+      //    const cartCount = `<%#= JSON.stringify(cartCount.cartItemCount) %>`;
+      //    // Select the cart icon element
+      //    const cartIcon = document.getElementById('cartIcon');
+
+      //    // Create a span element for the counter
+      //    const counter = document.createElement('span');
+      //    counter.style.position = 'absolute';
+      //    counter.style.borderRadius = '50%';
+      //    counter.style.backgroundColor = 'var(--headings-color)';
+      //    counter.style.width = '14px';
+      //    counter.style.height = '14px';
+      //    counter.style.top = '20px';
+      //    counter.style.textAlign = 'center';
+      //    counter.style.lineHeight = '15px';
+      //    counter.style.fontSize = '10px';
+      //    counter.style.color = '#fff';
+      //    counter.textContent = cartCount;
+
+      //    // Append the counter to the cart icon
+      //    cartIcon.appendChild(counter);
+      //    }
+      //    cartCount();
+
+      //------------------------------------------------------------------
+
+      // $(document).on('click', '.add-btn', function() {
+      //    const itemId = $(this).data('item-id');
+      //    console.log("Item ID:", itemId);
+
+      //    $.ajax({
+      //       url: `/api/addToCart?id=${itemId}`,
+      //       method: 'GET',
+      //       success: function(response) {
+      //          alert(response.message);
+      //          updateCartCount();
+      //       },
+      //       error: function(jqXHR) {
+      //          alert(jqXHR.responseJSON.message || "An error occurred!");
+      //       }
+      //    });
+      // });
+
+      // function updateCartCount() {
+      //       const userId = `<%#= userId %>`
+      //       if (!userId) {
+      //          console.error("userId is not defined!");
+      //          return;
+      //       }
+
+      //       $.ajax({
+      //          url: '/api/itemCount',
+      //          method: 'GET',
+      //          data: { userId: userId },
+      //          success: function(response) {
+      //             console.log(response);
+      //             cartCountDisplay(response);
+      //          },
+      //          error: function() {
+      //             console.error("Error fetching cart count");
+      //          }
+      //       });
+      //    }
+
+      // function cartCountDisplay(cartCount) {
+      //    const cartItemCount = `<%#= JSON.stringify(cartCount.cartItemCount) %>`;
+      //    const cartIcon = document.getElementById('cartIcon');
+
+      //    const counter = document.createElement('span');
+      //    counter.style.position = 'absolute';
+      //    counter.style.borderRadius = '50%';
+      //    counter.style.backgroundColor = 'var(--headings-color)';
+      //    counter.style.width = '14px';
+      //    counter.style.height = '14px';
+      //    counter.style.top = '20px';
+      //    counter.style.textAlign = 'center';
+      //    counter.style.lineHeight = '15px';
+      //    counter.style.fontSize = '10px';
+      //    counter.style.color = '#fff';
+      //    counter.textContent = cartItemCount;
+
+      //    cartIcon.appendChild(counter);
+      // }
+
+      // cartCountDisplay(cartCount)
+
+      //--------------------------------------------------------------
+
+      $(document).ready(function () {
+         // Fetch and display the initial cart count on page load
+         updateCartCount();
+      });
+
+      $(document).on('click', '.add-btn', function () {
+         const itemId = $(this).data('item-id');
+         console.log("Item ID:", itemId);
+
+         $.ajax({
+            url: `/api/addToCart?id=${itemId}`,
+            method: 'GET',
+            success: function (response) {
+               // alert(response.message);
+               showToast(response.message, 'success');
+               updateCartCount();  // Update the cart count after adding an item
+            },
+            error: function (jqXHR) {
+               alert(jqXHR.responseJSON.message || "An error occurred!");
             }
-        });
-    </script>
-    </body>
+         });
+      });
+
+      function updateCartCount() {
+         const userId = `<%= userId %>`;  // Make sure userId is defined here
+         if (!userId) {
+            console.error("userId is not defined!");
+            return;
+         }
+
+         $.ajax({
+            url: '/api/itemCount',
+            method: 'GET',
+            data: { userId: userId },
+            success: function (response) {
+               console.log("Cart Count Response:", response);
+               cartCountDisplay(response.cartItemCount);  // Pass the cart item count directly
+            },
+            error: function () {
+               console.error("Error fetching cart count");
+            }
+         });
+      }
+
+      function cartCountDisplay(cartItemCount) {
+         const cartIcon = document.getElementById('cartIcon');
+
+         // Remove any existing counter to avoid duplication
+         const existingCounter = cartIcon.querySelector('span');
+         if (existingCounter) {
+            cartIcon.removeChild(existingCounter);
+         }
+
+         // Create a new span element for the cart count
+         const counter = document.createElement('span');
+         counter.style.position = 'absolute';
+         counter.style.borderRadius = '50%';
+         counter.style.backgroundColor = 'var(--headings-color)';
+         counter.style.width = '14px';
+         counter.style.height = '14px';
+         counter.style.top = '20px';
+         // counter.style.right = '0'; 
+         counter.style.textAlign = 'center';
+         counter.style.lineHeight = '15px';
+         counter.style.fontSize = '10px';
+         counter.style.color = '#fff';
+         counter.textContent = cartItemCount;  // Use the count returned from the server
+
+         // Append the counter to the cart icon
+         cartIcon.appendChild(counter);
+      }
+
+
+      // Toast message function
+      function showToast(message, type) {
+         const toastContainer = document.getElementById('toastContainer');
+         const toast = document.createElement('div');
+         
+         toast.style.position = 'relative';
+         toast.style.minWidth = '200px';
+         toast.style.marginBottom = '10px';
+         toast.style.marginTop= '10px';
+         toast.style.padding = '10px';
+         toast.style.borderRadius = '5px';
+         toast.style.color = '#000';
+         toast.style.fontSize = '14px';
+         toast.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+         if (type === 'success') {
+            toast.style.backgroundColor = 'rgba(40, 167, 69, 0.7)';
+         } else {
+            toast.style.backgroundColor = 'rgba(220, 53, 69, 0.7)';
+         }
+         toast.textContent = message;
+
+         // Append the toast to the container
+         toastContainer.appendChild(toast);
+
+         // Automatically remove the toast after 3 seconds
+         setTimeout(function() {
+            toast.remove();
+         }, 3000);
+      }
+
+   </script>
+</body>
 
 </html>

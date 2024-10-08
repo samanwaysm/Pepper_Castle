@@ -22,7 +22,7 @@ exports.createOrder = async (req, res) => {
           }
       }
 
-      console.log(parsedOrderItems);
+    //   console.log(parsedOrderItems);
 
       if (!Array.isArray(parsedOrderItems) || parsedOrderItems.length === 0) {
           return res.status(400).json({ success: false, error: 'orderItems should be a non-empty array.' });
@@ -80,22 +80,13 @@ exports.createOrder = async (req, res) => {
                   quantity: item.cartItems.quantity
               })),
               mode: 'payment',
-              success_url: `https://example.com/success?orderId=${savedOrder._id}`,
-              cancel_url: `https://example.com/cancel?orderId=${savedOrder._id}`
+                success_url: `http://localhost:${process.env.PORT}/api/success?orderId=${savedOrder._id}`,
+                cancel_url: `https://example.com/cancel?orderId=${savedOrder._id}`
           });
 
-          console.log(session);
-
-          savedOrder.paymentStatus = 'success'
           savedOrder.stripeSessionId = session.id;
           await savedOrder.save();
-
-          // Remove items from the user's cart
-          await cartDb.updateOne(
-            { userId }, 
-            { $set: { cartItems: [] } }
-        );        
-
+    
           return res.json({ success: true, paymentUrl: session.url, sessionId: session.id });
       } else {
             // Remove items from the user's cart
@@ -110,6 +101,43 @@ exports.createOrder = async (req, res) => {
       console.error('Order creation failed:', error);
       return res.status(500).json({ success: false, error: 'Order creation failed.' });
   }
+};
+
+
+// Route to handle success payment
+exports.handlePaymentSuccess = async (req, res) => {
+    try {
+      const { orderId } = req.query;
+      console.log(orderId);
+      
+  
+      // Find the order by ID and update the payment status
+      const order = await OrderDb.findById(orderId);
+      if (!order) {
+        return res.status(404).json({ success: false, error: 'Order not found.' });
+      }
+
+       // Retrieve the payment intent details from Stripe
+        const paymentIntent = await stripe.paymentIntents.retrieve(order.stripeSessionId);
+        
+        // Log the payment intent details
+        console.log('Payment Intent Details:', paymentIntent);
+  
+      order.paymentStatus = 'success'; // Update payment status to success
+      await order.save();
+  
+      // Clear the user's cart
+      await cartDb.updateOne(
+        { userId: order.user }, 
+        { $set: { cartItems: [] } }
+      );
+      
+      res.redirect('/orderSuccess')
+    //   return res.json({ success: true, message: 'Payment successful and cart cleared.' });
+    } catch (error) {
+      console.error('Payment handling failed:', error);
+      return res.status(500).json({ success: false, error: 'Payment handling failed.' });
+    }
 };
 
 // exports.getSessionAndPaymentIntent = async (req, res) => {

@@ -15,11 +15,14 @@ const controller = require('../controller/adminSide/adminContoller');
 // route.get("/adminDash",isAdminAuthenticated,services.adminDash);
 // route.get("/adminUserMange",isAdminAuthenticated,services.adminUserManagement)
 
-route.get("/adminCategoryMange",services.adminCategoryMangement)
+
+route.get("/adminlogin",services.adminSignIn)
+
+// route.get("/adminCategoryMange",services.adminCategoryMangement)
 route.get("/categoryManagement",services.categoryManagement)
 
 
-route.get("/adminAddCategory",services.adminAddCategory)
+// route.get("/adminAddCategory",services.adminAddCategory)
 route.get("/addCategory",services.addCategory)
 
 
@@ -27,10 +30,10 @@ route.get("/addCategory",services.addCategory)
 route.get("/editCategory",services.editCategory)
 route.get("/unlistCategory",services.unlistCategory)
 
-route.get("/adminItemManagement",services.adminItemMangement)
+// route.get("/adminItemManagement",services.adminItemMangement)
 route.get("/itemManagement",services.itemMangement)
 route.get("/unlistItem",services.unlistItem)
-route.get("/adminAddItem",services.adminAddItem)
+// route.get("/adminAddItem",services.adminAddItem)
 route.get("/addItem",services.addItem)
 // route.get("/adminEditProduct",services.adminEditProduct)
 // route.get("/adminOrderMange",services.adminOrderMange)

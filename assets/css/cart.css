@@ -174,3 +174,145 @@
     opacity: 0.7;
 }
 
+/* General Styles remain unchanged */
+
+@media (max-width: 1024px) { /* Tablet view */
+    .container-wrapper {
+        padding: 10px;
+    }
+
+    .cart-container {
+        flex-direction: column; /* Stack elements vertically */
+        padding: 10px;
+    }
+
+    .product-section {
+        border-right: none; /* Remove border for mobile */
+        padding-right: 0; /* Remove right padding */
+    }
+
+    .summary-section {
+        margin-top: 20px; /* Add space above summary */
+        width: 100%; /* Ensure summary takes full width */
+    }
+
+    .summary {
+        padding: 15px; /* Adjust padding */
+    }
+}
+
+@media (max-width: 768px) { /* Mobile view */
+    .container-wrapper {
+        padding: 5px; /* Reduce padding for mobile */
+        background-color: #f9f9f9; /* Light background color */
+    }
+
+    .cart-container {
+        flex-direction: column; /* Stack elements vertically */
+        padding: 10px; /* Maintain padding */
+        margin-top: 150px;
+    }
+
+    .product-item {
+        display: flex;
+        flex-direction: column; /* Stack details vertically */
+        background: #fff; /* White background for items */
+        border-radius: 10px; /* Rounded corners */
+        padding: 15px; /* Padding inside each item */
+        margin-bottom: 15px; /* Space between items */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        position: relative; /* Allow child elements to be positioned relative to this */
+    }
+
+    .product-details {
+        display: flex;
+        align-items: center; /* Center align items */
+        justify-content: space-between; /* Space between elements */
+    }
+
+    .product-item img {
+        width: 60px; /* Smaller image size */
+        height: 60px; /* Smaller image size */
+        border-radius: 5px; /* Rounded image corners */
+    }
+
+    .product-name {
+        font-size: 18px; /* Slightly larger font size */
+        color: #333; /* Dark text color */
+        font-weight: bold; /* Bold text for emphasis */
+        flex: 1; /* Take available space */
+        padding-left: 10px; /* Space between image and text */
+    }
+
+    .quantity-selector {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px; /* Maintain small gap */
+        margin-top: 10px; /* Space above quantity selector */
+    }
+
+    .quantity-selector button {
+        width: 30px; /* Keep buttons small */
+        height: 30px; /* Keep buttons small */
+        font-size: 16px; /* Slightly smaller font size */
+        background-color: #fc5000; /* Button color */
+        color: #fff; /* Text color */
+        border: none; /* No border */
+        border-radius: 4px; /* Rounded corners */
+        transition: background-color 0.3s; /* Smooth transition */
+    }
+
+    .quantity-selector button:hover {
+        background-color: #e24600; /* Darker shade on hover */
+    }
+
+    .quantity-selector input {
+        width: 40px; /* Maintain small input width */
+        font-size: 12px; /* Smaller font size for input */
+        text-align: center; /* Center align text */
+        border: 1px solid #ddd; /* Border for input */
+        border-radius: 4px; /* Rounded corners */
+        padding: 2px; /* Padding inside input */
+    }
+
+    .item-total-price {
+        display: flex;
+        justify-content: space-between; /* Space between elements */
+        margin-top: 10px; /* Space above total price */
+        font-weight: bold; /* Bold for emphasis */
+        color: #fc5000; /* Highlight price color */
+    }
+
+    .delete-icon {
+        cursor: pointer;
+        position: absolute; /* Absolute positioning */
+        top: 10px; /* Distance from the top */
+        right: 10px; /* Distance from the right */
+        transition: opacity 0.3s; /* Smooth transition */
+    }
+    
+    .delete-icon:hover {
+        opacity: 0.7; /* Slight transparency on hover */
+    }
+
+    .empty-cart {
+        text-align: center; /* Center text */
+        color: #fc5000; /* Color for empty cart message */
+        font-weight: bold; /* Bold message */
+        margin-top: 20px; /* Space above */
+    }
+
+    .add-products-link {
+        background-color: #fc5000; /* Button color */
+        color: white; /* Button text color */
+        padding: 10px 20px; /* Button padding */
+        border-radius: 5px; /* Rounded corners */
+        text-decoration: none; /* No underline */
+        transition: background-color 0.3s; /* Smooth transition */
+    }
+
+    .add-products-link:hover {
+        background-color: #e24600; /* Darker shade on hover */
+    }
+}

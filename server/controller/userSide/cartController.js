@@ -5,11 +5,11 @@ const Category = require("../../model/categorySchema");
 const Item = require("../../model/itemSchema");
 const cartDb = require("../../model/cartSchema");
 
+
 exports.addToCart = async (req, res) => {
     const itemId = req.query.id;
     const userId = req.session.userId;
 
-    // console.log('item id ', itemId);
 
     if (typeof userId === "undefined") {
         return res.redirect('/signin');
@@ -40,6 +40,7 @@ exports.addToCart = async (req, res) => {
         }
 
         await cart.save();
+        return res.status(200).json({ message: "Item added to cart successfully!" });
         // res.redirect("/our-menu");
 
     } catch (err) {
@@ -50,6 +51,63 @@ exports.addToCart = async (req, res) => {
     }
 };
 
+// exports.addToCart = async (req, res) => {
+//     const itemId = req.query.itemId;
+//     const userId = req.query.userId;
+
+//     // Check if the user is authenticated
+//     if (typeof userId === "undefined") {
+//         return res.status(401).json({ message: 'Please sign in to add items to your cart.' });
+//     }
+
+//     try {
+//         // Find the cart for the user
+//         let cart = await cartDb.findOne({ userId: userId });
+
+//         // If no cart exists for the user, create a new one
+//         if (!cart) {
+//             cart = new cartDb({
+//                 userId: userId,
+//                 cartItems: [{
+//                     itemId: itemId,
+//                     quantity: 1
+//                 }]
+//             });
+//         } else {
+//             // Check if the item already exists in the cart
+//             const itemIndex = cart.cartItems.findIndex(item => item.itemId.toString() === itemId);
+
+//             if (itemIndex > -1) {
+//                 // If the item exists, increment its quantity
+//                 cart.cartItems[itemIndex].quantity += 1;
+//             } else {
+//                 // If the item doesn't exist, add it to the cart
+//                 cart.cartItems.push({
+//                     itemId: itemId,
+//                     quantity: 1
+//                 });
+//             }
+//         }
+
+//         // Save the cart after updating
+//         await cart.save();
+
+//         // Return success response with cart information
+//         return res.status(200).json({
+//             success: true,
+//             message: 'Item added to cart successfully.',
+//             cartItemCount: cart.cartItems.length
+//         });
+
+//     } catch (err) {
+//         console.error("Error adding to cart:", err.message);
+//         // Send a 500 response with error message in case of an issue
+//         return res.status(500).json({
+//             success: false,
+//             message: err.message || "Some error occurred while adding the item to the cart."
+//         });
+//     }
+// };
 
     
 exports.showCart = async (req, res) => {
@@ -220,5 +278,51 @@ exports.updateCart = async (req, res) => {
     } catch (error) {
         console.error('Error updating cart:', error);
         return res.status(500).json({ success: false, message: "An error occurred." });
+    }
+};
+
+
+// exports.getCartItemCount = async (req, res) => {
+//     try {
+//         const { userId } = req.query;
+//         if(userId === 'undefined'){
+//             const cartItemCount = 0
+//             res.status(200).json({cartItemCount})
+//         }else{
+//             const cart = await cartDb.findOne({ userId });
+//             // console.log(cart);
+            
+//             const cartItemCount = cart.cartItems.length;
+//             if(!cart || !cartItemCount){
+//                 cartItemCount = 0
+//             }
+            
+//             res.status(200).json({cartItemCount})
+//         }
+
+
+//     } catch (error) {
+//         console.error('Error fetching cart item count:', error);
+//         return res.status(500).json({ success: false, error: 'Server error.' });
+//     }
+// }
+
+
+exports.getCartItemCount = async (req, res) => {
+    try {
+        const { userId } = req.query;
+        let cartItemCount = 0;
+        if (userId === 'undefined') {
+            res.status(200).json({ cartItemCount });
+        } else {
+            const cart = await cartDb.findOne({ userId });
+            if (cart && cart.cartItems.length) {
+                cartItemCount = cart.cartItems.length; 
+            }
+            res.status(200).json({ cartItemCount });
+        }
+    } catch (error) {
+        console.error('Error fetching cart item count:', error);
+        return res.status(500).json({ success: false, error: 'Server error.' });
     }
 };
