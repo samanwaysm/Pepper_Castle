@@ -46,6 +46,14 @@
       .add-btn i {
          font-size: 14px;
       }
+
+      .small-swal {
+         font-size: 8px;
+         width: 300px;
+         height: 50px;
+         color: rgb(0, 0, 0);
+         border: black solid 1px;
+      }
    </style>
 </head>
 
@@ -335,6 +343,11 @@
    <!-- JS -->
    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+   <!-- Include SweetAlert2 CSS and JS -->
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+
    <!-- Removed redundant jQuery script -->
    <!-- <script src='js/jquery.js'></script> -->
    <script src='js/jquery-migrate.min.js'></script>
@@ -590,7 +603,23 @@
             method: 'GET',
             success: function (response) {
                // alert(response.message);
-               showToast(response.message, 'success');
+               // showToast(response.message, 'success');
+               // Swal.fire({
+               //    title: 'Success!',
+               //    text: response.message,
+               //    icon: 'success',
+               //    confirmButtonText: 'OK'
+               // });
+               Swal.fire({
+                  position: "top-center",
+                  title: response.message,
+                  showConfirmButton: false,
+                  timer: 500,
+                  customClass: {
+                     popup: 'small-swal'
+                  },
+                  background: 'rgba(255, 165, 0, 0.5)'
+               });
                updateCartCount();  // Update the cart count after adding an item
             },
             error: function (jqXHR) {

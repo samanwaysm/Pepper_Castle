@@ -135,7 +135,13 @@ exports.checkout = (req, res) => {
         axios.get(`http://localhost:${process.env.PORT}/api/showAddress?userId=${userId}`),
     ])
         .then(axios.spread((data1, data2) => {
-            res.render("user/checkout", { cartDetails: data1.data, addresses: data2.data, isUserAuthenticated, userId }, (err, html) => {
+            res.render("user/checkout", { 
+                cartDetails: data1.data, 
+                addresses: data2.data, 
+                isUserAuthenticated,
+                isUserAuth, 
+                userId
+             }, (err, html) => {
                 if (err) {
                     console.log(err);
                 }
@@ -155,6 +161,34 @@ exports.orderSuccess = (req, res) => {
         }
         delete req.session.validEmail
         delete req.session.wrongPassword
+        res.send(html)
+    })
+}
+
+
+exports.forgotPassword = (req, res, next) => {
+    res.render("user/forgot-password", (err, html) => {
+        if (err) {
+            console.log(err);
+        }
+        res.send(html)
+    })
+}
+
+exports.otpVerification = (req, res, next) => {
+    res.render("user/otp-verification", (err, html) => {
+        if (err) {
+            console.log(err);
+        }
+        res.send(html)
+    })
+}
+
+exports.resetPassword = (req, res, next) => {
+    res.render("user/reset-password", (err, html) => {
+        if (err) {
+            console.log(err);
+        }
         res.send(html)
     })
 }
