@@ -45,7 +45,7 @@ exports.contact = (req, res, next) => {
     })
 }
 
-exports.signIn = (req, res) => {
+exports.signin = (req, res) => {
     const { validEmail, wrongPassword, isUserAuthenticated } = req.session
     res.render("user/signin", { validEmail, wrongPassword, isUserAuthenticated }, (err, html) => {
         if (err) {

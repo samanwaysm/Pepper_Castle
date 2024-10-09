@@ -15,7 +15,7 @@ const orderController = require('../controller/userSide/orderController');
 
 
 route.get('/',services.homeRoutes)
-route.get('/signin',services.signIn)
+route.get('/signin',services.signin)
 route.get('/signup',services.signUp)
 route.get('/forgot-password',services.forgotPassword)
 route.get('/otp-verification',services.otpVerification)
