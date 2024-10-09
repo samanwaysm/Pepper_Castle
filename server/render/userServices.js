@@ -47,11 +47,10 @@ exports.contact = (req, res, next) => {
 
 exports.signin = (req, res) => {
     const { validEmail, wrongPassword, isUserAuthenticated } = req.session
-    res.render("user/signin", { validEmail, wrongPassword, isUserAuthenticated }, (err, html) => {
+    res.render("user/signin", { isUserAuthenticated }, (err, html) => {
         if (err) {
             console.log(err);
         }
-        delete req.session.validEmail
         delete req.session.wrongPassword
         res.send(html)
     })
