@@ -1,0 +1,292 @@
+.nav-fixed-top-cart,
+.headerHolder5.nav-fixed-top-cart { position: fixed;
+	top:0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+	background: #252525;
+	margin-top: 0;
+}
+
+#header-4.nav-fixed-top-cart{
+	top:0;
+}
+
+.header-3.nav-fixed-top-cart{
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+
+.container-chk {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 1200px; /* Adjusted for better max-width */
+    margin-top: 100px; /* Centering container */
+    gap: 20px; /* Reduced gap for a tighter layout */
+}
+
+.checkout-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Two columns layout */
+    gap: 20px;
+    width: 100%; /* Ensure the container uses full width */
+}
+
+.checkout h2 {
+    color: #fc5000;
+    text-align: center;
+    font-size: 35px;
+}
+
+/* Section Styles */
+.section {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.section:hover {
+    transform: translateY(-2px);
+}
+
+/* Address Section */
+.address-section h2, .payment-section h2 {
+    color: #fc5000;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.address-box {
+    margin-bottom: 10px;
+}
+
+.edit-address {
+    color: #fc5000;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.change-address {
+    background-color: #fc5000;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 25%;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.change-address:hover {
+    background-color: #fc5000;
+}
+
+/* Order Summary Section */
+.summary h3 {
+    color: #fc5000;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 20px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #fc5000;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.summary-item strong {
+    font-size: 18px;
+}
+
+/* Payment Section */
+.payment-section label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 16px;
+    cursor: pointer; /* Pointer on hover */
+}
+
+.place-order-btn {
+    background-color: #fc5000;
+    color: white;
+    padding: 10px; 
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 100%;
+    transition: background-color 0.2s;
+}
+
+.place-order-btn:hover {
+    background-color: #fc5000;
+}
+
+@media (max-width: 768px) {
+    .checkout-container {
+        grid-template-columns: 1fr; 
+    }
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+.modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 600px;  /* Increased width */
+    max-height: 80%; /* Adjusted max height */
+    overflow-y: auto; /* Scroll if content exceeds */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.modal-header h2 {
+    margin: 0;
+}
+.close {
+    cursor: pointer;
+    font-size: 24px;
+}
+.address-list {
+    margin: 20px 0;
+}
+.address-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+}
+.address-item input[type="radio"] {
+    margin-right: 10px;
+}
+/* .icons i {
+    cursor: pointer;
+    margin-left: 15px;
+    font-size: 18px;
+    color: #505050;
+
+}
+.icons i:hover {
+    color: #505050; 
+}*/
+.form-control {
+    margin: 15px 0;
+    border: none;
+}
+.form-control input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.btn-wide {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+}
+
+.form-control-edit {
+    margin: 15px 0;
+    border: none;
+    margin-top:10px;
+}
+.form-control-edit input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.addaddress-btn {
+    width: 50%;
+    background-color: #fc5000;
+    color: #fff;
+    margin-left: 25%;
+}
+
+.saveaddress-btn{
+    width: 50%;
+    background-color: #fc5000;
+    color: #fff;
+    margin-left: 25%;
+    margin-top: 10px;
+}
+
+.address-item {
+    display: flex;               
+    align-items: center;        
+    padding: 10px;             
+    border: 1px solid #ddd;    
+    border-radius: 5px;        
+    margin-bottom: 10px;       
+    background-color: #f9f9f9; 
+}
+
+.address-item label {
+    display: flex;              /* Use flexbox for label layout */
+    align-items: center;        /* Center items vertically */
+    flex: 1;                   /* Allow label to take full width */
+    padding-left: 3%;
+    padding-right: 3%;
+}
+
+.address-item input[type="radio"] {
+    margin-right: 15px;        /* Space between radio button and address text */
+    cursor: pointer;           /* Change cursor on hover */
+    min-height: 50px;
+
+}
+
+.address-item .icons {
+    display: flex;              /* Use flexbox for icons layout */
+    align-items: center;        /* Center icons vertically */
+}
+
+.address-item .icons i {
+    margin-left: 10px;         /* Space between icons */
+    cursor: pointer;           /* Change cursor on hover */
+    color: #505050;            /* Change icon color */
+    transition: color 0.3s;    /* Smooth transition for hover effect */
+}
+
+.address-item .icons i:hover {
+    color: #505050;            /* Darker shade on hover */
+}
+
+/* Optional: Style for strong text to differentiate */
+.address-item strong {
+    font-size: 16px;           /* Increase font size */
+    color: #333;               /* Darker color for better visibility */
+}

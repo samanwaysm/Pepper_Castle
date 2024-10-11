@@ -131,12 +131,12 @@ exports.checkout = (req, res) => {
     const { isUserAuthenticated, isUserAuth, userId } = req.session
     axios.all([
         axios.get(`http://localhost:${process.env.PORT}/api/showCart?userId=${userId}`),
-        axios.get(`http://localhost:${process.env.PORT}/api/showAddress?userId=${userId}`),
+        axios.get(`http://localhost:${process.env.PORT}/api/showDefaultAddress?userId=${userId}`),
     ])
         .then(axios.spread((data1, data2) => {
             res.render("user/checkout", { 
                 cartDetails: data1.data, 
-                addresses: data2.data, 
+                address: data2.data, 
                 isUserAuthenticated,
                 isUserAuth, 
                 userId

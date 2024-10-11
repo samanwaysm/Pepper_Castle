@@ -22,157 +22,12 @@
     <!-- Main CSS File -->
     <link rel='stylesheet' id='caverta-style-css' href='/css/style.css' type='text/css' media='all' />
     <!-- favicons -->
-    <link rel='stylesheet' id='caverta-style-css' href='/css/cart.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='caverta-style-css' href='/css/checkout.css' type='text/css' media='all' />
     <link rel="icon" href="/images/fav.png" sizes="32x32" />
     <link rel="icon" href="/images/icons/favicon-192x192.png" sizes="192x192" />
     <link rel="apple-touch-icon-precomposed" href="/images/icons/favicon-180x180.png" />
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMcXy8cM4lFpbpVg5gRZxY2t+GdA1sNFA1Y+" crossorigin="anonymous"> -->
-    <style>
-        .checkout-contrainer {
-            width: 70%;
-            margin: 40px auto;
-            padding: 30px;
-            padding-top: 150px;
-            background-color: white;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        }
 
-        h1 {
-            text-align: center;
-            color: #ff6600;
-            font-size: 2.5rem;
-        }
-
-        .section {
-            margin-bottom: 30px;
-        }
-
-        .section h2 {
-            margin-bottom: 15px;
-            color: #ff6600;
-            font-size: 1.6rem;
-        }
-
-        .order-summary {
-            padding: 20px;
-            background-color: #ffe5cc;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-            margin-bottom: 40px;
-        }
-
-        .order-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            padding: 15px;
-            background-color: white;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .order-item img {
-            width: 80px;
-            height: 80px;
-            border-radius: 5px;
-            object-fit: cover;
-        }
-
-        .order-item-details {
-            flex-grow: 1;
-            margin-left: 20px;
-        }
-
-        .order-item-details p {
-            margin: 5px 0;
-            font-size: 1.1rem;
-            color: #495057;
-        }
-
-        .order-item-price {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #495057;
-        }
-
-        .total-price {
-            font-weight: bold;
-            font-size: 1.3rem;
-            color: #212529;
-            text-align: right;
-        }
-
-        .address-display,
-        .payment-options {
-            padding: 20px;
-            background-color: #ffe5cc;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-        }
-
-        .address-display p {
-            font-size: 1.1rem;
-            margin: 8px 0;
-            color: #495057;
-        }
-
-        .address-display p span {
-            font-weight: bold;
-        }
-
-        .change-address-button,
-        .submit-button {
-            margin-top: 15px;
-            padding: 12px 16px;
-            font-size: 1.1rem;
-            background-color: #ff6600;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .change-address-button:hover,
-        .submit-button:hover {
-            background-color: #cc5200;
-        }
-
-        .payment-options label {
-            display: block;
-            font-size: 1.1rem;
-            margin: 8px 0;
-            color: #495057;
-        }
-
-        input[type="radio"] {
-            margin-right: 8px;
-        }
-
-        form input[type="text"],
-        form button {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 10px;
-            border: 1px solid #ced4da;
-            border-radius: 5px;
-            font-size: 1.1rem;
-        }
-
-        .submit-button {
-            width: 100%;
-            padding: 16px;
-            background-color: #ff6600;
-            font-size: 1.2rem;
-        }
-
-        .submit-button:hover {
-            background-color: #cc5200;
-        }
-    </style>
 </head>
 
 <body class="home">
@@ -294,266 +149,332 @@
         </div>
         <!-- /social-btn-top1 -->
     </header>
-        <div class="container checkout-contrainer">
-            <h1>Checkout</h1>
+
+    <div class="container-chk mx-auto p-6">
+        <div class="checkout">
+            <h2>Checkout</h2>
+        </div>
+        <div class="checkout-container">
+            <!-- Address Section -->
+            <!-- <div class="address-section section">
+                <h2>Address</h2>
+                <div class="address-box">
+                    <strong><%#= address.username %></strong><br>
+                    <%#= address.structuredAddress %>
+                </div>
+                <button class="change-address" id="changeAddressBtn">Change Address</button>
+            </div> -->
+            <div class="address-section section">
+                <h2>Address</h2>
+                <div class="address-box" id="currentAddress">
+                    <strong>
+                        <%= address.username %>
+                    </strong><br>
+                    <%= address.structuredAddress %>
+                </div>
+                <button class="change-address" id="changeAddressBtn">Change Address</button>
+            </div>
 
             <!-- Order Summary Section -->
-            <div class="section order-summary">
-                <h2>Order Summary</h2>
-
-                <!-- Dynamically populate order items -->
-                <% cartDetails.forEach(item=> { %>
-                    <div class="order-item">
-                        <img src="<%= item.itemDetails.image %>" alt="Product Image">
-                        <div class="order-item-details">
-                            <p>
-                                <%= item.itemDetails.item %>
-                            </p>
-                            <p>Quantity: <%= item.cartItems.quantity %>
-                            </p>
-                        </div>
-                        <p class="order-item-price">$<%= (item.itemDetails.price * item.cartItems.quantity).toFixed(2)
-                                %>
-                        </p>
+            <div class="summary-section section">
+                <div class="summary">
+                    <h3>Order Summary</h3>
+                    <div class="summary-item">
+                        <span>Subtotal</span>
+                        <span class="subtotal">S$<%= cartDetails.reduce((sum, item)=> sum + (item.itemDetails.price *
+                                item.cartItems.quantity), 0).toFixed(2) %></span>
                     </div>
-                    <% }) %>
-
-                        <!-- Total -->
-                        <p class="total-price">Total: $<%= cartDetails.reduce((total, item)=> total +
-                                (item.itemDetails.price * item.cartItems.quantity), 0).toFixed(2) %></p>
-            </div>
-
-            <!-- Address Display Section -->
-            <div class="section">
-                <h2>Shipping Address</h2>
-                <div class="address-display">
-                    <p>Full Name : <span id="username">
-                            <%= addresses.address[0].username %>
-                        </span></p>
-                    <p>Phone Number : <span id="phone">
-                            <%= addresses.address[0].phone %>
-                        </span></p>
-                    <p>Street : <span id="street">
-                            <%= addresses.address[0].street %>
-                        </span></p>
-                    <p>City : <span id="block">
-                            <%= addresses.address[0].block %>
-                        </span></p>
-                    <p>Unit Number : <span id="unitnum">
-                            <%= addresses.address[0].unitnum %>
-                        </span></p>
-                    <p>Postal Code : <span id="postal">
-                            <%= addresses.address[0].postal %>
-                        </span></p>
-
-                    <button class="change-address-button" onclick="toggleAddressForm()">Change Address</button>
-                </div>
-
-                <!-- Address Form (Initially Hidden) -->
-                <form id="addressForm" action="/change-address" method="POST" style="display:none;">
-                    <input type="text" id="newFullName" name="fullName" placeholder="Enter your full name" required>
-                    <input type="text" id="newPhone" name="phone" placeholder="Enter your phone number" required>
-                    <input type="text" id="newStreet" name="street" placeholder="Enter your street address" required>
-                    <input type="text" id="newCity" name="city" placeholder="Enter your city" required>
-                    <input type="text" id="newPostalCode" name="postalCode" placeholder="Enter your postal code"
-                        required>
-                    <input type="text" id="newCountry" name="country" placeholder="Enter your country" required>
-                    <button type="submit" class="change-address-button">Save Address</button>
-                </form>
-            </div>
-
-            <!-- Payment Method Section -->
-            <div class="section">
-                <h2>Payment Method</h2>
-                <div class="payment-options">
-                    <label>
-                        <input type="radio" name="paymentMethod" value="online" required> Online Payment
-                    </label>
-                    <label>
-                        <input type="radio" name="paymentMethod" value="cod" required> Cash on Delivery
-                    </label>
+                    <div class="summary-item">
+                        <span>Shipping</span>
+                        <span>Free</span>
+                    </div>
+                    <div class="summary-item">
+                        <strong>Total</strong>
+                        <strong class="total">S$<%= cartDetails.reduce((total, item)=> total +
+                                (item.itemDetails.price * item.cartItems.quantity), 0).toFixed(2) %></strong>
+                    </div>
                 </div>
             </div>
 
-            <!-- Submit Button -->
-            <div class="section">
-                <button type="submit" class="submit-button" onclick="submitOrder()">Place Order</button>
+            <!-- Payment Section -->
+            <div class="payment-section section">
+                <h2>Payment</h2>
+                <label><input type="radio" name="paymentMethod" value="online"> Online Payment</label>
+                <label><input type="radio" name="paymentMethod" value="cod"> Cash on Delivery</label>
+                <button type="submit" class="place-order-btn" onclick="submitOrder()">Place Your Order</button>
             </div>
         </div>
+    </div>
 
-        <!-- FOOTER -->
-        <footer>
-            <div class="container">
-                <div class="footer-widgets">
-                    <div class="row">
-                        <!-- FOOTER COLUMN 1 -->
-                        <div class="col-md-4">
-                            <div class="foo-block">
-                                <div id="text-2" class="widget widget-footer widget_text">
-                                    <div class="textwidget">
-                                        <p><img class="size-full wp-image-665" src="/images/Pepper-Castle_White.png"
-                                                alt="" width="250" height="51"></p>
-                                        <p>We offer such food connoisseurs the very best of North Indian cuisine that is
-                                            healthy, tasty, and free from additives.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--foo-block-->
-                        </div>
-                        <!--col-md-3-->
-                        <!-- FOOTER COLUMN 2 -->
-                        <div class="col-md-3">
-                            <div class="foo-block">
-                                <div id="text-3" class="widget widget-footer widget_text">
-                                    <h5 class="widgettitle"><span>Address</span></h5>
-                                    <div class="textwidget">
-                                        <p>33 Lorong liput<br> 277744 Singapore
-                                        </p>
-                                        <p style="white-space: nowrap;"><i class="fas fa-phone-alt"></i>+65 97440747<br>
-                                            <i class="fas fa-envelope"></i><a href="#">peppercastle@hotmail.com</a>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--foo-block-->
-                        </div>
-                        <!--col-md-3-->
 
-                        <div class="col-md-3">
-                            <div class="foo-block foo-last">
-                                <div id="text-5" class="widget widget-footer widget_text">
-                                    <h5 class="widgettitle"><span>Quick Links</span></h5>
-                                    <div class="textwidget ftr-menu">
-                                        <ul>
-                                            <li><a href="index.html">-Home</a></li>
-                                            <li><a href="about.html">-About</a></li>
-                                            <li><a href="testimonials.html">-Testimonials</a></li>
-                                            <li><a href="#">-Our Menu</a></li>
-                                            <li><a href="contact.html">-Contact</a></li>
-                                        </ul>
-                                    </div>
+    <!-- Modal -->
+    <!-- <div id="changeAddressModal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="closeModal">&times;</span>
+                <h2>Manage Addresses</h2>
+                <div class="address-list" id="addressList"></div>
+                <div>
+                    <label for="newAddress">New Address:</label><br>
+                    <textarea id="newAddress" rows="4" class="w-full p-2 border rounded" placeholder="Enter your new address"></textarea>
+                    <button id="addAddressBtn" class="change-address mt-4">Add Address</button>
+                </div>
+            </div>
+        </div> -->
+    <!-- Change Address Modal -->
+    <div id="changeAddressModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Select Address</h4>
+                <span id="closeModal" class="close">&times;</span>
+            </div>
+            <div class="address-list" id="addressList">
+            </div>
+            <button id="addAddressBtn" class="btn addaddress-btn">Add Address</button>
+        </div>
+    </div>
+
+    <!-- Add Address Modal -->
+    <div id="addAddressModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Add New Address</h4>
+                <span id="closeAddModal" class="close">&times;</span>
+            </div>
+            <div class="form-control">
+                <input type="text" id="username" placeholder="Username">
+            </div>
+            <div class="form-control">
+                <input type="text" id="phone" placeholder="Phone">
+            </div>
+            <div class="form-control">
+                <input type="text" id="street" placeholder="Street">
+            </div>
+            <div class="form-control">
+                <input type="text" id="block" placeholder="Block">
+            </div>
+            <div class="form-control">
+                <input type="text" id="unitnum" placeholder="Unit Number">
+            </div>
+            <div class="form-control">
+                <input type="text" id="postal" placeholder="Postal Code">
+            </div>
+            <button id="saveAddressBtn" class="btn saveaddress-btn">Save Address</button>
+        </div>
+    </div>
+
+    <!-- Modal Structure for Editing Address -->
+    <div id="editAddressModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Edit Address</h4>
+                <span id="closeEditModal" class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="editAddressForm">
+                    <input type="hidden" id="editAddressId">
+                    <div class="form-control-edit">
+                        <label>Username:</label>
+                        <input type="text" id="editUsername" required>
+                    </div>
+                    <div class="form-control-edit">
+                        <label>Phone:</label>
+                        <input type="text" id="editPhone" required>
+                    </div>
+                    <div class="form-control-edit">
+                        <label>Street:</label>
+                        <input type="text" id="editStreet" required>
+                    </div>
+                    <div class="form-control-edit">
+                        <label>Block:</label>
+                        <input type="text" id="editBlock" required>
+                    </div>
+                    <div class="form-control-edit">
+                        <label>Unit Number:</label>
+                        <input type="text" id="editUnitNum" required>
+                    </div>
+                    <div class="form-control-edit">
+                        <label>Postal Code:</label>
+                        <input type="number" id="editPostal" required>
+                    </div>
+                    <button id="editAddressBtn" class="btn saveaddress-btn">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-widgets">
+                <div class="row">
+                    <!-- FOOTER COLUMN 1 -->
+                    <div class="col-md-4">
+                        <div class="foo-block">
+                            <div id="text-2" class="widget widget-footer widget_text">
+                                <div class="textwidget">
+                                    <p><img class="size-full wp-image-665" src="/images/Pepper-Castle_White.png" alt=""
+                                            width="250" height="51"></p>
+                                    <p>We offer such food connoisseurs the very best of North Indian cuisine that is
+                                        healthy, tasty, and free from additives.</p>
                                 </div>
                             </div>
-                            <!--foo-block-->
                         </div>
-                        <!-- FOOTER COLUMN 3 -->
-                        <div class="col-md-2">
-                            <div class="foo-block">
-                                <div id="text-4" class="widget widget-footer widget_text">
-                                    <h5 class="widgettitle"><span>Hours</span></h5>
-                                    <div class="textwidget">
-                                        <p style="white-space: nowrap;">Monday – Sunday<br>
-                                            11:00 AM - 11:00 PM
-                                        </p>
-                                    </div>
-                                    <ul class="footer-social">
-                                        <li><a class="social-facebook" href="#" target="_blank"><i
-                                                    class="fab fa-facebook-f"></i></a></li>
-                                        <li><a class="social-instagram"
-                                                href="https://www.instagram.com/pepper_castle_/?igshid=eddejyohhgwd"
-                                                target="_blank"><i class="fab fa-instagram"></i></a></li>
+                        <!--foo-block-->
+                    </div>
+                    <!--col-md-3-->
+                    <!-- FOOTER COLUMN 2 -->
+                    <div class="col-md-3">
+                        <div class="foo-block">
+                            <div id="text-3" class="widget widget-footer widget_text">
+                                <h5 class="widgettitle"><span>Address</span></h5>
+                                <div class="textwidget">
+                                    <p>33 Lorong liput<br> 277744 Singapore
+                                    </p>
+                                    <p style="white-space: nowrap;"><i class="fas fa-phone-alt"></i>+65 97440747<br>
+                                        <i class="fas fa-envelope"></i><a href="#">peppercastle@hotmail.com</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--foo-block-->
+                    </div>
+                    <!--col-md-3-->
+
+                    <div class="col-md-3">
+                        <div class="foo-block foo-last">
+                            <div id="text-5" class="widget widget-footer widget_text">
+                                <h5 class="widgettitle"><span>Quick Links</span></h5>
+                                <div class="textwidget ftr-menu">
+                                    <ul>
+                                        <li><a href="index.html">-Home</a></li>
+                                        <li><a href="about.html">-About</a></li>
+                                        <li><a href="testimonials.html">-Testimonials</a></li>
+                                        <li><a href="#">-Our Menu</a></li>
+                                        <li><a href="contact.html">-Contact</a></li>
                                     </ul>
                                 </div>
                             </div>
-                            <!--foo-block-->
                         </div>
-                        <!--col-md-3-->
-                        <!-- FOOTER COLUMN 4 -->
-
-                        <!--col-md-3-->
+                        <!--foo-block-->
                     </div>
-                    <!--row-->
-                </div>
-                <!-- footer-widgets -->
-                <div class="copyright">
-                    <!-- COPYRIGHT -->
-                    <div class="footer-copy">
-                        <p>© 2023 - Pepper Castle. All Rights Reserved.</p>
+                    <!-- FOOTER COLUMN 3 -->
+                    <div class="col-md-2">
+                        <div class="foo-block">
+                            <div id="text-4" class="widget widget-footer widget_text">
+                                <h5 class="widgettitle"><span>Hours</span></h5>
+                                <div class="textwidget">
+                                    <p style="white-space: nowrap;">Monday – Sunday<br>
+                                        11:00 AM - 11:00 PM
+                                    </p>
+                                </div>
+                                <ul class="footer-social">
+                                    <li><a class="social-facebook" href="#" target="_blank"><i
+                                                class="fab fa-facebook-f"></i></a></li>
+                                    <li><a class="social-instagram"
+                                            href="https://www.instagram.com/pepper_castle_/?igshid=eddejyohhgwd"
+                                            target="_blank"><i class="fab fa-instagram"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!--foo-block-->
                     </div>
-                    <!-- SOCIAL ICONS -->
+                    <!--col-md-3-->
+                    <!-- FOOTER COLUMN 4 -->
 
+                    <!--col-md-3-->
                 </div>
-                <!--copyright-->
+                <!--row-->
             </div>
-            <!--container-->
-        </footer>
+            <!-- footer-widgets -->
+            <div class="copyright">
+                <!-- COPYRIGHT -->
+                <div class="footer-copy">
+                    <p>© 2023 - Pepper Castle. All Rights Reserved.</p>
+                </div>
+                <!-- SOCIAL ICONS -->
 
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script>
-            $(document).ready(function () {
-                updateCartCount();
-            });
-            function submitOrder() {
-                const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
-                const orderItems = `<%- JSON.stringify(cartDetails) %>`;
-                const userId = `<%= userId %>`;
-                const structuredAddress = `<%= addresses.address[0].structuredAddress %>`;
+            </div>
+            <!--copyright-->
+        </div>
+        <!--container-->
+    </footer>
 
-                const address = {
-                    username: document.getElementById('username').textContent,
-                    phone: document.getElementById('phone').textContent,
-                    street: document.getElementById('street').textContent,
-                    block: document.getElementById('block').textContent,
-                    unitnum: document.getElementById('unitnum').textContent,
-                    postal: document.getElementById('postal').textContent,
-                    structuredAddress: structuredAddress
-                };
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
 
-                const orderData = {
-                    orderItems: orderItems, // Should be a JavaScript object, not a string
-                    paymentMethod: paymentMethod,
-                    address: address,
-                    userId: userId
-                };
-
-                // Send AJAX POST request to create an order
-                fetch('/api/create-order', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(orderData)
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            if (paymentMethod === 'online') {
-                                window.location.href = data.paymentUrl; // Stripe redirect URL
-                            } else {
-                                alert('Order placed with Cash on Delivery!');
-                            }
-                        } else {
-                            alert('Error placing order: ' + data.error);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
+        $(document).ready(function () {
+            updateCartCount();
+        });
+        function updateCartCount() {
+            const userId = `<%= userId %>`;  // Make sure userId is defined here
+            if (!userId) {
+                console.error("userId is not defined!");
+                return;
             }
 
-
-
-
-
-            function updateCartCount() {
-                const userId = `<%= userId %>`;  // Make sure userId is defined here
-                if (!userId) {
-                    console.error("userId is not defined!");
-                    return;
-                }
-
-                $.ajax({
-                    url: '/api/itemCount',
-                    method: 'GET',
-                    data: { userId: userId },
-                    success: function (response) {
+            $.ajax({
+                url: '/api/itemCount',
+                method: 'GET',
+                data: { userId: userId },
+                success: function (response) {
                     console.log("Cart Count Response:", response);
                     cartCountDisplay(response.cartItemCount);  // Pass the cart item count directly
-                    },
-                    error: function () {
+                },
+                error: function () {
                     console.error("Error fetching cart count");
-                    }
-                });
+                }
+            });
+        }
+
+        function cartCountDisplay(cartItemCount) {
+            const cartIcon = document.getElementById('cartIcon');
+
+            // Remove any existing counter to avoid duplication
+            const existingCounter = cartIcon.querySelector('span');
+            if (existingCounter) {
+                cartIcon.removeChild(existingCounter);
             }
-            function cartCountDisplay(cartItemCount) {
+
+            // Create a new span element for the cart count
+            const counter = document.createElement('span');
+            counter.style.position = 'absolute';
+            counter.style.borderRadius = '50%';
+            counter.style.backgroundColor = 'var(--headings-color)';
+            counter.style.width = '14px';
+            counter.style.height = '14px';
+            counter.style.top = '20px';
+            // counter.style.right = '0'; 
+            counter.style.textAlign = 'center';
+            counter.style.lineHeight = '15px';
+            counter.style.fontSize = '10px';
+            counter.style.color = '#fff';
+            counter.textContent = cartItemCount;  // Use the count returned from the server
+
+            // Append the counter to the cart icon
+            cartIcon.appendChild(counter);
+        }
+        function updateCartCount() {
+            const userId = `<%= userId %>`;  // Make sure userId is defined here
+            if (!userId) {
+                console.error("userId is not defined!");
+                return;
+            }
+
+            $.ajax({
+                url: '/api/itemCount',
+                method: 'GET',
+                data: { userId: userId },
+                success: function (response) {
+                    console.log("Cart Count Response:", response);
+                    cartCountDisplay(response.cartItemCount);  // Pass the cart item count directly
+                },
+                error: function () {
+                    console.error("Error fetching cart count");
+                }
+            });
+        }
+        function cartCountDisplay(cartItemCount) {
             const cartIcon = document.getElementById('cartIcon');
 
             // Remove any existing counter to avoid duplication
@@ -581,9 +502,302 @@
             cartIcon.appendChild(counter);
         }
 
-        </script>
+        // Get userId from the server-side template
+        const userId = `<%= userId %>`; // Assuming this is passed from your backend
+
+        // Function to open modals
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        // Function to close modals
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Open the modal to change address and fetch addresses via AJAX
+        document.getElementById("changeAddressBtn").onclick = function () {
+            openModal('changeAddressModal');
+            fetchAddresses();
+        }
+
+        // Close modals on close button click
+        document.getElementById("closeModal").onclick = function () {
+            closeModal('changeAddressModal');
+        }
+        document.getElementById("closeAddModal").onclick = function () {
+            closeModal('addAddressModal');
+        }
+
+        // Fetch addresses using AJAX and render them
+        function fetchAddresses() {
+            const addressList = document.getElementById("addressList");
+            addressList.innerHTML = 'Loading...';
+
+            fetch(`/api/showAddress?userId=${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.isDefault);
+                    addressList.innerHTML = '';
+                    if (data.length === 0) {
+                        addressList.innerHTML = 'No addresses found.';
+                    } else {
+                        data.forEach((address, index) => {
+                            addressList.innerHTML += `
+                                <div class="address-item" id="address-item-${index}">
+                                    <label>
+                                        <input type="radio" name="selectedAddress" 
+                                            value="${index}" 
+                                            ${address.isDefault ? 'checked' : ''} 
+                                            onchange="updateDefaultAddress('${address._id}')">                                        
+                                        <div>
+                                            <span>${address.structuredAddress}</span>
+                                        </div>
+                                    </label>
+                                    <div class="icons">
+                                        <i class="fas fa-edit" onclick="editAddress('${address._id}')" title="Edit Address"></i>
+                                        <i class="fas fa-trash-alt" onclick="deleteAddress('${address._id}','${index}')" title="Delete Address"></i>
+                                    </div>
+                                </div>
+
+                            `;
+                        });
+                    }
+                })
+                .catch(error => console.error('Error fetching addresses:', error));
+        }
+
+        // Open modal to add a new address
+        document.getElementById("addAddressBtn").onclick = function () {
+            openModal('addAddressModal');
+        }
 
 
-    </body>
+
+        // Save address using AJAX
+        document.getElementById("saveAddressBtn").onclick = function () {
+            const username = document.getElementById("username").value;
+            const phone = document.getElementById("phone").value;
+            const street = document.getElementById("street").value;
+            const block = document.getElementById("block").value;
+            const unitnum = document.getElementById("unitnum").value;
+            const postal = document.getElementById("postal").value;
+
+            // Send the new address data via AJAX
+            const data = { userId, username, phone, street, block, unitnum, postal }; // Include userId
+
+            fetch(`/api/addAddress?userId=${userId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(result => {
+                    // alert('Address added successfully!');
+                    closeModal('addAddressModal');
+                    fetchAddresses();  // Refresh address list
+                })
+                .catch(error => console.error('Error adding address:', error));
+        }
+
+        // Edit address function
+        function editAddress(index) {
+            // Implement AJAX call to edit the address by index
+            const newAddress = prompt('Edit address:'); // Get updated address details
+            if (newAddress) {
+                // Send an AJAX request to update the address
+                fetch(`/api/editAddress`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ userId, index, newAddress }) // Include userId
+                })
+                    .then(response => response.json())
+                    .then(result => {
+                        // alert('Address updated successfully!');
+                        fetchAddresses(); // Refresh address list
+                    })
+                    .catch(error => console.error('Error updating address:', error));
+            }
+        }
+
+        // Delete address function
+        function deleteAddress(addressId, index) {
+            const userId = `<%= userId %>`;
+            console.log('delete-', index);
+
+            $.ajax({
+                url: `/api/deleteAddress?userId=${userId}`,
+                method: 'DELETE',
+                data: { addressId: addressId },
+                success: function (response) {
+                    // alert("Address deleted successfully.");
+                    const addressElement = document.getElementById(`address-item-${index}`);
+
+                    // Check if the element exists before attempting to remove
+                    if (addressElement) {
+                        console.log(`Element found, deleting: address-item-${index}`);
+                        addressElement.remove();  // Remove the item from DOM
+                    } else {
+                        console.log(`Element not found: address-item-${index}`);
+                    }
+                },
+                error: function (err) {
+                    console.error(err);
+                    // alert("Failed to delete the address.");
+                }
+            });
+        }
+
+        function updateDefaultAddress(addressId) {
+            const userId = `<%= userId %>`;
+            $.ajax({
+                type: 'POST',
+                url: '/api/updateDefaultAddress',
+                data: {
+                    userId: userId,
+                    addressId: addressId
+                },
+                success: function (response) {
+                    // Handle success response
+                    closeModal('changeAddressModal');
+                    fetchDefaultAddress();
+                    // console.log('Default address updated successfully:', response);
+                },
+                error: function (xhr, status, error) {
+                    // Handle error response
+                    console.error('Error updating default address:', error);
+                }
+            });
+        }
+
+        function fetchDefaultAddress() {
+            const userId = '<%= userId %>';
+            fetch(`/api/showDefaultAddress?userId=${userId}`)
+                .then(response => response.json())
+                .then(address => {
+                    document.getElementById('currentAddress').innerHTML = `
+                        <strong>${address.username}</strong><br>
+                        ${address.structuredAddress}
+                    `;
+                });
+        }
+
+        function fetchAddressData(addressId) {
+            const userId = '<%= userId %>';
+            $.ajax({
+                url: `/api/getAddress`,
+                method: 'GET',
+                data: {
+                    userId: userId,
+                    addressId: addressId
+                },
+                success: function (response) {
+                    document.getElementById('editAddressId').value = response._id;
+                    document.getElementById('editUsername').value = response.username;
+                    document.getElementById('editPhone').value = response.phone;
+                    document.getElementById('editStreet').value = response.street;
+                    document.getElementById('editBlock').value = response.block;
+                    document.getElementById('editUnitNum').value = response.unitnum;
+                    document.getElementById('editPostal').value = response.postal;
+
+                    // Display the modal
+                    document.getElementById('editAddressModal').style.display = 'flex';
+                },
+                error: function (err) {
+                    console.error('Error fetching address data:', err);
+                    // alert('Failed to load address details.');
+                }
+            });
+        }
+
+        function editAddress(addressId) {
+            fetchAddressData(addressId);
+        }
+
+        document.getElementById("closeEditModal").onclick = function () {
+            closeModal('editAddressModal');
+        }
+
+        document.getElementById("editAddressBtn").onclick = function (event) {
+            event.preventDefault();
+
+            const addressId = document.getElementById("editAddressId").value;
+            const username = document.getElementById("editUsername").value;
+            const phone = document.getElementById("editPhone").value;
+            const street = document.getElementById("editStreet").value;
+            const block = document.getElementById("editBlock").value;
+            const unitnum = document.getElementById("editUnitNum").value;
+            const postal = document.getElementById("editPostal").value;
+
+            // Prepare data to send
+            const updatedData = { username, phone, street, block, unitnum, postal };
+            console.log(updatedData);
+
+            // Send the new address data via AJAX
+            fetch(`/api/updateAddress?userId=${userId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ addressId, updatedData }) // Fix: Use JSON.stringify
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok: ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(result => {
+                    // alert('Address updated successfully!'); // Change message to be more accurate
+                    closeModal('editAddressModal');
+                    fetchAddresses();  // Refresh address list
+                })
+                .catch(error => console.error('Error updating address:', error));
+        }
+
+        function submitOrder() {
+            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+            const orderItems = `<%- JSON.stringify(cartDetails) %>`;
+            const userId = `<%= userId %>`;
+            // const structuredAddress = `<%= address.structuredAddress %>`;
+            const addressId = `<%= address.addressId %>`;
+
+            const orderData = {
+                orderItems: orderItems,
+                paymentMethod: paymentMethod,
+                addressId: addressId,
+                userId: userId
+            };
+
+            fetch('/api/create-order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(orderData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        if (paymentMethod === 'online') {
+                            window.location.href = data.paymentUrl;
+                        } else {
+                            window.location.href = data.paymentUrl;
+                        }
+                    } else {
+                        alert('Error placing order: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+
+    </script>
+
+</body>
 
 </html>

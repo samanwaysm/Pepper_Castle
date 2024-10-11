@@ -4,7 +4,23 @@ var Item = require("../../model/itemSchema");
 
 
 exports.adminLogin = async (req, res) => {
-
+  const admin = {
+    email: process.env.ADMIN_EMAIL,
+    password: process.env.ADMIN_PASS,
+  };
+  if (req.body.email === admin.email && req.body.password === admin.password) {
+    req.session.isAdminAuthenticated = true;
+    res.redirect("/dashboard");
+  } else {
+    if (req.body.email !== admin.email) {
+      req.session.adminEmailErr = "Invalid Email";
+      return res.redirect("/adminlogin");
+    }
+    if (req.body.password !== admin.password) {
+      req.session.adminPassErr = "Invalid Password";
+      return res.redirect("/adminlogin");
+    }
+  }
 };
 
 exports.adminLogout = async (req, res) => {

@@ -52,8 +52,13 @@ route.get('/api/showCart',cartController.showCart)
 route.post('/api/update-cart',cartController.updateCart)
 route.delete('/api/remove-from-cart',cartController.removeCart)
 
+route.post('/api/addAddress', addressController.addAddress);
+route.get('/api/showDefaultAddress',addressController.showDefaultAddress)
 route.get('/api/showAddress',addressController.showAddress)
-
+route.post('/api/updateDefaultAddress', addressController.updateDefaultAddress);
+route.delete('/api/deleteAddress',addressController.deleteAddress)
+route.get('/api/getAddress',addressController.getAddress)
+route.post('/api/updateAddress',addressController.updateAddress)
 // route.get('/api/session/:sessionId',orderController.getSessionAndPaymentIntent)
 
 module.exports = route;

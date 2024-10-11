@@ -11,9 +11,20 @@ const axios = require('axios')
 //     });
 // }
 
-exports.adminSignIn = (req, res) => {
+exports.adminLogin = (req, res) => {
     // const { validEmail, wrongPassword, isUserAuthenticated } = req.session
-    res.render("admin/adminSignIn", (err, html) => {
+    res.render("admin/adminlogin", (err, html) => {
+        if (err) {
+            console.log(err);
+        }
+        res.send(html)
+    })
+}
+
+
+exports.dashboard = (req, res) => {
+    // const { validEmail, wrongPassword, isUserAuthenticated } = req.session
+    res.render("admin/dashboard", (err, html) => {
         if (err) {
             console.log(err);
         }

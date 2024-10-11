@@ -16,31 +16,24 @@ const controller = require('../controller/adminSide/adminContoller');
 // route.get("/adminUserMange",isAdminAuthenticated,services.adminUserManagement)
 
 
-route.get("/adminlogin",services.adminSignIn)
+route.get("/adminlogin",services.adminLogin)
 
-// route.get("/adminCategoryMange",services.adminCategoryMangement)
+route.get("/dashboard",services.dashboard)
 route.get("/categoryManagement",services.categoryManagement)
-
-
-// route.get("/adminAddCategory",services.adminAddCategory)
 route.get("/addCategory",services.addCategory)
-
-
-// route.get("/adminUnlistCategory",services.adminUnlistCategory)
 route.get("/editCategory",services.editCategory)
 route.get("/unlistCategory",services.unlistCategory)
 
-// route.get("/adminItemManagement",services.adminItemMangement)
 route.get("/itemManagement",services.itemMangement)
 route.get("/unlistItem",services.unlistItem)
-// route.get("/adminAddItem",services.adminAddItem)
 route.get("/addItem",services.addItem)
-// route.get("/adminEditProduct",services.adminEditProduct)
-// route.get("/adminOrderMange",services.adminOrderMange)
 
 
 
 // API
+
+route.post("/admin/adminlogin",controller.adminLogin);
+
 route.get("/admin/categoryShow",controller.CategoryManagementShow);
 route.post("/admin/addCategory",controller.addCategory);
 route.get("/admin/editCategoryShow",controller.editCategoryShow);

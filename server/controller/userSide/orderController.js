@@ -1,132 +1,271 @@
+const mongoose = require("mongoose");
 
 const OrderDb = require("../../model/orderSchema");
 const cartDb = require("../../model/cartSchema");
+const addressDb = require('../../model/addressSchema');
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-
 exports.createOrder = async (req, res) => {
-  try {
-      const { orderItems, paymentMethod, address, userId } = req.body;
+    const { orderItems, paymentMethod, addressId, userId } = req.body; 
+    console.log('Request Body:', req.body);
+    try {
+        const addressData = await getAddress(userId, addressId)
+        const address = addressData[0].address
+        const cartItems = await getCartItems(userId)
 
-      if (!userId || !orderItems || !paymentMethod || !address) {
-          return res.status(400).json({ success: false, error: 'Missing required fields.' });
-      }
+        // console.log('Address :',address);
+        // console.log('Cart :',cartItems);
+        let totalAmount = 0;
+        const items = cartItems.map(item => {
+            const { itemDetails, cartItems } = item;
+            const { price, item: itemName } = itemDetails;
+            const { quantity } = cartItems;
+            totalAmount += price * quantity;
 
-      let parsedOrderItems = orderItems;
-      if (typeof orderItems === 'string') {
-          try {
-              parsedOrderItems = JSON.parse(orderItems);
-          } catch (error) {
-              return res.status(400).json({ success: false, error: 'Invalid orderItems format.' });
-          }
-      }
+            return {
+                item: itemName,
+                quantity,
+                price
+            };
+        });
+        // console.log(items,totalAmount);
 
-    //   console.log(parsedOrderItems);
+        const { username, phone, street, block, unitnum, postal, structuredAddress } = addressData[0].address;
+        
+        const newOrder = new OrderDb({
+            user: userId,
+            items,
+            paymentMethod,
+            address: {
+                username,
+                phone,
+                street,
+                block,
+                unitnum,
+                postal,
+                structuredAddress
+            },
+            totalAmount,
+            paymentStatus: 'pending' 
+        });
+        
+        // console.log(newOrder);
+        const savedOrder = await newOrder.save();
 
-      if (!Array.isArray(parsedOrderItems) || parsedOrderItems.length === 0) {
-          return res.status(400).json({ success: false, error: 'orderItems should be a non-empty array.' });
-      }
-
-      const { username, phone, street, block, unitnum, postal, structuredAddress } = address;
-      if (!structuredAddress || !postal || !unitnum || !block || !street || !phone || !username) {
-          return res.status(400).json({ success: false, error: 'Incomplete address information.' });
-      }
-
-      let totalAmount = 0;
-      const items = parsedOrderItems.map(item => {
-          const { itemDetails, cartItems } = item;
-          const { price, item: itemName } = itemDetails;
-          const { quantity } = cartItems;
-
-          totalAmount += price * quantity;
-
-          return {
-              item: itemName,
-              quantity,
-              price
-          };
-      });
-
-      const newOrder = new OrderDb({
-          user: userId,
-          items,
-          paymentMethod,
-          address: {
-              username,
-              phone,
-              street,
-              block,
-              unitnum,
-              postal,
-              structuredAddress
-          },
-          totalAmount,
-          paymentStatus: 'pending' 
-      });
-
-      const savedOrder = await newOrder.save();
-
-      if (paymentMethod === 'online') {
-          const session = await stripe.checkout.sessions.create({
-              line_items: parsedOrderItems.map(item => ({
-                  price_data: {
-                      currency: 'sgd',
-                      product_data: {
-                          name: item.itemDetails.item,
-                      },
-                      unit_amount: item.itemDetails.price * 100
-                  },
-                  quantity: item.cartItems.quantity
-              })),
-              mode: 'payment',
-                success_url: `http://localhost:${process.env.PORT}/api/success?orderId=${savedOrder._id}`,
+        if (paymentMethod === 'online') {
+            console.log('entered');
+        
+            const session = await stripe.checkout.sessions.create({
+                line_items: cartItems.map(item => ({
+                    price_data: {
+                        currency: 'sgd',
+                        product_data: {
+                            name: item.itemDetails.item,
+                        },
+                        unit_amount: Math.round(item.itemDetails.price * 100)
+                    },
+                    quantity: item.cartItems.quantity
+                })),
+                mode: 'payment',
+                success_url: `http://localhost:${process.env.PORT}/api/success?orderId=${savedOrder._id}&userId=${userId}`,
                 cancel_url: `https://example.com/cancel?orderId=${savedOrder._id}`
-          });
-
-          savedOrder.stripeSessionId = session.id;
-          await savedOrder.save();
-    
-          return res.json({ success: true, paymentUrl: session.url, sessionId: session.id });
-      } else {
-            // Remove items from the user's cart
+            });
+        
+            savedOrder.stripeSessionId = session.id;
+            await savedOrder.save();
+            return res.json({ success: true, paymentUrl: session.url, sessionId: session.id });
+        } else {
             await cartDb.updateOne(
                 { userId }, 
                 { $set: { cartItems: [] } }
-            );            
-            return res.json({ success: true, message: 'Order placed successfully with cash on delivery.' });
+            );
+            return res.json({ success: true, paymentUrl: '/orderSuccess' });
       }
+        
 
-  } catch (error) {
-      console.error('Order creation failed:', error);
-      return res.status(500).json({ success: false, error: 'Order creation failed.' });
-  }
+    } catch (error) {
+        console.error('Error fetching address data:', error);
+        res.status(500).json({ message: 'Internal server error', error: error.message });
+    }
 };
 
 
-// Route to handle success payment
+
+
+const getAddress = async (userId, addressId) => {
+    return await addressDb.aggregate([
+        {
+            $match: {
+                userId: new mongoose.Types.ObjectId(userId) 
+            }
+        },
+        {
+            $unwind: "$address" 
+        },
+        {
+            $match: {
+                "address._id": new mongoose.Types.ObjectId(addressId)
+            }
+        },
+        {
+            $project: {
+                address: 1
+            }
+        }
+    ]);
+};
+
+const getCartItems = async (userId) => {
+    return await cartDb.aggregate([
+        {
+            $match: { userId: new mongoose.Types.ObjectId(userId) }
+        },
+        {
+            $unwind: "$cartItems"
+        },
+        {
+            $lookup: {
+                from: "items",
+                localField: "cartItems.itemId",
+                foreignField: "_id",
+                as: "itemDetails"
+            }
+        },
+        {
+            $unwind: "$itemDetails"
+        },
+        {
+            $project: {
+                _id: 1,
+                "itemDetails.item": 1,
+                "itemDetails.price": 1,
+                "itemDetails.image": 1,
+                "cartItems.quantity": 1,
+                "cartItems.itemId": 1
+            }
+        }
+    ]);
+}
+
+
+
+
+// exports.createOrder = async (req, res) => {
+//   try {
+//       const { orderItems, paymentMethod, address, userId } = req.body;
+
+//       if (!userId || !orderItems || !paymentMethod || !address) {
+//           return res.status(400).json({ success: false, error: 'Missing required fields.' });
+//       }
+
+//       let parsedOrderItems = orderItems;
+//       if (typeof orderItems === 'string') {
+//           try {
+//               parsedOrderItems = JSON.parse(orderItems);
+//           } catch (error) {
+//               return res.status(400).json({ success: false, error: 'Invalid orderItems format.' });
+//           }
+//       }
+
+//     //   console.log(parsedOrderItems);
+
+//       if (!Array.isArray(parsedOrderItems) || parsedOrderItems.length === 0) {
+//           return res.status(400).json({ success: false, error: 'orderItems should be a non-empty array.' });
+//       }
+
+//       const { username, phone, street, block, unitnum, postal, structuredAddress } = address;
+//       if (!structuredAddress || !postal || !unitnum || !block || !street || !phone || !username) {
+//           return res.status(400).json({ success: false, error: 'Incomplete address information.' });
+//       }
+
+//       let totalAmount = 0;
+//       const items = parsedOrderItems.map(item => {
+//           const { itemDetails, cartItems } = item;
+//           const { price, item: itemName } = itemDetails;
+//           const { quantity } = cartItems;
+
+//           totalAmount += price * quantity;
+
+//           return {
+//               item: itemName,
+//               quantity,
+//               price
+//           };
+//       });
+
+//       const newOrder = new OrderDb({
+//           user: userId,
+//           items,
+//           paymentMethod,
+//           address: {
+//               username,
+//               phone,
+//               street,
+//               block,
+//               unitnum,
+//               postal,
+//               structuredAddress
+//           },
+//           totalAmount,
+//           paymentStatus: 'pending' 
+//       });
+
+//       const savedOrder = await newOrder.save();
+
+//       if (paymentMethod === 'online') {
+//           const session = await stripe.checkout.sessions.create({
+//               line_items: parsedOrderItems.map(item => ({
+//                   price_data: {
+//                       currency: 'sgd',
+//                       product_data: {
+//                           name: item.itemDetails.item,
+//                       },
+//                       unit_amount: item.itemDetails.price * 100
+//                   },
+//                   quantity: item.cartItems.quantity
+//               })),
+//               mode: 'payment',
+//                 success_url: `http://localhost:${process.env.PORT}/api/success?orderId=${savedOrder._id}`,
+//                 cancel_url: `https://example.com/cancel?orderId=${savedOrder._id}`
+//           });
+
+//           savedOrder.stripeSessionId = session.id;
+//           await savedOrder.save();
+    
+//           return res.json({ success: true, paymentUrl: session.url, sessionId: session.id });
+//       } else {
+//             // Remove items from the user's cart
+//             await cartDb.updateOne(
+//                 { userId }, 
+//                 { $set: { cartItems: [] } }
+//             );            
+//             return res.json({ success: true, message: 'Order placed successfully with cash on delivery.' });
+//       }
+
+//   } catch (error) {
+//       console.error('Order creation failed:', error);
+//       return res.status(500).json({ success: false, error: 'Order creation failed.' });
+//   }
+// };
+
+
 exports.handlePaymentSuccess = async (req, res) => {
     try {
-      const { orderId } = req.query;
+      const { orderId,userId } = req.query;
       console.log(orderId);
-      
-  
-      // Find the order by ID and update the payment status
       const order = await OrderDb.findById(orderId);
       if (!order) {
         return res.status(404).json({ success: false, error: 'Order not found.' });
       }
-
-       // Retrieve the payment intent details from Stripe
-        const paymentIntent = await stripe.paymentIntents.retrieve(order.stripeSessionId);
-        
-        // Log the payment intent details
-        console.log('Payment Intent Details:', paymentIntent);
+        // const paymentIntent = await stripe.paymentIntents.retrieve(order.stripeSessionId);
+        // console.log('Payment Intent Details:', paymentIntent);
   
-      order.paymentStatus = 'success'; // Update payment status to success
+      order.paymentStatus = 'success';
       await order.save();
-  
-      // Clear the user's cart
+      
+      
+
       await cartDb.updateOne(
         { userId: order.user }, 
         { $set: { cartItems: [] } }
