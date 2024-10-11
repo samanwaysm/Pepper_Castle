@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="apple-touch-icon" sizes="76x76" href="/admin/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="images/fav.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Pepper Castle Admin - User Management</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+        name='viewport' />
+    <!-- Fonts and icons -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <!-- CSS Files -->
+    <link href="/admin/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/admin/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
+    <link href="/admin/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link href="/admin/demo/demo.css" rel="stylesheet" />
+    <style>
+        .user-table {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .user-table th,
+        .user-table td {
+            text-align: center;
+            padding: 12px;
+            background-color: #f8f9fa;
+        }
+
+        .user-table th {
+            background-color: #f8f9fa;
+        }
+
+        .action-buttons button {
+            margin: 0 5px;
+        }
+
+        .mng-btn {
+            width: 80px;
+        }
+    </style>
+</head>
+
+<body class="">
+    <div class="wrapper">
+        <div class="sidebar" data-color="white" data-active-color="danger">
+            <div class="logo">
+                <a href="https://www.creative-tim.com" class="simple-text logo-mini">
+                    <div class="logo-image-small">
+                        <img src="images/fav.png">
+                    </div>
+                </a>
+                <a href="https://www.creative-tim.com" class="simple-text logo-normal">Pepper Castle</a>
+            </div>
+            <div class="sidebar-wrapper">
+                <ul class="nav">
+                    <li>
+                        <a href="/dashboard">
+                            <i class="nc-icon nc-bank"></i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/orderManagement">
+                            <i class="nc-icon nc-bag-16"></i>
+                            <p>Order Management</p>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="/userManagement">
+                            <i class="nc-icon nc-single-02"></i>
+                            <p>User Management</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/categoryManagement">
+                            <i class="nc-icon nc-minimal-down"></i>
+                            <p>Category Management</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/itemManagement">
+                            <i class="nc-icon nc-tile-56"></i>
+                            <p>Item Management</p>
+                        </a>
+                    </li>
+
+                    <li class="active-pro">
+                        <a href="./logout">
+                            <i class="nc-icon nc-simple-remove"></i>
+                            <p>Logout</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="main-panel">
+            <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
+                <div class="container-fluid">
+                    <div class="navbar-wrapper">
+                        <div class="navbar-toggle">
+                            <button type="button" class="navbar-toggler">
+                                <span class="navbar-toggler-bar bar1"></span>
+                                <span class="navbar-toggler-bar bar2"></span>
+                                <span class="navbar-toggler-bar bar3"></span>
+                            </button>
+                        </div>
+                        <a class="navbar-brand" href="javascript:;">User Management</a>
+                    </div>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
+                        aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-bar navbar-kebab"></span>
+                        <span class="navbar-toggler-bar navbar-kebab"></span>
+                        <span class="navbar-toggler-bar navbar-kebab"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
+                        <form>
+                            <div class="input-group no-border">
+                                <input type="text" value="" name="search" class="form-control" placeholder="Search..."
+                                    id="search-input">
+                                <!-- <input type="text" name="search" placeholder="Search users..." id="search-input" /> -->
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <i class="nc-icon nc-zoom-split"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </nav>
+            <div class="content">
+                <div class="breadcrumb">
+                    <a href="/userManagement" class="breadcrumb-link">User Management</a>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <a href="/addUser"><button class="btn btn-primary">Add User</button></a>
+                    <a href="/deactivateUser"><button class="btn btn-primary">Deactivate User</button></a>
+                </div>
+
+                <table class="table user-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% users.forEach(user=> { %>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <%= user.username %>
+                                </td>
+                                <td>
+                                    <%= user.email %>
+                                </td>
+                                <td>
+                                    <%= user.phone %>
+                                </td>
+                                <td class="action-buttons">
+                                    <% if(user.isBlocked===false){ %>
+                                        <button class="btn btn-danger btn-sm mng-btn action-btn"
+                                            data-id="<%= user._id %>" data-action="block">Block</button>
+                                        <% } else { %>
+                                            <button class="btn btn-success btn-sm mng-btn action-btn"
+                                                data-id="<%= user._id %>" data-action="unblock">Unblock</button>
+                                            <% } %>
+                                </td>
+                            </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
+            </div>
+            <script src="/admin/js/core/jquery.min.js"></script>
+            <script src="/admin/js/core/popper.min.js"></script>
+            <script src="/admin/js/core/bootstrap.min.js"></script>
+            <script src="/admin/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+            <script src="/admin/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script>
+            <script src="/admin/demo/demo.js"></script>
+        </div>
+    </div>
+
+    <script>
+        // $(document).ready(function () {
+        //     function debounce(func, delay) {
+        //         let timeout;
+        //         return function (...args) {
+        //             clearTimeout(timeout);
+        //             timeout = setTimeout(() => func.apply(this, args), delay);
+        //         };
+        //     }
+
+        //     // Fetch users initially or based on search
+        //     $('#search-input').on('keyup', debounce(function () {
+        //         const query = $(this).val();
+
+        //         if (query.length > 0) {
+        //             $.ajax({
+        //                 url: '/admin/searchUsers',
+        //                 method: 'GET',
+        //                 data: { query: query },
+        //                 success: function (data) {
+        //                     renderUsers(data);
+        //                 },
+        //                 error: function (err) {
+        //                     console.error("Error fetching users: ", err);
+        //                 }
+        //             });
+        //         } else {
+        //             $.ajax({
+        //                 url: '/admin/userManagementShow',
+        //                 method: 'GET',
+        //                 success: function (data) {
+        //                     renderUsers(data);
+        //                 },
+        //                 error: function (err) {
+        //                     console.error("Error fetching users: ", err);
+        //                 }
+        //             });
+        //         }
+        //     }, 300));
+
+        //     // Function to render users with block/unblock buttons
+        //     function renderUsers(data) {
+        //         $('.user-table tbody').empty();
+
+        //         data.forEach((user, index) => {
+        //             const buttonHtml = user.isBlocked === false
+        //                 ? `<button class="btn btn-danger btn-sm mng-btn action-btn" data-id="${user._id}" data-action="block">Block</button>`
+        //                 : `<button class="btn btn-success btn-sm mng-btn action-btn" data-id="${user._id}" data-action="unblock">Unblock</button>`;
+
+        //             $('.user-table tbody').append(`
+        //             <tr>
+        //                 <td>${index + 1}</td> <!-- Serial number -->
+        //                 <td>${user.username}</td>
+        //                 <td>${user.email}</td>
+        //                 <td>${user.phone}</td>
+        //                 <td class="action-buttons">
+        //                     ${buttonHtml} <!-- Dynamic button -->
+        //                 </td>
+        //             </tr>
+        //         `);
+        //         });
+
+        //         // Attach event listeners to the dynamically generated buttons
+        //         $('.action-btn').on('click', function () {
+        //             const userId = $(this).data('id');
+        //             const action = $(this).data('action');
+
+        //             // Call the updateUserStatus API
+        //             $.ajax({
+        //                 url: '/admin/updateUserStatus',
+        //                 method: 'POST',
+        //                 data: { userId: userId, action: action },
+        //                 success: function (response) {
+        //                     alert(response.message);
+        //                     $('#search-input').trigger('keyup'); // Re-trigger the search or reload users
+        //                 },
+        //                 error: function (err) {
+        //                     console.error('Error updating user status:', err);
+        //                 }
+        //             });
+        //         });
+        //     }
+        // });
+
+
+        $(document).ready(function () {
+            // Function to render users with block/unblock buttons
+            function renderUsers(data) {
+                $('.user-table tbody').empty();
+
+                data.forEach((user, index) => {
+                    const buttonHtml = user.isBlocked === false
+                        ? `<button class="btn btn-danger btn-sm mng-btn action-btn" data-id="${user._id}" data-action="block">Block</button>`
+                        : `<button class="btn btn-success btn-sm mng-btn action-btn" data-id="${user._id}" data-action="unblock">Unblock</button>`;
+
+                    $('.user-table tbody').append(`
+                <tr>
+                    <td>${index + 1}</td> <!-- Serial number -->
+                    <td>${user.username}</td>
+                    <td>${user.email}</td>
+                    <td>${user.phone}</td>
+                    <td class="action-buttons">
+                        ${buttonHtml} <!-- Dynamic button -->
+                    </td>
+                </tr>
+            `);
+                });
+
+                // Attach event listeners to the dynamically generated buttons
+                attachActionListeners();
+            }
+
+            // Function to attach event listeners to the block/unblock buttons
+            function attachActionListeners() {
+                $('.action-btn').on('click', function () {
+                    const userId = $(this).data('id');
+                    const action = $(this).data('action');
+
+                    // Call the updateUserStatus API
+                    $.ajax({
+                        url: '/admin/updateUserStatus',
+                        method: 'POST',
+                        data: { userId: userId, action: action },
+                        success: function (response) {
+                            // alert(response.message);
+                            $('#search-input').trigger('keyup'); // Re-trigger the search or reload users
+                        },
+                        error: function (err) {
+                            console.error('Error updating user status:', err);
+                        }
+                    });
+                });
+            }
+
+            function debounce(func, delay) {
+                let timeout;
+                return function (...args) {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => func.apply(this, args), delay);
+                };
+            }
+
+            // Fetch users initially or based on search
+            $('#search-input').on('keyup', debounce(function () {
+                const query = $(this).val();
+
+                if (query.length > 0) {
+                    $.ajax({
+                        url: '/admin/searchUsers',
+                        method: 'GET',
+                        data: { query: query },
+                        success: function (data) {
+                            renderUsers(data);
+                        },
+                        error: function (err) {
+                            console.error("Error fetching users: ", err);
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        url: '/admin/userManagementShow',
+                        method: 'GET',
+                        success: function (data) {
+                            renderUsers(data);
+                        },
+                        error: function (err) {
+                            console.error("Error fetching users: ", err);
+                        }
+                    });
+                }
+            }, 300));
+
+            // Initial load of users
+            $.ajax({
+                url: '/admin/userManagementShow',
+                method: 'GET',
+                success: function (data) {
+                    renderUsers(data);
+                },
+                error: function (err) {
+                    console.error("Error fetching initial users: ", err);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

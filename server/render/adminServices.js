@@ -32,6 +32,27 @@ exports.dashboard = (req, res) => {
     })
 }
 
+// exports.userManagement = (req, res) => {
+//     // const { validEmail, wrongPassword, isUserAuthenticated } = req.session
+//     res.render("admin/userManagement", (err, html) => {
+//         if (err) {
+//             console.log(err);
+//         }
+//         res.send(html)
+//     })
+// }
+
+exports.userManagement=(req,res)=>{
+    axios.get(`http://localhost:${process.env.PORT}/admin/userManagementShow`)
+    .then(function (response){
+        res.render("admin/userManagement",{users: response.data});
+    })
+    .catch(err => {
+        res.send(err);
+    });
+}
+
+
 exports.categoryManagement=(req,res)=>{
     axios.get(`http://localhost:${process.env.PORT}/admin/categoryShow`)
     .then(function (response){

@@ -28,6 +28,8 @@ route.get("/itemManagement",services.itemMangement)
 route.get("/unlistItem",services.unlistItem)
 route.get("/addItem",services.addItem)
 
+route.get("/userManagement",services.userManagement)
+
 
 
 // API
@@ -50,6 +52,9 @@ route.get("/admin/unlistItemShow",controller.unlistItemShow)
 route.get('/admin/unlistItem',controller.unlistItem);
 route.get('/admin/listItem',controller.listItem);
 
+route.get('/admin/userManagementShow',controller.userManagement);
+route.get('/admin/searchUsers',controller.searchUsers);
 
+route.post('/admin/updateUserStatus',controller.updateUserStatus);
 
 module.exports = route;

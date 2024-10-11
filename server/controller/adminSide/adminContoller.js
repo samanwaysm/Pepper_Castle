@@ -33,7 +33,46 @@ exports.Dashboard = async (req, res, next) => {
 };
 
 exports.userManagement = async (req, res) => {
+  try {
+    const users = await userDb.find();
+    console.log(users);
+    res.status(200).json(users);
+  } catch (error) {
+    console.error("Error fetching users: ", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
 
+exports.searchUsers = async (req, res) => {
+  const { query } = req.query;
+  try {
+    const users = await userDb.find({
+      $or: [
+        { username: { $regex: query, $options: 'i' } },
+        { email: { $regex: query, $options: 'i' } }
+      ]
+    });
+    res.status(200).json(users);
+  } catch (error) {
+    console.error("Error searching users: ", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+
+exports.updateUserStatus = async (req, res) => {
+  try {
+    const { userId, action } = req.body;
+    const isBlocked = action === 'block' ? true : false;
+    const updatedUser = await userDb.findByIdAndUpdate(userId, { isBlocked: isBlocked });
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json({ message: `User ${isBlocked ? 'blocked' : 'unblocked'} successfully` });
+  } catch (error) {
+    console.error('Error updating user status:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 };
 
 exports.userBlock = async (req, res) => {
@@ -46,29 +85,29 @@ exports.userunBlock = async (req, res) => {
 // cateogary managment
 
 exports.addCategory = async (req, res) => {
-    const categoryName = req.body.category;
-    const categoryExists = await Category.findOne({
-      category: { $regex: new RegExp(categoryName, "i") },
-    });
-    console.log('hii',req.body);
-    if (categoryExists) {
-      req.session.categoryerr = "Category already in use";
-      return res.redirect("/adminAddCategory");
-    }
+  const categoryName = req.body.category;
+  const categoryExists = await Category.findOne({
+    category: { $regex: new RegExp(categoryName, "i") },
+  });
+  console.log('hii', req.body);
+  if (categoryExists) {
+    req.session.categoryerr = "Category already in use";
+    return res.redirect("/adminAddCategory");
+  }
 
-    const category = new Category({
+  const category = new Category({
     category: categoryName,
-    });
-    category
-      .save(category)
-      .then((data) => {
-        res.redirect("/adminCategoryMange");
-      })
-      .catch((err) => {
-        res.status(400).send({
-          message: err.message || "some error occured while creating option ",
-        });
+  });
+  category
+    .save(category)
+    .then((data) => {
+      res.redirect("/adminCategoryMange");
+    })
+    .catch((err) => {
+      res.status(400).send({
+        message: err.message || "some error occured while creating option ",
       });
+    });
 };
 
 exports.CategoryManagementShow = async (req, res) => {
@@ -86,7 +125,7 @@ exports.UnlistCategoryShow = async (req, res) => {
 exports.unlistCategory = async (req, res) => {
   const id = req.query.id;
   console.log(id);
-  
+
   const categorydata = await Category.find({ _id: id });
   if (
     categorydata &&
@@ -124,7 +163,7 @@ exports.editCategory = async (req, res) => {
   const categoryName = req.body.category
   const editId = req.query.id;
   console.log(req.body, editId);
-  
+
   try {
     await Category.updateOne(
       { _id: editId },
@@ -151,41 +190,41 @@ exports.editCategoryShow = async (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({ message: err.message });
-  });
+    });
 };
 
 // item managment
 
 exports.addItem = (req, res) => {
-    if (!req.body) {
-        res.status(400).send({ message: "hi you entered any thing" });
-        return;
-      }
-      console.log(req);
-      
-      const file = req.files;
-      const images = file.map((values) => `/uploads/${values.filename}`);
-      console.log('dcs');
-      
-      // save in db
-      const item = new Item({
-        item: req.body.item,
-        category: req.body.category,
-        description: req.body.description,
-        price: req.body.price,
-        image: images,
+  if (!req.body) {
+    res.status(400).send({ message: "hi you entered any thing" });
+    return;
+  }
+  console.log(req);
+
+  const file = req.files;
+  const images = file.map((values) => `/uploads/${values.filename}`);
+  console.log('dcs');
+
+  // save in db
+  const item = new Item({
+    item: req.body.item,
+    category: req.body.category,
+    description: req.body.description,
+    price: req.body.price,
+    image: images,
+  });
+  item
+    .save(item)
+    .then((data) => {
+      // console.log("done")
+      res.redirect("/itemManagement");
+    })
+    .catch((err) => {
+      res.status(400).send({
+        message: err.message || "some error occured while creating option ",
       });
-      item
-        .save(item)
-        .then((data) => {
-          // console.log("done")
-          res.redirect("/itemManagement");
-        })
-        .catch((err) => {
-          res.status(400).send({
-            message: err.message || "some error occured while creating option ",
-          });
-        });
+    });
 };
 
 exports.edititem = async (req, res) => {
@@ -196,10 +235,10 @@ exports.edititemShow = async (req, res) => {
 };
 
 exports.itemManagementShow = async (req, res) => {
-    const itemList = await Item.find({
-        $and: [{ listed: true }, { isCategory: true }],
-      });
-      res.send(itemList);
+  const itemList = await Item.find({
+    $and: [{ listed: true }, { isCategory: true }],
+  });
+  res.send(itemList);
 };
 
 exports.unlistItemShow = async (req, res) => {

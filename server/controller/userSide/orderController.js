@@ -82,8 +82,6 @@ exports.createOrder = async (req, res) => {
             );
             return res.json({ success: true, paymentUrl: '/orderSuccess' });
       }
-        
-
     } catch (error) {
         console.error('Error fetching address data:', error);
         res.status(500).json({ message: 'Internal server error', error: error.message });
