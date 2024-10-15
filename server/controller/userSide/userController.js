@@ -418,3 +418,13 @@ exports.updatepassword = async (req, res) => {
   console.log(updateuser);
   res.redirect("/signin");
 };
+
+
+exports.signOut = async (req, res) => {
+  req.session.isUserAuth = false;
+  req.session.isUserAuthenticated = false;
+  delete req.session.email
+  delete req.session.phone
+  delete req.session.userId
+}
+

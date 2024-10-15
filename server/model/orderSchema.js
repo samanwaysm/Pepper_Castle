@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    orderId:{
+        type: String, 
+        required: true 
+    },
     items: [{
         item: {
             type: String,
@@ -14,7 +18,11 @@ const orderSchema = new mongoose.Schema({
         price: { 
             type: Number, 
             required: true 
-        }
+        },
+        image:[{
+            type:String,
+            required:true
+        }]
     }],
     address: {
         username: {
@@ -44,6 +52,14 @@ const orderSchema = new mongoose.Schema({
         structuredAddress: {
             type: String,
             required: true
+        },
+        latitude:{
+            type: String,
+            required: true
+        }, 
+        longitude:{
+            type: String,
+            required: true
         }
     },
     paymentMethod: { 
@@ -62,6 +78,10 @@ const orderSchema = new mongoose.Schema({
     stripeSessionId: {
         type: String, 
         default: null 
+    },
+    status: { 
+        type: String, 
+        default: null
     },
     createdAt: { 
         type: Date, 

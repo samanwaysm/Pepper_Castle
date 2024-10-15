@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { v4: uuidv4 } = require('uuid');
 
 const OrderDb = require("../../model/orderSchema");
 const cartDb = require("../../model/cartSchema");
@@ -10,23 +11,31 @@ exports.createOrder = async (req, res) => {
     const { orderItems, paymentMethod, addressId, userId } = req.body; 
     console.log('Request Body:', req.body);
     try {
+        const orderId =await generateOrderId();
+        console.log(orderId);
+        
         const addressData = await getAddress(userId, addressId)
         const address = addressData[0].address
+        const {latitude, longitude} = req.session
+        
         const cartItems = await getCartItems(userId)
+        // console.log(cartItems);
+        // return res.send(cartItems)
 
         // console.log('Address :',address);
         // console.log('Cart :',cartItems);
         let totalAmount = 0;
         const items = cartItems.map(item => {
             const { itemDetails, cartItems } = item;
-            const { price, item: itemName } = itemDetails;
+            const { price, item: itemName, image } = itemDetails;
             const { quantity } = cartItems;
             totalAmount += price * quantity;
 
             return {
                 item: itemName,
                 quantity,
-                price
+                price,
+                image
             };
         });
         // console.log(items,totalAmount);
@@ -35,6 +44,7 @@ exports.createOrder = async (req, res) => {
         
         const newOrder = new OrderDb({
             user: userId,
+            orderId,
             items,
             paymentMethod,
             address: {
@@ -44,7 +54,9 @@ exports.createOrder = async (req, res) => {
                 block,
                 unitnum,
                 postal,
-                structuredAddress
+                structuredAddress,
+                latitude,
+                longitude
             },
             totalAmount,
             paymentStatus: 'pending' 
@@ -76,6 +88,8 @@ exports.createOrder = async (req, res) => {
             await savedOrder.save();
             return res.json({ success: true, paymentUrl: session.url, sessionId: session.id });
         } else {
+            savedOrder.status = 'Ordered';
+            await savedOrder.save();
             await cartDb.updateOne(
                 { userId }, 
                 { $set: { cartItems: [] } }
@@ -89,7 +103,28 @@ exports.createOrder = async (req, res) => {
 };
 
 
+// const generateOrderId = () => {
+//     const timestamp = Date.now().toString();
+//     return `ORD-${timestamp}-${uuidv4()}`;
+// };
 
+// const generateOrderId = () => {
+//     const timestamp = Date.now().toString();
+//     const randomNum = Math.floor(Math.random() * 10000);
+//     return `ORD-${timestamp}${randomNum}`;
+// };
+
+const generateOrderId = async () => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; 
+    let orderId;
+    let isUnique = false;
+    while (!isUnique) {
+        orderId = Array.from({ length: 8 + Math.floor(Math.random() * 2) }, () => characters.charAt(Math.floor(Math.random() * characters.length))).join('');
+        const existingOrder = await OrderDb.findOne({ orderId });
+        isUnique = !existingOrder; 
+    }
+    return `${orderId}`;
+};
 
 const getAddress = async (userId, addressId) => {
     return await addressDb.aggregate([
@@ -260,6 +295,7 @@ exports.handlePaymentSuccess = async (req, res) => {
         // console.log('Payment Intent Details:', paymentIntent);
   
       order.paymentStatus = 'success';
+      order.status = 'Ordered';
       await order.save();
       
       

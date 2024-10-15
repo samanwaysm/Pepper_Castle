@@ -173,3 +173,47 @@ exports.unlistItem=(req,res)=>{
         res.send(err);
     });
 }
+
+// exports.orderManagement=(req,res)=>{
+//     res.render("admin/orderManagement",(err,html)=>{
+//         if(err){
+//             console.log('render err',err);
+//             return res.send('Internal server  err');
+//         }
+//         res.send(html);
+//     });
+// }
+
+exports.orderManagement=(req,res)=>{
+    axios.get(`http://localhost:${process.env.PORT}/admin/getAllOrders`)
+    .then(function (response){
+        res.render("admin/orderManagement",{orders: response.data.orders});
+    })
+    .catch(err => {
+        res.render('error', { error: err });
+        res.send(err);
+    });
+}
+
+
+
+exports.orderDetail=(req,res)=>{
+    const { orderId } = req.query
+    axios.get(`http://localhost:${process.env.PORT}/admin/getOrderDetails?orderId=${orderId}`)
+    .then(function (response){
+        res.render("admin/orderDetail",{order: response.data.order});
+    })
+    .catch(err => {
+        res.render('error', { error: err });
+        res.send(err);
+    });
+}
+// exports.orderDetail=(req,res)=>{
+//     res.render("admin/orderDetail",(err,html)=>{
+//         if(err){
+//             console.log('render err',err);
+//             return res.send('Internal server  err');
+//         }
+//         res.send(html);
+//     });
+// }

@@ -20,7 +20,6 @@ const PORT = process.env.PORT || 8080;
 
 const cacheTime = 60;
 app.use((req, res, next) => {
-    // res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); 
     res.setHeader("Cache-Control", `public,no-store, must-revalidate, max-age=${cacheTime}`);
     res.setHeader("Pragma", "no-cache");  
     next()

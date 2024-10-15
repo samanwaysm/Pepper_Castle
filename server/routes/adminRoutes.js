@@ -30,6 +30,8 @@ route.get("/addItem",services.addItem)
 
 route.get("/userManagement",services.userManagement)
 
+route.get("/orderManagement",services.orderManagement)
+route.get("/orderDetail",services.orderDetail)
 
 
 // API
@@ -56,5 +58,11 @@ route.get('/admin/userManagementShow',controller.userManagement);
 route.get('/admin/searchUsers',controller.searchUsers);
 
 route.post('/admin/updateUserStatus',controller.updateUserStatus);
+
+route.get('/admin/getAllOrders',controller.getAllOrders);
+route.get('/admin/getOrderDetails',controller.getOrderDetails);
+
+route.post('/admin/getLocationDetails',controller.getLocationDetails);
+
 
 module.exports = route;

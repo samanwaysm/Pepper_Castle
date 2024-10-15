@@ -26,123 +26,81 @@
     <link rel="icon" href="/images/fav.png" sizes="32x32" />
     <link rel="icon" href="/images/icons/favicon-192x192.png" sizes="192x192" />
     <link rel="apple-touch-icon-precomposed" href="/images/icons/favicon-180x180.png" />
-
     <style>
-        /* Breadcrumb */
-        .breadcrumb {
-            margin: 20px;
-            font-size: 16px;
-        }
 
-        .breadcrumb a {
-            text-decoration: none;
-            color: #ff6600;
-        }
-
-        .breadcrumb span {
-            color: #555;
-        }
-
-        /* Profile Container */
         .profile-container {
             display: flex;
-            flex-wrap: wrap;
-            max-width: 95%;
-            margin: 40px auto;
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            padding: 20px;
+            margin: 20px auto;
+            width: 95%;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        /* Sidebar */
         .profile-sidebar {
-            width: 100%;
-            max-width: 400px;
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
+            width: 25%;
+            background-color: #ff7043;
+            padding: 20px;
             text-align: center;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
         }
 
-        .profile-sidebar .profile-image {
-            /* width: 120px; */
-            height: 120px;
+        .profile-sidebar img {
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .profile-sidebar h2 {
-            font-size: 22px;
-            color: #333;
+            color: white;
+            font-size: 24px;
             margin-bottom: 20px;
         }
 
         .profile-menu {
             list-style: none;
             padding: 0;
-            margin: 0;
         }
 
         .profile-menu li {
-            margin-bottom: 15px;
+            margin: 15px 0;
         }
 
         .profile-menu a {
+            color: white;
             text-decoration: none;
             font-size: 18px;
-            color: #555;
-            display: block;
-            padding: 10px;
-            border-radius: 5px;
         }
 
-        .profile-menu a:hover,
-        .profile-menu .active {
-            background-color: #ff6600;
-            color: white;
+        .profile-menu a:hover {
+            text-decoration: underline;
         }
 
-        /* Profile Details Section */
         .profile-details {
-            
-            flex-grow: 2;
-            padding: 20px;
-            width: 100%;
+            width: 75%;
+            padding: 40px;
         }
 
         .profile-details h2 {
-            font-size: 26px;
-            color: #333;
+            font-size: 28px;
             margin-bottom: 30px;
-            font-weight: 500;
+            color: #333;
         }
 
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            /* Two equal columns */
-            gap: 20px;
-            /* Space between grid items */
-            /* max-width: 600px; */
-            margin: 0 auto;
-        }
-
-        /* Form Group Styles */
         .form-group {
-            display: flex;
-            flex-direction: column;
+            margin-bottom: 20px;
         }
 
         .form-group label {
-            margin-bottom: 5px;
-            font-weight: bold;
+            display: block;
+            font-size: 18px;
+            margin-bottom: 10px;
         }
 
         .form-group input {
+            width: 100%;
             padding: 10px;
             font-size: 16px;
             border: 1px solid #ccc;
@@ -151,120 +109,23 @@
 
         .form-group .error {
             color: red;
-            font-size: 12px;
-            margin-top: 5px;
-        }
-
-        /* Button Styles */
-        .save-btn {
-            background-color: #ff6600;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-top: 20px;
-            width: 30%;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .form-grid {
-                grid-template-columns: 1fr;
-                /* Stack in one column for smaller screens */
-            }
-        }
-
-        .error {
-            color: red;
             font-size: 14px;
-            margin-top: 8px;
         }
 
-        /* Button Styles */
         .save-btn {
-            background-color: #ff6600;
+            background-color: #ff7043;
             color: white;
+            padding: 10px 20px;
             border: none;
-            padding: 12px 20px;
-            font-size: 16px;
             border-radius: 5px;
+            font-size: 18px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
         }
 
         .save-btn:hover {
-            background-color: #ff6600;
-        }
-
-        @media (max-width: 1024px) {
-            .profile-container {
-                flex-direction: column;
-            }
-
-            .profile-details {
-                padding: 20px;
-                width: 100%;
-            }
-
-            .profile-sidebar {
-                max-width: 100%;
-                margin-bottom: 20px;
-            }
-
-            .breadcrumb {
-                font-size: 14px;
-                margin: 10px;
-            }
-        }
-
-        @media (min-width: 768px) {
-            .profile-container {
-                flex-wrap: nowrap;
-            }
-
-            .profile-sidebar {
-                max-width: 300px;
-            }
-
-            .profile-details {
-                padding: 40px 60px;
-            }
-        }
-
-        @media (max-width: 767px) {
-            .profile-sidebar {
-                width: 100%;
-                margin-bottom: 20px;
-            }
-
-            .profile-details {
-                padding: 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .breadcrumb {
-                font-size: 14px;
-                margin: 10px;
-            }
-
-            .profile-sidebar {
-                padding: 20px;
-            }
-
-            .profile-details h2 {
-                font-size: 22px;
-            }
-
-            .save-btn {
-                padding: 10px 15px;
-            }
+            background-color: #e65100;
         }
     </style>
-
 </head>
 
 <body class="home">
@@ -387,50 +248,46 @@
         <!-- /social-btn-top1 -->
     </header>
     <!-- WRAP CONTENT -->
-    <div class="breadcrumb">
-        <a href="/">Home</a> &gt; <span>My Account</span>
-    </div>
-
-    <div class="profile-container">
-        <div class="profile-sidebar">
-            <!-- <img src="path_to_profile_image" alt="Profile" class="profile-image" /> -->
-            <h2 class="profile-name">Sam</h2>
-            <ul class="profile-menu">
-                <li><a href="/profile" class="active">My Account</a></li>
-                <li><a href="#">Manage Address</a></li>
-                <li><a href="#">Order History</a></li>
-                <li><a href="#">Change Password</a></li>
-                <li><a href="#">Logout</a></li>
-            </ul>
-        </div>
-        <div class="profile-details">
-            <h2>My Account</h2>
-            <form>
-                <div class="form-grid">
+    <div class="container-wrapper">
+        <div class="profile-container">
+            <div class="profile-sidebar">
+                <img src="path_to_profile_image" alt="Profile" class="profile-image" />
+                <h2 class="profile-name">Sam</h2>
+                <ul class="profile-menu">
+                    <li><a href="#">My Account</a></li>
+                    <li><a href="#">Manage Address</a></li>
+                    <li><a href="#">Order History</a></li>
+                    <li><a href="#">Change Password</a></li>
+                    <li><a href="#">Logout</a></li>
+                </ul>
+            </div>
+            <div class="profile-details">
+                <h2>My Account</h2>
+                <form>
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" id="name" value="" />
+                        <input type="text" id="name" value="Sam" />
                     </div>
                     <div class="form-group">
                         <label for="phone">Phone</label>
-                        <input type="text" id="phone" value="" />
-                        <!-- <span class="error"></span> -->
+                        <input type="text" id="phone" value="99615764" />
+                        <span class="error">Phone number should be 8 digits.</span>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" id="email" />
+                        <input type="email" id="email" value="samanwaysm@gmail.com" />
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" id="password"/>
+                        <input type="password" id="password"
+                            placeholder="Please leave empty if you do not want to change your password" />
                     </div>
-                </div>
-                <button class="save-btn">Save</button>
-            </form>
-
+                    <button class="save-btn">Save</button>
+                </form>
+            </div>
         </div>
-    </div>
 
+    </div>
     <!-- /WRAP CONTENT -->
     <!-- FOOTER -->
     <footer>

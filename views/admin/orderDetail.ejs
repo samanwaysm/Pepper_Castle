@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="apple-touch-icon" sizes="76x76" href="/admin/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="images/fav.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Pepper Castle Admin - Order Details</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <!-- Fonts and icons -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <!-- CSS Files -->
+    <link href="/admin/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/admin/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
+    <style>
+        body {
+            background-color: #f4f7fa; /* Light background color for the body */
+        }
+
+        .order-details-container {
+            margin-top: 30px;
+            padding: 25px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between; /* Space between item ID and time */
+            margin-bottom: 20px;
+        }
+
+        .order-header div {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .order-status {
+            margin-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 10px;
+        }
+
+        .item-details {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column; /* Stack item details vertically */
+        }
+
+        .item {
+            margin-bottom: 10px;
+            display: flex; /* Flexbox for item layout */
+            align-items: center; /* Center items vertically */
+            padding: 5px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .item img {
+            width: 50px; /* Width of the item image */
+            height: 50px; /* Height of the item image */
+            margin-right: 15px; /* Space between image and text */
+            border-radius: 5px; /* Rounded corners for images */
+        }
+
+        .address-details {
+            margin-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 10px;
+        }
+
+        .user-info {
+            margin-top: 20px;
+            border: 1px solid #e0e0e0;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9; /* Slightly different background for user info */
+        }
+
+        .status-container {
+            margin-top: 15px;
+            display: flex; /* Flexbox for horizontal layout */
+            justify-content: space-between; /* Space between select and button */
+            align-items: center;
+        }
+
+        .status-container select {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            width: 70%; /* Width for the dropdown */
+        }
+
+        .update-button {
+            padding: 8px 15px;
+            background-color: #007bff; /* Primary button color */
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .update-button:hover {
+            background-color: #0056b3; /* Darker shade on hover */
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="sidebar" data-color="white" data-active-color="danger">
+            <div class="logo">
+                <a href="https://www.creative-tim.com" class="simple-text logo-mini">
+                    <div class="logo-image-small">
+                        <img src="images/fav.png">
+                    </div>
+                </a>
+                <a href="https://www.creative-tim.com" class="simple-text logo-normal">Pepper Castle</a>
+            </div>
+            <div class="sidebar-wrapper">
+                <ul class="nav">
+                    <li>
+                        <a href="/dashboard">
+                            <i class="nc-icon nc-bank"></i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="/orderManagement">
+                            <i class="nc-icon nc-bag-16"></i>
+                            <p>Order Management</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/userManagement">
+                            <i class="nc-icon nc-single-02"></i>
+                            <p>User Management</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/categoryManagement">
+                            <i class="nc-icon nc-minimal-down"></i>
+                            <p>Category Management</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/itemManagement">
+                            <i class="nc-icon nc-tile-56"></i>
+                            <p>Item Management</p>
+                        </a>
+                    </li>
+
+                    <li class="active-pro">
+                        <a href="./upgrade.html">
+                            <i class="nc-icon nc-simple-remove"></i>
+                            <p>Logout</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="main-panel">
+            <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
+                <div class="container-fluid">
+                    <div class="navbar-wrapper">
+                        <div class="navbar-toggle">
+                            <button type="button" class="navbar-toggler">
+                                <span class="navbar-toggler-bar bar1"></span>
+                                <span class="navbar-toggler-bar bar2"></span>
+                                <span class="navbar-toggler-bar bar3"></span>
+                            </button>
+                        </div>
+                        <a class="navbar-brand" href="javascript:;">Order Details</a>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="content">
+                <div class="container-fluid order-details-container">
+                    <div class="order-header">
+                        <div>Order ID: <%= order.orderId %></div>
+                        <div>Order Time: <%= order.createdAt.time %></div> 
+                    </div>
+                    
+                    <div class="order-date">
+                        <strong>Order Date:</strong> <%= order.createdAt.date %> <!-- Display order date -->
+                    </div>
+
+                    <div class="total-amount">
+                        <strong>Total Amount:</strong> $<%= order.totalAmount.toFixed(2) %> <!-- Display total amount -->
+                    </div>
+
+                    <div class="item-details">
+                        <h5>Items:</h5>
+                        <% order.items.forEach(item => { %>
+                            <div class="item">
+                                <img src="<%= item.image %>" alt="<%= item.item %>"> <!-- Display item image -->
+                                <div>
+                                    <div><strong>Item Name:</strong> <%= item.item %></div> <!-- Item name -->
+                                    <div><strong>Quantity:</strong> <%= item.quantity %></div> <!-- Item quantity -->
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+
+                    <div class="address-details">
+                        <h5>Shipping Address:</h5>
+                        <p><%= order.address.structuredAddress %></p>
+                    </div>
+
+                    <div class="order-status">
+                        <div>Status: <%= order.status %></div>
+                        <div class="status-container">
+                            <% if (order.status === 'Delivered') { %>
+                                <button class="btn btn-success" disabled>Delivered</button>
+                            <% } else if (order.status === 'Cancelled') { %>
+                                <button class="btn btn-danger" disabled>Cancelled</button>
+                            <% } else { %>
+                                <select>
+                                    <option value="Ordered" <%= order.status === 'Ordered' ? 'selected' : '' %>>Ordered</option>
+                                    <option value="Processing" <%= order.status === 'Processing' ? 'selected' : '' %>>Processing</option>
+                                    <option value="Shipped" <%= order.status === 'Shipped' ? 'selected' : '' %>>Shipped</option>
+                                    <option value="Delivered" <%= order.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+                                    <option value="Cancelled" <%= order.status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
+                                </select>
+                            <% } %>                            
+                            <button class="update-button">Update</button>
+                            <!-- <button class="update-button">Print</button> -->
+                        </div>
+                    </div>
+
+                    <div class="user-info">
+                        <h5>User Information</h5>
+                        <p>Username: <%= order.username %></p>
+                        <p>Email: <%= order.email %></p>
+                        <p>Phone: <%= order.phone %></p>
+                    </div>
+                </div>
+            </div>
+
+            <script src="/admin/js/core/jquery.min.js"></script>
+            <script src="/admin/js/core/popper.min.js"></script>
+            <script src="/admin/js/core/bootstrap.min.js"></script>
+            <script src="/admin/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script>
+        </div>
+    </div>
+</body>
+
+</html>

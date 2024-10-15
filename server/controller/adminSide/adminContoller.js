@@ -1,6 +1,10 @@
+const geolib = require('geolib');
+const axios = require('axios')
+
 var userDb = require("../../model/userSchema");
 var Category = require("../../model/categorySchema");
 var Item = require("../../model/itemSchema");
+const Order = require("../../model/orderSchema");
 
 
 exports.adminLogin = async (req, res) => {
@@ -270,3 +274,180 @@ exports.listItem = async (req, res) => {
   }
 };
 
+exports.getAllOrders = async (req, res) => {
+  try {
+    // const orders = await Order.find()
+    //     .populate('users', 'username')
+    //     .select('items totalAmount paymentStatus address.username')
+    // const orders = await Order.find();
+    const orders = await Order.aggregate([
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'user',
+          foreignField: '_id',
+          as: 'userDetails'
+        }
+      },
+      {
+        $unwind: '$userDetails'
+      },
+      {
+        $project: {
+          _id: 1,
+          orderId: 1,
+          username: '$userDetails.username',
+          items: 1,
+          totalAmount: 1,
+          paymentStatus: 1,
+          status: 1
+        }
+      }
+    ]);
+    res.status(200).json({
+      success: true,
+      orders: orders.map(order => ({
+        orderId: order.orderId,
+        username: order.username,
+        items: order.items.map(item => ({
+          itemName: item.item,
+          quantity: item.quantity
+        })),
+        paymentStatus: order.paymentStatus,
+        totalAmount: order.totalAmount,
+        status: order.status
+      }))
+    });
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch orders"
+    });
+  }
+};
+
+exports.getOrderDetails = async (req, res) => {
+  const { orderId } = req.query;
+  try {
+    const orderDetails = await Order.aggregate([
+      {
+        $match: { orderId: orderId }
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "user",
+          foreignField: "_id",
+          as: "userDetails"
+        }
+      },
+      {
+        $unwind: {
+          path: "$userDetails",
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          orderId: 1,
+          items: 1,
+          address: 1,
+          totalAmount: 1,
+          paymentStatus: 1,
+          status: 1,
+          createdAt: 1,
+          username: "$userDetails.username",
+          email: "$userDetails.email",
+          phone: "$userDetails.phone"
+        }
+      }
+    ]);
+
+    // console.log('order-detail',orderDetails);
+
+
+    if (orderDetails.length === 0) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    const singaporeTimeZone = 'Asia/Singapore';
+    const createdAt = new Date(orderDetails[0].createdAt);
+    const formattedDate = new Intl.DateTimeFormat('en-SG', {
+      timeZone: singaporeTimeZone,
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    }).format(createdAt);
+
+    const formattedTime = new Intl.DateTimeFormat('en-SG', {
+      timeZone: singaporeTimeZone,
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: true
+    }).format(createdAt);
+
+    const formattedOrder = {
+      ...orderDetails[0],
+      createdAt: {
+        date: formattedDate,
+        time: formattedTime
+      }
+    };
+
+    return res.json({ success: true, order: formattedOrder });
+  } catch (error) {
+    console.error('Error fetching order details:', error);
+    return res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+};
+
+
+exports.getLocationDetails = async (req, res) => {
+  const {latitude, longitude} = req.body
+  console.log(latitude, longitude);
+  
+  req.session.latitude = latitude;
+  req.session.longitude = longitude;
+  const deliveryLocation = { latitude: 11.873567564458085, longitude: 75.38882081116785 };
+  const userLocation = { latitude: req.session.latitude , longitude: req.session.longitude };
+  // const userLocation = { latitude: 11.873969209326026, longitude: 75.37894297831816 };
+  const distanceInMeters = geolib.getDistance(deliveryLocation, userLocation);
+  const distanceInKilometers = distanceInMeters / 1000;
+
+  const deliveryRadius = 10;
+  console.log(distanceInKilometers);
+
+
+  if (distanceInKilometers <= deliveryRadius) {
+      console.log('Delivery is available in this area.');
+  } else {
+      console.log('Sorry, we do not deliver to this area.');
+  }
+
+  // const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${11.805032337467159},${75.54574386975459}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
+
+  //   const response = await axios.get(url);
+  //   const results = response.data.results;
+  //   console.log('-->url-->',response);
+  //   return results
+    
+
+  //   if (results.length > 0) {
+  //     const addressComponents = results[0].address_components;
+  //     const postalCode = addressComponents.find(component => component.types.includes('postal_code'));
+
+  //     if (postalCode) {
+  //       return res.status(200).json({
+  //         message: 'Pincode found',
+  //         pincode: postalCode.long_name
+  //       });
+  //     } else {
+  //       return res.status(404).json({ message: 'Pincode not found' });
+  //     }
+  //   } else {
+  //     return res.status(404).json({ message: 'No results found' });
+  //   }
+}

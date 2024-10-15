@@ -191,3 +191,63 @@ exports.resetPassword = (req, res, next) => {
         res.send(html)
     })
 }
+
+exports.profile = (req, res, next) => {
+    const { isUserAuthenticated, isUserAuth, userId } = req.session
+    res.render("user/change",{isUserAuth,userId}, (err, html) => {
+        if (err) {
+            console.log(err);
+        }
+        res.send(html)
+    })
+}
+
+exports.manageAddress = (req, res, next) => {
+    const { isUserAuthenticated, isUserAuth, userId } = req.session
+    res.render("user/manage-address",{isUserAuth,userId}, (err, html) => {
+        if (err) {
+            console.log(err);
+        }
+        res.send(html)
+    })
+}
+
+exports.orderHistory = (req, res, next) => {
+    const { isUserAuthenticated, isUserAuth, userId } = req.session
+    res.render("user/order-history",{isUserAuth,userId}, (err, html) => {
+        if (err) {
+            console.log(err);
+        }
+        res.send(html)
+    })
+}
+
+exports.changePassword = (req, res, next) => {
+    const { isUserAuthenticated, isUserAuth, userId } = req.session
+    res.render("user/change-password",{isUserAuth,userId}, (err, html) => {
+        if (err) {
+            console.log(err);
+        }
+        res.send(html)
+    })
+}
+
+exports.profile = (req, res, next) => {
+    const { isUserAuthenticated, isUserAuth, userId } = req.session
+    res.render("user/profile",{isUserAuth,userId}, (err, html) => {
+        if (err) {
+            console.log(err);
+        }
+        res.send(html)
+    })
+}
+
+exports.profile = (req, res, next) => {
+    const { isUserAuthenticated, isUserAuth, userId } = req.session
+    res.render("user/profile",{isUserAuth,userId}, (err, html) => {
+        if (err) {
+            console.log(err);
+        }
+        res.send(html)
+    })
+}

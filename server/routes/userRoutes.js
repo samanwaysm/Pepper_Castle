@@ -13,26 +13,29 @@ const cartController = require('../controller/userSide/cartController');
 const addressController = require('../controller/userSide/addressController');
 const orderController = require('../controller/userSide/orderController');
 
-
+route.get('/signin',isUserNotAuthenticated,services.signin)
+route.get('/signup',isUserNotAuthenticated,services.signUp)
+route.get('/forgot-password',isUserNotAuthenticated,services.forgotPassword)
+route.get('/otp-verification',isUserNotAuthenticated,services.otpVerification)
+route.get('/reset-password',isUserNotAuthenticated,services.resetPassword)
 route.get('/',services.homeRoutes)
-route.get('/signin',services.signin)
-route.get('/signup',services.signUp)
-route.get('/forgot-password',services.forgotPassword)
-route.get('/otp-verification',services.otpVerification)
-route.get('/reset-password',services.resetPassword)
 route.get('/about',services.about)
 route.get('/contact',services.contact)
 route.get('/our-menu',services.ourMenuList)
 route.get('/cart',isUserAuthenticated,services.cart)
 route.get('/checkout',isUserAuthenticated,services.checkout)
-route.get('/orderSuccess',services.orderSuccess)
+route.get('/orderSuccess',isUserAuthenticated,services.orderSuccess)
+route.get('/profile',services.profile)
+route.get('/manage-address',services.manageAddress)
+route.get('/order-history',services.orderHistory)
+route.get('/change-password',services.changePassword)
+
 
 // APIs
 
 route.post('/api/signup',controller.signUp)
 route.post('/api/signin',controller.signIn)   // Login 
-// route.post('/api/logout',controller.userLogout)   // Logout
-
+route.post('/api/logout',controller.signOut)   // Logout
 route.post('/api/generateotp',controller.forgotOtp)
 route.post('/api/otpverification',controller.forgototpverification)
 route.post('/api/generateotp',controller.forgotOtp)
@@ -40,7 +43,6 @@ route.post('/api/updatepassword',controller.updatepassword)
 
 route.post('/api/create-order',orderController.createOrder)
 route.get('/api/success',orderController.handlePaymentSuccess)
-// route.post('/create-checkout-session',orderController.redirectStrip)
 
 // route.get('/api/',categoryAndItemContoller.homeCategoryShow)
 route.get('/api/ourMenuList',categoryAndItemContoller.ourMenuList)
@@ -59,6 +61,5 @@ route.post('/api/updateDefaultAddress', addressController.updateDefaultAddress);
 route.delete('/api/deleteAddress',addressController.deleteAddress)
 route.get('/api/getAddress',addressController.getAddress)
 route.post('/api/updateAddress',addressController.updateAddress)
-// route.get('/api/session/:sessionId',orderController.getSessionAndPaymentIntent)
 
 module.exports = route;
