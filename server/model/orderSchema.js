@@ -87,6 +87,10 @@ const orderSchema = new mongoose.Schema({
         type: String, 
         default: null
     },
+    completed: { 
+        type: Boolean, 
+        default: false
+    },
     createdAt: { 
         type: Date, 
         default: Date.now 

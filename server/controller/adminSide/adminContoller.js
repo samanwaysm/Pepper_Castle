@@ -275,11 +275,36 @@ exports.listItem = async (req, res) => {
 
 exports.getAllOrders = async (req, res) => {
   try {
-    // const orders = await Order.find()
-    //     .populate('users', 'username')
-    //     .select('items totalAmount paymentStatus address.username')
-    // const orders = await Order.find();
+    // const orders = await Order.aggregate([
+    //   {
+    //     $lookup: {
+    //       from: 'users',
+    //       localField: 'user',
+    //       foreignField: '_id',
+    //       as: 'userDetails'
+    //     }
+    //   },
+    //   {
+    //     $unwind: '$userDetails'
+    //   },
+    //   {
+    //     $project: {
+    //       _id: 1,
+    //       orderId: 1,
+    //       username: '$userDetails.username',
+    //       items: 1,
+    //       totalAmount: 1,
+    //       paymentStatus: 1,
+    //       status: 1
+    //     }
+    //   }
+    // ]);
     const orders = await Order.aggregate([
+      {
+        $match: {
+          completed: true // Filter to only get orders where completed is true
+        }
+      },
       {
         $lookup: {
           from: 'users',
@@ -303,6 +328,9 @@ exports.getAllOrders = async (req, res) => {
         }
       }
     ]);
+
+    console.log(orders);
+    
     res.status(200).json({
       success: true,
       orders: orders.map(order => ({

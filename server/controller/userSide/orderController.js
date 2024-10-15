@@ -17,15 +17,9 @@ exports.createOrder = async (req, res) => {
         const addressData = await getAddress(userId, addressId)
         const address = addressData[0].address
         const {latitude, longitude, distanceInKilometers} = req.session
-        console.log(latitude, longitude, distanceInKilometers);
-        
         
         const cartItems = await getCartItems(userId)
-        // console.log(cartItems);
-        // return res.send(cartItems)
 
-        // console.log('Address :',address);
-        // console.log('Cart :',cartItems);
         let totalAmount = 0;
         const items = cartItems.map(item => {
             const { itemDetails, cartItems } = item;
@@ -92,6 +86,7 @@ exports.createOrder = async (req, res) => {
             return res.json({ success: true, paymentUrl: session.url, sessionId: session.id });
         } else {
             savedOrder.status = 'Ordered';
+            savedOrder.completed = true
             await savedOrder.save();
             await cartDb.updateOne(
                 { userId }, 
@@ -299,6 +294,7 @@ exports.handlePaymentSuccess = async (req, res) => {
   
       order.paymentStatus = 'success';
       order.status = 'Ordered';
+      order.completed = true
       await order.save();
       
       
