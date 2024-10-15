@@ -93,7 +93,7 @@
       </div>
       <!-- /nav-button-holder-->
       <!-- LOGO -->
-      <div class="logo logo-1"><a href="index.html"><img class="img-fluid" src="images/Pepper-Castle_White.png"
+      <div class="logo logo-1"><a href="/"><img class="img-fluid" src="images/Pepper-Castle_White.png"
                alt="Pepper Castle" /></a></div>
       <!-- MENU -->
       <nav class="nav-holder nav-holder-1">
@@ -212,7 +212,7 @@
                         experience that won't strain your wallet. Join us at pepper castle and discover the perfect
                         blend of affordability and authentic Indian flavours.
                      </p>
-                     <p><a class="view-more margin-t24" href="contact.html">Book a Table</a></p>
+                     <p><a class="view-more margin-t24" href="/contact">Book a Table</a></p>
                   </div>
                </div>
                <!-- /col-md-6 -->
@@ -441,7 +441,7 @@
                      </div>
                      <!-- <div class="col-md-2">
                            <div class="like-to-eat">
-                              <a href="our-menu.html">
+                              <a href="/our-menu">
                                  <div class="widgettitle"><img src="images/08.png"></div>
                                  <p>Vegetarian Mains</p>
                               </a>
@@ -494,8 +494,6 @@
    </div>
    <!-- /WRAP CONTENT -->
 
-   <p id="locationDisplay">Checking location...</p>
-
    <!-- FOOTER -->
    <footer>
       <div class="container">
@@ -540,11 +538,11 @@
                         <h5 class="widgettitle"><span>Quick Links</span></h5>
                         <div class="textwidget ftr-menu">
                            <ul>
-                              <li><a href="#">-Home</a></li>
-                              <li><a href="about.html">-About</a></li>
+                              <li><a href="/">-Home</a></li>
+                              <li><a href="/about">-About</a></li>
                               <li><a href="testimonials.html">-Testimonials</a></li>
-                              <li><a href="our-menu.html">-Our Menu</a></li>
-                              <li><a href="contact.html">-Contact</a></li>
+                              <li><a href="/our-menu">-Our Menu</a></li>
+                              <li><a href="/contact">-Contact</a></li>
                            </ul>
                         </div>
                      </div>
@@ -619,6 +617,9 @@
    <script src='js/contactform-home.js'></script>
    <script>
 
+      // Check location on page load
+      window.onload = getLocation;
+
       // Function to get user's location
       function getLocation() {
          if (navigator.geolocation) {
@@ -632,12 +633,12 @@
       function success(position) {
          const latitude = position.coords.latitude;
          const longitude = position.coords.longitude;
-         console.log(latitude,longitude);
-         
+         console.log(latitude, longitude);
+
          $.ajax({
-            url: '/admin/getLocationDetails',
+            url: '/api/getLocationDetails',
             method: 'POST',
-            data: { latitude,longitude },
+            data: { latitude, longitude },
             success: function (response) {
                console.log("", response);
             },
@@ -668,8 +669,7 @@
          }
       }
 
-      // Check location on page load
-      window.onload = getLocation;
+
 
 
 

@@ -1,4 +1,3 @@
-const geolib = require('geolib');
 const axios = require('axios')
 
 var userDb = require("../../model/userSchema");
@@ -405,27 +404,8 @@ exports.getOrderDetails = async (req, res) => {
 };
 
 
-exports.getLocationDetails = async (req, res) => {
-  const {latitude, longitude} = req.body
-  console.log(latitude, longitude);
-  
-  req.session.latitude = latitude;
-  req.session.longitude = longitude;
-  const deliveryLocation = { latitude: 11.873567564458085, longitude: 75.38882081116785 };
-  const userLocation = { latitude: req.session.latitude , longitude: req.session.longitude };
-  // const userLocation = { latitude: 11.873969209326026, longitude: 75.37894297831816 };
-  const distanceInMeters = geolib.getDistance(deliveryLocation, userLocation);
-  const distanceInKilometers = distanceInMeters / 1000;
-
-  const deliveryRadius = 10;
-  console.log(distanceInKilometers);
 
 
-  if (distanceInKilometers <= deliveryRadius) {
-      console.log('Delivery is available in this area.');
-  } else {
-      console.log('Sorry, we do not deliver to this area.');
-  }
 
   // const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${11.805032337467159},${75.54574386975459}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
 
@@ -450,4 +430,3 @@ exports.getLocationDetails = async (req, res) => {
   //   } else {
   //     return res.status(404).json({ message: 'No results found' });
   //   }
-}

@@ -62,7 +62,5 @@ route.post('/admin/updateUserStatus',controller.updateUserStatus);
 route.get('/admin/getAllOrders',controller.getAllOrders);
 route.get('/admin/getOrderDetails',controller.getOrderDetails);
 
-route.post('/admin/getLocationDetails',controller.getLocationDetails);
-
 
 module.exports = route;

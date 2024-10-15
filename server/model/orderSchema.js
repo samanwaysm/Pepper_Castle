@@ -60,6 +60,10 @@ const orderSchema = new mongoose.Schema({
         longitude:{
             type: String,
             required: true
+        },
+        distanceInKilometers:{
+            type: String,
+            required: true
         }
     },
     paymentMethod: { 

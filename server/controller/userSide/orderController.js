@@ -16,7 +16,9 @@ exports.createOrder = async (req, res) => {
         
         const addressData = await getAddress(userId, addressId)
         const address = addressData[0].address
-        const {latitude, longitude} = req.session
+        const {latitude, longitude, distanceInKilometers} = req.session
+        console.log(latitude, longitude, distanceInKilometers);
+        
         
         const cartItems = await getCartItems(userId)
         // console.log(cartItems);
@@ -56,7 +58,8 @@ exports.createOrder = async (req, res) => {
                 postal,
                 structuredAddress,
                 latitude,
-                longitude
+                longitude,
+                distanceInKilometers
             },
             totalAmount,
             paymentStatus: 'pending' 

@@ -62,4 +62,6 @@ route.delete('/api/deleteAddress',addressController.deleteAddress)
 route.get('/api/getAddress',addressController.getAddress)
 route.post('/api/updateAddress',addressController.updateAddress)
 
+route.post('/api/getLocationDetails',controller.getLocationDetails);
+
 module.exports = route;

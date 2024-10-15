@@ -96,7 +96,7 @@
         </div>
         <!-- /nav-button-holder-->
         <!-- LOGO -->
-        <div class="logo logo-1"><a href="index.html"><img class="img-fluid" src="/images/Pepper-Castle_White.png"
+        <div class="logo logo-1"><a href="/"><img class="img-fluid" src="/images/Pepper-Castle_White.png"
                     alt="Caverta" /></a></div>
         <!-- MENU -->
         <nav class="nav-holder nav-holder-1">
@@ -201,25 +201,13 @@
                 <h2>Payment</h2>
                 <label><input type="radio" name="paymentMethod" value="online"> Online Payment</label>
                 <label><input type="radio" name="paymentMethod" value="cod"> Cash on Delivery</label>
-                <button type="submit" class="place-order-btn" onclick="submitOrder()">Place Your Order</button>
+                <button type="submit" class="place-order-btn" onclick="checkDeliveryArea()">Place Your Order</button>
             </div>
         </div>
     </div>
 
-
     <!-- Modal -->
-    <!-- <div id="changeAddressModal" class="modal">
-            <div class="modal-content">
-                <span class="close" id="closeModal">&times;</span>
-                <h2>Manage Addresses</h2>
-                <div class="address-list" id="addressList"></div>
-                <div>
-                    <label for="newAddress">New Address:</label><br>
-                    <textarea id="newAddress" rows="4" class="w-full p-2 border rounded" placeholder="Enter your new address"></textarea>
-                    <button id="addAddressBtn" class="change-address mt-4">Add Address</button>
-                </div>
-            </div>
-        </div> -->
+
     <!-- Change Address Modal -->
     <div id="changeAddressModal" class="modal">
         <div class="modal-content">
@@ -347,11 +335,11 @@
                                 <h5 class="widgettitle"><span>Quick Links</span></h5>
                                 <div class="textwidget ftr-menu">
                                     <ul>
-                                        <li><a href="index.html">-Home</a></li>
-                                        <li><a href="about.html">-About</a></li>
+                                        <li><a href="/">-Home</a></li>
+                                        <li><a href="/about">-About</a></li>
                                         <li><a href="testimonials.html">-Testimonials</a></li>
                                         <li><a href="#">-Our Menu</a></li>
-                                        <li><a href="contact.html">-Contact</a></li>
+                                        <li><a href="/contact">-Contact</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -402,6 +390,77 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+
+        window.onload = getLocation;
+
+        // Function to get user's location
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(success, error);
+            } else {
+                alert("Geolocation is not supported by this browser.")
+            }
+        }
+
+        // Success callback
+        function success(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            console.log(latitude, longitude);
+
+            // Store the user's location in session (optional)
+            sessionStorage.setItem('latitude', latitude);
+            sessionStorage.setItem('longitude', longitude);
+        }
+
+        // Error callback
+        function error(err) {
+            switch (err.code) {
+                case err.PERMISSION_DENIED:
+                    document.getElementById('locationDisplay').textContent = "User denied the request for Geolocation.";
+                    break;
+                case err.POSITION_UNAVAILABLE:
+                    document.getElementById('locationDisplay').textContent = "Location information is unavailable.";
+                    break;
+                case err.TIMEOUT:
+                    document.getElementById('locationDisplay').textContent = "The request to get user location timed out.";
+                    break;
+                case err.UNKNOWN_ERROR:
+                    document.getElementById('locationDisplay').textContent = "An unknown error occurred.";
+                    break;
+            }
+        }
+
+        // Function to check delivery area before submitting order
+        function checkDeliveryArea() {
+            const latitude = sessionStorage.getItem('latitude');
+            const longitude = sessionStorage.getItem('longitude');
+
+            if (latitude && longitude) {
+                $.ajax({
+                    url: '/api/getLocationDetails',
+                    method: 'POST',
+                    data: { latitude, longitude },
+                    success: function (response) {
+                        console.log(response);
+                        
+                        if (response) {
+                            console.log(response);
+                            
+                            submitOrder(); // Call submitOrder only if delivery is available
+                        } else {
+                            console.log(response);
+                            alert('Delivery is not available in your area.');
+                        }
+                    },
+                    error: function () {
+                        console.error("Error while checking delivery area");
+                    }
+                });
+            } else {
+                alert('Unable to retrieve your location. Please enable location services.');
+            }
+        }
 
         $(document).ready(function () {
             updateCartCount();

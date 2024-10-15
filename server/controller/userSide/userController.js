@@ -2,6 +2,8 @@ const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
 const Mailgen = require("mailgen");
+const geolib = require('geolib');
+
 
 
 const User = require("../../model/userSchema");
@@ -428,3 +430,26 @@ exports.signOut = async (req, res) => {
   delete req.session.userId
 }
 
+exports.getLocationDetails = async (req, res) => {
+  const {latitude, longitude} = req.body
+  console.log(latitude, longitude);
+  req.session.latitude = latitude;
+  req.session.longitude = longitude;
+  const deliveryLocation = { latitude: 11.873567564458085, longitude: 75.38882081116785 };
+  const userLocation = { latitude: req.session.latitude , longitude: req.session.longitude };
+
+  // const deliveryLocation = { latitude: 1.3110285534979251, longitude: 103.79496585267069 }; // pepper castle location 
+  // const userLocation = { latitude: 1.3067381388575823, longitude: 103.79125367543192 }; // pepper castle nearby location ->600 m  
+  
+  const distanceInMeters = geolib.getDistance(deliveryLocation, userLocation);
+  const distanceInKilometers = distanceInMeters / 1000;
+
+  const deliveryRadius = 10;
+  console.log(distanceInKilometers);
+
+  const isInDeliveryRange = distanceInKilometers <= deliveryRadius;
+  console.log(isInDeliveryRange);
+  req.session.distanceInKilometers = distanceInKilometers,
+  // Send response with delivery range status and user's latitude and longitude
+  res.send(isInDeliveryRange);
+}
