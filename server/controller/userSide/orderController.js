@@ -9,7 +9,7 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 exports.createOrder = async (req, res) => {
     const { orderItems, paymentMethod, addressId, userId } = req.body; 
-    console.log('Request Body:', req.body);
+    // console.log('Request Body:', req.body);
     try {
         const orderId =await generateOrderId();
         console.log(orderId);
@@ -77,9 +77,10 @@ exports.createOrder = async (req, res) => {
                     quantity: item.cartItems.quantity
                 })),
                 mode: 'payment',
+                // success_url: `http://localhost:${process.env.PORT}/orderSuccess`,
                 // success_url: `http://localhost:${process.env.PORT}/api/success?orderId=${savedOrder._id}&userId=${userId}`,
                 success_url: `https://pepper-castle.onrender.com/api/success?orderId=${savedOrder._id}&userId=${userId}`,
-                cancel_url: `https://example.com/cancel?orderId=${savedOrder._id}`
+                cancel_url: `https://example.com/cancel`
             });
         
             savedOrder.stripeSessionId = session.id;
@@ -183,6 +184,72 @@ const getCartItems = async (userId) => {
 
 
 
+exports.handlePaymentSuccess = async (req, res) => {
+    try {
+      const { orderId,userId } = req.query;
+      console.log(orderId);
+      const order = await OrderDb.findById(orderId);
+      if (!order) {
+        return res.status(404).json({ success: false, error: 'Order not found.' });
+      }
+        // const paymentIntent = await stripe.paymentIntents.retrieve(order.stripeSessionId);
+        // console.log('Payment Intent Details:', paymentIntent);
+  
+      order.paymentStatus = 'success';
+      order.status = 'Ordered';
+      order.completed = true
+      await order.save();
+      
+      
+
+      await cartDb.updateOne(
+        { userId: order.user }, 
+        { $set: { cartItems: [] } }
+      );
+      
+      res.redirect('/orderSuccess')
+    //   return res.json({ success: true, message: 'Payment successful and cart cleared.' });
+    } catch (error) {
+      console.error('Payment handling failed:', error);
+      return res.status(500).json({ success: false, error: 'Payment handling failed.' });
+    }
+};
+
+
+// const handlePaymentSuccess = async (session) => { 
+//     try {
+//               const { orderId } = req.query;
+//               console.log(orderId);
+//               const order = await OrderDb.findById(orderId);
+//               if (!order) {
+//                 return res.status(404).json({ success: false, error: 'Order not found.' });
+//               }
+//                 // const paymentIntent = await stripe.paymentIntents.retrieve(order.stripeSessionId);
+//                 // console.log('Payment Intent Details:', paymentIntent);
+          
+//               order.paymentStatus = 'success';
+//               order.status = 'Ordered';
+//               order.completed = true
+//               await order.save();
+//               console.log(order.user);
+              
+//               await cartDb.updateOne(
+//                 { userId: order.user }, 
+//                 { $set: { cartItems: [] } }
+//               );
+              
+//               res.redirect('/orderSuccess')
+//             //   return res.json({ success: true, message: 'Payment successful and cart cleared.' });
+//             } catch (error) {
+//               console.error('Payment handling failed:', error);
+//               return res.status(500).json({ success: false, error: 'Payment handling failed.' });
+//             }
+
+// }
+
+
+
+
 // exports.createOrder = async (req, res) => {
 //   try {
 //       const { orderItems, paymentMethod, address, userId } = req.body;
@@ -282,59 +349,3 @@ const getCartItems = async (userId) => {
 // };
 
 
-exports.handlePaymentSuccess = async (req, res) => {
-    try {
-      const { orderId,userId } = req.query;
-      console.log(orderId);
-      const order = await OrderDb.findById(orderId);
-      if (!order) {
-        return res.status(404).json({ success: false, error: 'Order not found.' });
-      }
-        // const paymentIntent = await stripe.paymentIntents.retrieve(order.stripeSessionId);
-        // console.log('Payment Intent Details:', paymentIntent);
-  
-      order.paymentStatus = 'success';
-      order.status = 'Ordered';
-      order.completed = true
-      await order.save();
-      
-      
-
-      await cartDb.updateOne(
-        { userId: order.user }, 
-        { $set: { cartItems: [] } }
-      );
-      
-      res.redirect('/orderSuccess')
-    //   return res.json({ success: true, message: 'Payment successful and cart cleared.' });
-    } catch (error) {
-      console.error('Payment handling failed:', error);
-      return res.status(500).json({ success: false, error: 'Payment handling failed.' });
-    }
-};
-
-// exports.getSessionAndPaymentIntent = async (req, res) => {
-//   const { sessionId } = req.params;
-
-//   try {
-//       // Retrieve Stripe session
-//       const session = await stripe.checkout.sessions.retrieve(sessionId);
-
-//       if (!session) {
-//           return res.status(404).json({ success: false, error: 'Session not found.' });
-//       }
-
-//       // Retrieve payment intent if available
-//       if (session.payment_intent) {
-//           const paymentIntent = await stripe.paymentIntents.retrieve(session.payment_intent);
-//           console.log(session, paymentIntent);
-          
-//           return res.send({ success: true, session, paymentIntent });
-//       } else {
-//           return res.json({ success: true, session, message: 'No payment intent found for this session.' });
-//       }
-//   } catch (error) {
-//       console.error('Failed to retrieve session or payment intent:', error);
-//       return res.status(500).json({ success: false, error: 'Failed to retrieve session or payment intent.' });
-//   }
-// };

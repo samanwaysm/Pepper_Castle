@@ -18,20 +18,6 @@ const adminRouter = require('./server/routes/adminRoutes');
 
 const PORT = process.env.PORT || 8080;
 
-const cacheTime = 60;
-app.use((req, res, next) => {
-    res.setHeader("Cache-Control", `public,no-store, must-revalidate, max-age=${cacheTime}`);
-    res.setHeader("Pragma", "no-cache");  
-    next()
-})
-
-
-
-
-
-// log requests
-app.use(morgan('tiny'));
-
 // mongodb connection
 connectDB();
 
@@ -39,6 +25,15 @@ app.use(express.json());
 // parse request to body-parser
 app.use(bodyparser.urlencoded({extended:true}))
 
+const cacheTime = 60;
+app.use((req, res, next) => {
+    res.setHeader("Cache-Control", `public,no-store, must-revalidate, max-age=${cacheTime}`);
+    res.setHeader("Pragma", "no-cache");  
+    next()
+})
+
+// log requests
+app.use(morgan('tiny'));
 
 // set view engine
 app.set('view engine', 'ejs');

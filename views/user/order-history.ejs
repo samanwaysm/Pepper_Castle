@@ -263,6 +263,9 @@
                 padding: 10px 15px;
             }
         }
+        .fa-user{
+            color: #ff6600;
+        }
     </style>
 
 </head>
@@ -394,40 +397,17 @@
     <div class="profile-container">
         <div class="profile-sidebar">
             <!-- <img src="path_to_profile_image" alt="Profile" class="profile-image" /> -->
-            <h2 class="profile-name">Sam</h2>
+            <h2 class="profile-name"><%= username %></h2>
             <ul class="profile-menu">
-                <li><a href="/profile" class="active">My Account</a></li>
-                <li><a href="#">Manage Address</a></li>
-                <li><a href="#">Order History</a></li>
-                <li><a href="#">Change Password</a></li>
-                <li><a href="#">Logout</a></li>
+                <li><a href="/profile">My Account</a></li>
+                <li><a href="/manage-address">Manage Address</a></li>
+                <li><a href="/order-history" class="active">Order History</a></li>
+                <li><a href="/change-password">Change Password</a></li>
+                <li><a href="/api/logout">Logout</a></li>
             </ul>
         </div>
         <div class="profile-details">
-            <h2>My Account</h2>
-            <form>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" value="" />
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Phone</label>
-                        <input type="text" id="phone" value="" />
-                        <!-- <span class="error"></span> -->
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" />
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" id="password"/>
-                    </div>
-                </div>
-                <button class="save-btn">Save</button>
-            </form>
-
+            <h2>Orders</h2>
         </div>
     </div>
 

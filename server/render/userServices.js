@@ -192,19 +192,19 @@ exports.resetPassword = (req, res, next) => {
     })
 }
 
-exports.profile = (req, res, next) => {
-    const { isUserAuthenticated, isUserAuth, userId } = req.session
-    res.render("user/change",{isUserAuth,userId}, (err, html) => {
-        if (err) {
-            console.log(err);
-        }
-        res.send(html)
-    })
-}
+// exports.profile = (req, res, next) => {
+//     const { isUserAuthenticated, isUserAuth, userId } = req.session
+//     res.render("user/change",{isUserAuth,userId}, (err, html) => {
+//         if (err) {
+//             console.log(err);
+//         }
+//         res.send(html)
+//     })
+// }
 
 exports.manageAddress = (req, res, next) => {
-    const { isUserAuthenticated, isUserAuth, userId } = req.session
-    res.render("user/manage-address",{isUserAuth,userId}, (err, html) => {
+    const { isUserAuthenticated, isUserAuth, userId, username } = req.session
+    res.render("user/manage-address",{isUserAuth,userId,username}, (err, html) => {
         if (err) {
             console.log(err);
         }
@@ -213,8 +213,8 @@ exports.manageAddress = (req, res, next) => {
 }
 
 exports.orderHistory = (req, res, next) => {
-    const { isUserAuthenticated, isUserAuth, userId } = req.session
-    res.render("user/order-history",{isUserAuth,userId}, (err, html) => {
+    const { isUserAuthenticated, isUserAuth, userId ,username} = req.session
+    res.render("user/order-history",{isUserAuth,userId,username}, (err, html) => {
         if (err) {
             console.log(err);
         }
@@ -223,8 +223,8 @@ exports.orderHistory = (req, res, next) => {
 }
 
 exports.changePassword = (req, res, next) => {
-    const { isUserAuthenticated, isUserAuth, userId } = req.session
-    res.render("user/change-password",{isUserAuth,userId}, (err, html) => {
+    const { isUserAuthenticated, isUserAuth, userId, username } = req.session
+    res.render("user/change-password",{isUserAuth,userId,username}, (err, html) => {
         if (err) {
             console.log(err);
         }
@@ -232,22 +232,34 @@ exports.changePassword = (req, res, next) => {
     })
 }
 
-exports.profile = (req, res, next) => {
-    const { isUserAuthenticated, isUserAuth, userId } = req.session
-    res.render("user/profile",{isUserAuth,userId}, (err, html) => {
-        if (err) {
-            console.log(err);
-        }
-        res.send(html)
-    })
+// exports.profile = (req, res, next) => {
+//     const { isUserAuthenticated, isUserAuth, userId } = req.session
+//     res.render("user/profile",{isUserAuth,userId}, (err, html) => {
+//         if (err) {
+//             console.log(err);
+//         }
+//         res.send(html)
+//     })
+// }
+
+exports.profile = (req, res) => {
+    const { isUserAuthenticated, isUserAuth, userId,username } = req.session
+    axios.get(`http://localhost:${process.env.PORT}/api/getUserDetails?userId=${userId}`)
+        .then((response) => {
+            res.render("user/profile", { user: response.data, isUserAuthenticated,isUserAuth,userId,username });
+        })
+        .catch((err) => {
+            console.error("Error fetching user details:", err.message);
+            res.status(err.response?.status || 500).send('Failed to load user. Please try again later.');
+        });
 }
 
-exports.profile = (req, res, next) => {
-    const { isUserAuthenticated, isUserAuth, userId } = req.session
-    res.render("user/profile",{isUserAuth,userId}, (err, html) => {
-        if (err) {
-            console.log(err);
-        }
-        res.send(html)
-    })
-}
+// exports.profile = (req, res, next) => {
+//     const { isUserAuthenticated, isUserAuth, userId } = req.session
+//     res.render("user/profile",{isUserAuth,userId}, (err, html) => {
+//         if (err) {
+//             console.log(err);
+//         }
+//         res.send(html)
+//     })
+// }

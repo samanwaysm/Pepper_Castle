@@ -113,7 +113,7 @@ exports.signUp = async (req, res) => {
       { defaultAddress: addressId },
       { new: true }
     );
-
+    req.session.username = newUser.username;
     req.session.email = newUser.email;
     req.session.userId = newUser._id;
     req.session.isUserAuthenticated = true;
@@ -127,7 +127,7 @@ exports.signUp = async (req, res) => {
   }
 };
 
-exports.signIn = async (req, res) => {  
+exports.signIn = async (req, res) => {
   const log = {
     emailOrPhone: req.body.emailOrPhone, // Accepting either email or phone
     password: req.body.password,
@@ -147,6 +147,7 @@ exports.signIn = async (req, res) => {
     const isPasswordMatch = await bcrypt.compare(log.password, foundUser.password);
 
     if (isPasswordMatch && !foundUser.isBlocked) {
+      req.session.username = foundUser.username;
       req.session.email = foundUser.email;
       req.session.phone = foundUser.phone;
       req.session.userId = foundUser._id;
@@ -269,8 +270,8 @@ const forgotOtpSendOtpMail = async (req, res) => {
     theme: "default",  // Default Mailgen theme
     product: {
       name: "Pepper Castle", // Company name
-      link: "https://peppercastle.com/", 
-      logo: "assets/images/fav.png", 
+      link: "https://peppercastle.com/",
+      logo: "assets/images/fav.png",
       theme: {
         header: {
           backgroundColor: '#fc5000',  // Custom theme color
@@ -352,12 +353,12 @@ const forgotuserOtpVerify = async (req, res) => {
 };
 
 exports.forgotOtp = async (req, res) => {
-  console.log('body:',req.body);
-  req.session.user=req.body.email;
-  
-  if (req.body.email=="") {
-    req.session.message= "email is required"
-    return  res.redirect("/forgot-password");
+  console.log('body:', req.body);
+  req.session.user = req.body.email;
+
+  if (req.body.email == "") {
+    req.session.message = "email is required"
+    return res.redirect("/forgot-password");
   }
   const foundUser = await User.findOne({ email: req.body.email });
   if (!foundUser) {
@@ -423,24 +424,27 @@ exports.updatepassword = async (req, res) => {
 
 
 exports.signOut = async (req, res) => {
+  console.log('user sign out');
+
   req.session.isUserAuth = false;
   req.session.isUserAuthenticated = false;
   delete req.session.email
   delete req.session.phone
   delete req.session.userId
+  res.redirect("/")
 }
 
 exports.getLocationDetails = async (req, res) => {
-  const {latitude, longitude} = req.body
+  const { latitude, longitude } = req.body
   console.log(latitude, longitude);
   req.session.latitude = latitude;
   req.session.longitude = longitude;
   const deliveryLocation = { latitude: 11.873567564458085, longitude: 75.38882081116785 };
-  const userLocation = { latitude: req.session.latitude , longitude: req.session.longitude };
+  const userLocation = { latitude: req.session.latitude, longitude: req.session.longitude };
 
   // const deliveryLocation = { latitude: 1.3110285534979251, longitude: 103.79496585267069 }; // pepper castle location 
   // const userLocation = { latitude: 1.3067381388575823, longitude: 103.79125367543192 }; // pepper castle nearby location ->600 m  
-  
+
   const distanceInMeters = geolib.getDistance(deliveryLocation, userLocation);
   const distanceInKilometers = distanceInMeters / 1000;
 
@@ -450,6 +454,73 @@ exports.getLocationDetails = async (req, res) => {
   const isInDeliveryRange = distanceInKilometers <= deliveryRadius;
   console.log(isInDeliveryRange);
   req.session.distanceInKilometers = distanceInKilometers,
-  // Send response with delivery range status and user's latitude and longitude
-  res.send(isInDeliveryRange);
+    // Send response with delivery range status and user's latitude and longitude
+    res.send(isInDeliveryRange);
+}
+
+exports.getUserDetails = async (req, res) => {
+  try {
+    const userId = req.query.userId;
+
+    // Use aggregation pipeline to fetch user data
+    const userProfile = await User.aggregate([
+      {
+        $match: { _id: new mongoose.Types.ObjectId(userId) } // Match the user by ID
+      },
+      {
+        $project: {
+          _id: 0,              // Exclude _id from the result
+          username: 1,         // Include username field
+          email: 1,            // Include email field
+          phone: 1             // Include phone field
+        }
+      }
+    ]);
+
+    // Check if user exists
+    if (userProfile.length === 0) {
+      return res.status(404).send('User not found');
+    }
+    const user = userProfile[0]
+    res.send(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server error');
+  }
+}
+
+exports.changePassword = async (req, res) => {
+  const userid = req.session.userId;
+  console.log(userid);
+  const {oldpassword, newpassword } = req.body
+  console.log(oldpassword, newpassword)
+  // res.redirect("/userProfile")
+  try {
+    const foundUser = await User.findOne({ _id: userid });
+    const isPasswordMatch = await bcrypt.compare(
+      oldpassword,
+      foundUser.password
+    );
+    const hashedpassword = await bcrypt.hash(newpassword, 10);
+    if (!isPasswordMatch) {
+      console.log(isPasswordMatch);
+      
+      req.session.message = "Wrong Password"
+      res.redirect("/change-password")
+    } else {
+      await User.updateOne({ _id: userid }, {
+        $set: {
+          password: hashedpassword
+        }
+      })
+      req.session.isUserAuth = false;
+      req.session.isUserAuthenticated = false;
+      delete req.session.email
+      delete req.session.phone
+      delete req.session.userId
+      res.redirect("/signin")
+    }
+  } catch (err) {
+    res.status(500).send(err)
+  }
 }
