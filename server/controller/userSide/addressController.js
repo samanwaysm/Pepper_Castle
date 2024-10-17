@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 
 
 exports.showDefaultAddress = async (req, res, next) => {
+    console.log('show def');
+    
     const userId = req.query.userId;
     try {
         const result = await addressDb.aggregate([
@@ -36,7 +38,7 @@ exports.showDefaultAddress = async (req, res, next) => {
         if (result.length === 0) {
             return res.status(404).json({ message: 'Default address not found.' });
         }
-        console.log(result);
+        console.log('add def ret');
 
         res.status(200).json(result[0]);
 
@@ -251,6 +253,7 @@ exports.showAddressManagement = async (req, res) => {
                 username: address.username,
                 street: address.street,
                 block: address.block,
+                unitnum: address.unitnum,
                 postal: address.postal,
                 structuredAddress: address.structuredAddress,
                 isDefault: String(userAddresses.defaultAddress._id) === String(address._id)

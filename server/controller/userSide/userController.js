@@ -524,3 +524,37 @@ exports.changePassword = async (req, res) => {
     res.status(500).send(err)
   }
 }
+
+exports.changeProfile = async (req, res) => {
+  const userid = req.session.userId;
+  console.log(userid);
+  const {username, phone, email, password } = req.body
+  console.log(username, phone, email,password)
+  try {
+    const foundUser = await User.findOne({ _id: userid });
+    const isPasswordMatch = await bcrypt.compare(
+      password,
+      foundUser.password
+    );
+    if (!isPasswordMatch) {
+      console.log(isPasswordMatch);
+      req.session.message = "Wrong Password"
+      res.redirect("/profile")
+    } else {
+      await User.updateOne({ _id: userid }, {
+        $set: {
+          username: username,
+          phone: phone
+        }
+      })
+
+      req.session.username = username 
+      req.session.phone = phone
+
+      res.redirect("/profile")
+    }
+  } catch (err) {
+    res.status(500).send(err)
+  }
+}
+

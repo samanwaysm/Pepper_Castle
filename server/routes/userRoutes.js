@@ -67,8 +67,8 @@ route.get('/api/getAddress',addressController.getAddress)
 route.post('/api/updateAddress',addressController.updateAddress)
 
 route.get('/api/showAddressManagement',addressController.showAddressManagement)
-
 route.post('/api/changePassword',controller.changePassword)
+route.post('/api/changeProfile',controller.changeProfile)
 
 route.post('/api/getLocationDetails',controller.getLocationDetails);
 
