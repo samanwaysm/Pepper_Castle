@@ -29,7 +29,8 @@ exports.homeRoutes = (req, res, next) => {
     //     });
 }
 exports.about = (req, res, next) => {
-    res.render("user/about", (err, html) => {
+    const { isUserAuthenticated, isUserAuth, userId } = req.session
+    res.render("user/about",{ isUserAuthenticated, isUserAuth, userId }, (err, html) => {
         if (err) {
             console.log(err);
         }
@@ -37,7 +38,18 @@ exports.about = (req, res, next) => {
     })
 }
 exports.contact = (req, res, next) => {
-    res.render("user/contact", (err, html) => {
+    const { isUserAuthenticated, isUserAuth, userId } = req.session
+    res.render("user/contact",{ isUserAuthenticated, isUserAuth, userId }, (err, html) => {
+        if (err) {
+            console.log(err);
+        }
+        res.send(html)
+    })
+}
+
+exports.testimonials = (req, res, next) => {
+    const { isUserAuthenticated, isUserAuth, userId } = req.session
+    res.render("user/testimonials",{ isUserAuthenticated, isUserAuth, userId }, (err, html) => {
         if (err) {
             console.log(err);
         }
@@ -46,19 +58,20 @@ exports.contact = (req, res, next) => {
 }
 
 exports.signin = (req, res) => {
-    const { validEmail, wrongPassword, isUserAuthenticated } = req.session
-    res.render("user/signin", { isUserAuthenticated }, (err, html) => {
+    const {isUserAuthenticated, errors } = req.session
+    delete req.session.errors 
+    res.render("user/signin", { isUserAuthenticated, errors }, (err, html) => {
         if (err) {
             console.log(err);
         }
-        delete req.session.wrongPassword
         res.send(html)
     })
 }
 
 exports.signUp = (req, res) => {
-    const { foundEmail, isUserAuthenticated } = req.session;
-    res.render("user/signup", { isUserAuthenticated, foundEmail }, (err, html) => {
+    const { foundEmail, isUserAuthenticated, errors } = req.session;
+    delete req.session.errors 
+    res.render("user/signup", { isUserAuthenticated, foundEmail, errors}, (err, html) => {
         if (err) {
             console.log(err);
         }
@@ -154,7 +167,8 @@ exports.checkout = (req, res) => {
 
 
 exports.orderSuccess = (req, res) => {
-    res.render("user/orderSuccess", (err, html) => {
+    const { isUserAuthenticated, isUserAuth, userId, username } = req.session
+    res.render("user/orderSuccess",{isUserAuth,userId}, (err, html) => {
         if (err) {
             console.log(err);
         }
@@ -175,7 +189,8 @@ exports.forgotPassword = (req, res, next) => {
 }
 
 exports.otpVerification = (req, res, next) => {
-    res.render("user/otp-verification", (err, html) => {
+    const { rTime } = req.session
+    res.render("user/otp-verification",{rTime}, (err, html) => {
         if (err) {
             console.log(err);
         }
@@ -212,9 +227,9 @@ exports.manageAddress = (req, res, next) => {
     })
 }
 
-exports.orderHistory = (req, res, next) => {
+exports.ordersList = (req, res, next) => {
     const { isUserAuthenticated, isUserAuth, userId ,username} = req.session
-    res.render("user/order-history",{isUserAuth,userId,username}, (err, html) => {
+    res.render("user/orders-list",{isUserAuth,userId,username}, (err, html) => {
         if (err) {
             console.log(err);
         }
@@ -223,8 +238,9 @@ exports.orderHistory = (req, res, next) => {
 }
 
 exports.changePassword = (req, res, next) => {
-    const { isUserAuthenticated, isUserAuth, userId, username } = req.session
-    res.render("user/change-password",{isUserAuth,userId,username}, (err, html) => {
+    const { isUserAuthenticated, isUserAuth, userId, username, errors } = req.session
+    delete req.session.errors 
+    res.render("user/change-password",{isUserAuth,userId,username,errors }, (err, html) => {
         if (err) {
             console.log(err);
         }
@@ -243,10 +259,11 @@ exports.changePassword = (req, res, next) => {
 // }
 
 exports.profile = (req, res) => {
-    const { isUserAuthenticated, isUserAuth, userId,username } = req.session
+    const { isUserAuthenticated, isUserAuth, userId,username,errors } = req.session
+    delete req.session.errors 
     axios.get(`http://localhost:${process.env.PORT}/api/getUserDetails?userId=${userId}`)
         .then((response) => {
-            res.render("user/profile", { user: response.data, isUserAuthenticated,isUserAuth,userId,username });
+            res.render("user/profile", { user: response.data, isUserAuthenticated,isUserAuth,userId,username,errors });
         })
         .catch((err) => {
             console.error("Error fetching user details:", err.message);

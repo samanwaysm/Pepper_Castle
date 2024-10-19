@@ -7,7 +7,8 @@
     <link rel="icon" type="image/png" href="images/fav.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>Pepper Castle Admin - Order Details</title>
-    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+        name='viewport' />
     <!-- Fonts and icons -->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
     <!-- CSS Files -->
@@ -15,7 +16,8 @@
     <link href="/admin/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
     <style>
         body {
-            background-color: #f4f7fa; /* Light background color for the body */
+            background-color: #f4f7fa;
+            /* Light background color for the body */
         }
 
         .order-details-container {
@@ -29,7 +31,8 @@
 
         .order-header {
             display: flex;
-            justify-content: space-between; /* Space between item ID and time */
+            justify-content: space-between;
+            /* Space between item ID and time */
             margin-bottom: 20px;
         }
 
@@ -47,13 +50,16 @@
         .item-details {
             margin-top: 10px;
             display: flex;
-            flex-direction: column; /* Stack item details vertically */
+            flex-direction: column;
+            /* Stack item details vertically */
         }
 
         .item {
             margin-bottom: 10px;
-            display: flex; /* Flexbox for item layout */
-            align-items: center; /* Center items vertically */
+            display: flex;
+            /* Flexbox for item layout */
+            align-items: center;
+            /* Center items vertically */
             padding: 5px;
             border: 1px solid #e0e0e0;
             border-radius: 5px;
@@ -61,10 +67,14 @@
         }
 
         .item img {
-            width: 50px; /* Width of the item image */
-            height: 50px; /* Height of the item image */
-            margin-right: 15px; /* Space between image and text */
-            border-radius: 5px; /* Rounded corners for images */
+            width: 50px;
+            /* Width of the item image */
+            height: 50px;
+            /* Height of the item image */
+            margin-right: 15px;
+            /* Space between image and text */
+            border-radius: 5px;
+            /* Rounded corners for images */
         }
 
         .address-details {
@@ -78,13 +88,16 @@
             border: 1px solid #e0e0e0;
             padding: 15px;
             border-radius: 5px;
-            background-color: #f9f9f9; /* Slightly different background for user info */
+            background-color: #f9f9f9;
+            /* Slightly different background for user info */
         }
 
         .status-container {
             margin-top: 15px;
-            display: flex; /* Flexbox for horizontal layout */
-            justify-content: space-between; /* Space between select and button */
+            display: flex;
+            /* Flexbox for horizontal layout */
+            justify-content: space-between;
+            /* Space between select and button */
             align-items: center;
         }
 
@@ -92,12 +105,14 @@
             padding: 8px;
             border-radius: 5px;
             border: 1px solid #ddd;
-            width: 70%; /* Width for the dropdown */
+            width: 70%;
+            /* Width for the dropdown */
         }
 
         .update-button {
             padding: 8px 15px;
-            background-color: #007bff; /* Primary button color */
+            background-color: #007bff;
+            /* Primary button color */
             color: #fff;
             border: none;
             border-radius: 5px;
@@ -106,9 +121,9 @@
         }
 
         .update-button:hover {
-            background-color: #0056b3; /* Darker shade on hover */
+            background-color: #0056b3;
+            /* Darker shade on hover */
         }
-
     </style>
 </head>
 
@@ -157,7 +172,7 @@
                     </li>
 
                     <li class="active-pro">
-                        <a href="./upgrade.html">
+                        <a href="/admin/logout">
                             <i class="nc-icon nc-simple-remove"></i>
                             <p>Logout</p>
                         </a>
@@ -184,70 +199,114 @@
             <div class="content">
                 <div class="container-fluid order-details-container">
                     <div class="order-header">
-                        <div>Order ID: <%= order.orderId %></div>
-                        <div>Order Time: <%= order.createdAt.time %></div> 
+                        <div>Order ID: <%= order.orderId %>
+                        </div>
+                        <div>Order Time: <%= order.createdAt.time %>
+                        </div>
                     </div>
-                    
+
                     <div class="order-date">
-                        <strong>Order Date:</strong> <%= order.createdAt.date %> <!-- Display order date -->
+                        <strong>Order Date:</strong>
+                        <%= order.createdAt.date %> <!-- Display order date -->
                     </div>
 
                     <div class="total-amount">
-                        <strong>Total Amount:</strong> $<%= order.totalAmount.toFixed(2) %> <!-- Display total amount -->
+                        <strong>Total Amount:</strong> $<%= order.totalAmount.toFixed(2) %>
+                            <!-- Display total amount -->
                     </div>
 
                     <div class="item-details">
                         <h5>Items:</h5>
-                        <% order.items.forEach(item => { %>
+                        <% order.items.forEach(item=> { %>
                             <div class="item">
                                 <img src="<%= item.image %>" alt="<%= item.item %>"> <!-- Display item image -->
                                 <div>
-                                    <div><strong>Item Name:</strong> <%= item.item %></div> <!-- Item name -->
-                                    <div><strong>Quantity:</strong> <%= item.quantity %></div> <!-- Item quantity -->
+                                    <div><strong>Item Name:</strong>
+                                        <%= item.item %>
+                                    </div> <!-- Item name -->
+                                    <div><strong>Quantity:</strong>
+                                        <%= item.quantity %>
+                                    </div> <!-- Item quantity -->
                                 </div>
                             </div>
-                        <% }); %>
+                            <% }); %>
                     </div>
 
                     <div class="address-details">
                         <h5>Shipping Address:</h5>
-                        <p><%= order.address.structuredAddress %></p>
+                        <p>
+                            <%= order.address.structuredAddress %>
+                        </p>
                     </div>
 
-                    <div class="order-status">
-                        <div>Status: <%= order.status %></div>
+                    <div class="order-status" data-order-id="<%= order.orderId %>">
+                        <div>Status: <%= order.status %>
+                        </div>
                         <div class="status-container">
-                            <% if (order.status === 'Delivered') { %>
+                            <% if (order.status==='Delivered' ) { %>
                                 <button class="btn btn-success" disabled>Delivered</button>
-                            <% } else if (order.status === 'Cancelled') { %>
-                                <button class="btn btn-danger" disabled>Cancelled</button>
-                            <% } else { %>
-                                <select>
-                                    <option value="Ordered" <%= order.status === 'Ordered' ? 'selected' : '' %>>Ordered</option>
-                                    <option value="Processing" <%= order.status === 'Processing' ? 'selected' : '' %>>Processing</option>
-                                    <option value="Shipped" <%= order.status === 'Shipped' ? 'selected' : '' %>>Shipped</option>
-                                    <option value="Delivered" <%= order.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
-                                    <option value="Cancelled" <%= order.status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
-                                </select>
-                            <% } %>                            
-                            <button class="update-button">Update</button>
-                            <!-- <button class="update-button">Print</button> -->
+                                <% } else if (order.status==='Cancelled' ) { %>
+                                    <button class="btn btn-danger" disabled>Cancelled</button>
+                                    <% } else { %>
+                                        <select>
+                                            <option value="Ordered" <%=order.status==='Ordered' ? 'selected' : '' %>
+                                                >Ordered</option>
+                                            <option value="Processing" <%=order.status==='Processing' ? 'selected' : ''
+                                                %>>Processing</option>
+                                            <option value="Shipped" <%=order.status==='Shipped' ? 'selected' : '' %>
+                                                >Shipped</option>
+                                            <option value="Delivered" <%=order.status==='Delivered' ? 'selected' : '' %>
+                                                >Delivered</option>
+                                            <option value="Cancelled" <%=order.status==='Cancelled' ? 'selected' : '' %>
+                                                >Cancelled</option>
+                                        </select>
+                                        <% } %>
+                                            <button class="update-button">Update</button>
                         </div>
                     </div>
 
+
                     <div class="user-info">
                         <h5>User Information</h5>
-                        <p>Username: <%= order.username %></p>
-                        <p>Email: <%= order.email %></p>
-                        <p>Phone: <%= order.phone %></p>
+                        <p>Username: <%= order.username %>
+                        </p>
+                        <p>Email: <%= order.email %>
+                        </p>
+                        <p>Phone: <%= order.phone %>
+                        </p>
                     </div>
                 </div>
             </div>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
             <script src="/admin/js/core/jquery.min.js"></script>
             <script src="/admin/js/core/popper.min.js"></script>
             <script src="/admin/js/core/bootstrap.min.js"></script>
             <script src="/admin/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script>
+
+            <script>
+                $(document).on('click', '.update-button', function () {
+                    const container = $(this).closest('.status-container');
+                    const orderId = container.closest('.order-status').data('order-id'); // Assuming you're storing orderId in a data attribute
+                    const status = container.find('select').val(); // Get the selected status from the dropdown
+        
+                    $.ajax({
+                        url: '/api/updateStatus',  // Make sure your route is set up for POST requests
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ orderId: orderId, status: status }),
+                        success: function (response) {
+                            alert(response.message);  // Show a success message
+        
+                            // Reload the page to reflect the updated status
+                            location.reload();
+                        },
+                        error: function (err) {
+                            alert('Error updating order status');
+                        }
+                    });
+                });
+            </script>
         </div>
     </div>
 </body>

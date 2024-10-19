@@ -25,14 +25,15 @@ route.get('/reset-password',isUserNotAuthenticated,services.resetPassword)
 route.get('/',services.homeRoutes)
 route.get('/about',services.about)
 route.get('/contact',services.contact)
+route.get('/testimonials',services.testimonials)
 route.get('/our-menu',services.ourMenuList)
 route.get('/cart',isUserAuthenticated,services.cart)
 route.get('/checkout',isUserAuthenticated,services.checkout)
 route.get('/orderSuccess',isUserAuthenticated,services.orderSuccess)
 route.get('/profile',isUserAuthenticated,services.profile)
-route.get('/manage-address',services.manageAddress)
-route.get('/order-history',services.orderHistory)
-route.get('/change-password',services.changePassword)
+route.get('/manage-address',isUserAuthenticated,services.manageAddress)
+route.get('/orders-list',isUserAuthenticated,services.ordersList)
+route.get('/change-password',isUserAuthenticated,services.changePassword)
 
 
 // APIs
@@ -44,9 +45,10 @@ route.post('/api/generateotp',controller.forgotOtp)
 route.post('/api/otpverification',controller.forgototpverification)
 route.post('/api/generateotp',controller.forgotOtp)
 route.post('/api/updatepassword',controller.updatepassword)
+route.get('/api/forgotOtpResend',controller.forgotOtpResend)
 
 route.post('/api/create-order',orderController.createOrder)
-route.get('/api/success',orderController.handlePaymentSuccess)
+// route.get('/api/success',orderController.handlePaymentSuccess)
 
 // route.get('/api/',categoryAndItemContoller.homeCategoryShow)
 route.get('/api/ourMenuList',categoryAndItemContoller.ourMenuList)
@@ -73,8 +75,20 @@ route.post('/api/changeProfile',controller.changeProfile)
 route.post('/api/getLocationDetails',controller.getLocationDetails);
 
 
+
+
+
+route.get('/api/orderslist', orderController.orderslist);
+
 route.get('/api/getUserDetails',controller.getUserDetails)
 
-route.post('/webhook',rawBodyParser,webhookController.webhook);
+route.post('/api/getGoogleMaplocation',controller.getGoogleMaplocation)
+
+
+
+
+
+
+route.post('/webhook',express.raw({ type: 'application/json' }),webhookController.webhook);
 
 module.exports = route;

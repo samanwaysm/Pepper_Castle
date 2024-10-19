@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const { v4: uuidv4 } = require('uuid');
+const moment = require('moment-timezone'); // Import moment-timezone
+
 
 const OrderDb = require("../../model/orderSchema");
 const cartDb = require("../../model/cartSchema");
@@ -62,6 +64,9 @@ exports.createOrder = async (req, res) => {
         // console.log(newOrder);
         const savedOrder = await newOrder.save();
 
+        const orderIdStr = savedOrder._id ? savedOrder._id.toString() : null;
+        const userIdStr = userId.toString();
+
         if (paymentMethod === 'online') {
             console.log('entered');
         
@@ -77,10 +82,16 @@ exports.createOrder = async (req, res) => {
                     quantity: item.cartItems.quantity
                 })),
                 mode: 'payment',
-                // success_url: `http://localhost:${process.env.PORT}/orderSuccess`,
+                success_url: `http://localhost:${process.env.PORT}/orderSuccess`,
                 // success_url: `http://localhost:${process.env.PORT}/api/success?orderId=${savedOrder._id}&userId=${userId}`,
-                success_url: `https://pepper-castle.onrender.com/api/success?orderId=${savedOrder._id}&userId=${userId}`,
-                cancel_url: `https://example.com/cancel`
+                // success_url: `https://pepper-castle.onrender.com/api/success?orderId=${savedOrder._id}&userId=${userId}`,
+                cancel_url: `https://example.com/cancel`,
+                payment_intent_data: {
+                    metadata: {
+                        orderId: savedOrder._id.toString(),
+                        userId: userId.toString(),
+                    }
+                }
             });
         
             savedOrder.stripeSessionId = session.id;
@@ -184,36 +195,38 @@ const getCartItems = async (userId) => {
 
 
 
-exports.handlePaymentSuccess = async (req, res) => {
-    try {
-      const { orderId,userId } = req.query;
-      console.log(orderId);
-      const order = await OrderDb.findById(orderId);
-      if (!order) {
-        return res.status(404).json({ success: false, error: 'Order not found.' });
-      }
-        // const paymentIntent = await stripe.paymentIntents.retrieve(order.stripeSessionId);
-        // console.log('Payment Intent Details:', paymentIntent);
+
+
+// exports.handlePaymentSuccess = async (req, res) => {
+//     try {
+//       const { orderId,userId } = req.query;
+//       console.log(orderId);
+//       const order = await OrderDb.findById(orderId);
+//       if (!order) {
+//         return res.status(404).json({ success: false, error: 'Order not found.' });
+//       }
+//         // const paymentIntent = await stripe.paymentIntents.retrieve(order.stripeSessionId);
+//         // console.log('Payment Intent Details:', paymentIntent);
   
-      order.paymentStatus = 'success';
-      order.status = 'Ordered';
-      order.completed = true
-      await order.save();
+//       order.paymentStatus = 'success';
+//       order.status = 'Ordered';
+//       order.completed = true
+//       await order.save();
       
       
 
-      await cartDb.updateOne(
-        { userId: order.user }, 
-        { $set: { cartItems: [] } }
-      );
+//       await cartDb.updateOne(
+//         { userId: order.user }, 
+//         { $set: { cartItems: [] } }
+//       );
       
-      res.redirect('/orderSuccess')
-    //   return res.json({ success: true, message: 'Payment successful and cart cleared.' });
-    } catch (error) {
-      console.error('Payment handling failed:', error);
-      return res.status(500).json({ success: false, error: 'Payment handling failed.' });
-    }
-};
+//       res.redirect('/orderSuccess')
+//     //   return res.json({ success: true, message: 'Payment successful and cart cleared.' });
+//     } catch (error) {
+//       console.error('Payment handling failed:', error);
+//       return res.status(500).json({ success: false, error: 'Payment handling failed.' });
+//     }
+// };
 
 
 // const handlePaymentSuccess = async (session) => { 
@@ -349,3 +362,48 @@ exports.handlePaymentSuccess = async (req, res) => {
 // };
 
 
+
+exports.orderslist = async (req, res) => {
+    const userId = req.query.userId; // Assuming user ID is stored in req.user (after authentication)
+    console.log('enteeeeeeeeeerd');
+    
+    try {
+        const orders = await OrderDb.aggregate([
+            { 
+                $match: { 
+                    user: new mongoose.Types.ObjectId(userId), 
+                    completed: true
+                }
+            },
+            {
+                $project: {
+                    orderId: 1,
+                    items: 1, 
+                    totalAmount: 1,
+                    paymentMethod: 1,
+                    paymentStatus: 1,
+                    status: 1,
+                    address: 1,
+                    createdAt: {
+                        $dateToString: {
+                            format: "%Y-%m-%d %H:%M:%S",
+                            date: { $dateAdd: { startDate: "$createdAt", unit: "hour", amount: 8 } } // Convert UTC to Singapore Time (+8 hours)
+                        }
+                    }
+                }
+            }
+        ]);
+
+        // Check if orders exist
+        if (!orders.length) {
+            return res.status(404).json({ message: 'No orders found for this user.' });
+        }
+        console.log(orders[0]);
+        
+        // Return the list of orders
+        res.status(200).json({ orders });
+    } catch (error) {
+        console.error('Error fetching orders:', error);
+        res.status(500).json({ message: 'An error occurred while fetching orders.', error });
+    }
+}

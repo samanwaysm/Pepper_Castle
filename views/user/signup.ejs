@@ -285,6 +285,9 @@
 <body>
     <div class="signup-container">
         <h2>Signup</h2>
+        <% if (errors && errors.signUpError) { %>
+            <p class="error-message"><%= errors.signUpError %></p>
+        <% } %>
         <form id="signupForm" method="POST" action="/api/signup">
             <!-- User Information -->
             <div class="form-row">
@@ -357,7 +360,7 @@
 
             <!-- Link to Login Page -->
             <div class="already-have-account">
-                <a href="#">Already have an account? Login</a>
+                <a href="/signin">Already have an account? Signin</a>
             </div>
         </form>
     </div>

@@ -17,6 +17,7 @@
     <link href="/admin/css/bootstrap.min.css" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="/admin/demo/demo.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         .item-card {
             display: flex;
@@ -66,9 +67,7 @@
         .action-buttons button {
             margin-right: 10px;
         }
-        .button_len{
-            width: 100px;
-        }
+        
     </style>
 </head>
 
@@ -117,7 +116,7 @@
                     </li>
 
                     <li class="active-pro">
-                        <a href="./upgrade.html">
+                        <a href="/admin/logout">
                             <i class="nc-icon nc-simple-remove"></i>
                             <p>Logout</p>
                         </a>
@@ -177,18 +176,39 @@
                                     <div class="item-price">$<%= item.price %></div>
                                 </div>
                                 <div class="item-actions">
-                                    <a href="/unlistItem"><button class="button_len btn btn-warning btn-sm">
+                                    <a href="/editItem?id=<%= item._id %>"><button class="button_len btn btn-warning btn-sm">
                                         <i class="nc-icon nc-ruler-pencil"></i> Edit
                                     </button></a>
-                                    <a href="/admin/unlistItem?id=<%= item._id %>"><button class="button_len btn btn-danger btn-sm">
-                                        <i class="nc-icon nc-simple-remove"></i> Unlist
-                                    </button></a>
+                                    <a href="javascript:void(0);" onclick="confirmUnlist('<%= item._id %>')">
+                                        <button class="button_len btn btn-danger btn-sm">
+                                            <i class="nc-icon nc-simple-remove"></i> Unlist
+                                        </button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     <% }); %>
                 </div>
             </div>
+
+            <script>
+                function confirmUnlist(itemId) {
+                    Swal.fire({
+                        title: 'Are you sure unlist this item?',
+                        text: "",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, unlist it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/admin/unlistItem?id=' + itemId;
+                        }
+                    });
+                }
+            </script>
+            
             <script src="/admin/js/core/jquery.min.js"></script>
             <script src="/admin/js/core/popper.min.js"></script>
             <script src="/admin/js/core/bootstrap.min.js"></script>

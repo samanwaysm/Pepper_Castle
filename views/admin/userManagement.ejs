@@ -17,6 +17,8 @@
     <link href="/admin/css/bootstrap.min.css" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="/admin/demo/demo.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         .user-table {
             width: 100%;
@@ -186,93 +188,11 @@
             <script src="/admin/js/plugins/perfect-scrollbar.jquery.min.js"></script>
             <script src="/admin/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script>
             <script src="/admin/demo/demo.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         </div>
     </div>
 
     <script>
-        // $(document).ready(function () {
-        //     function debounce(func, delay) {
-        //         let timeout;
-        //         return function (...args) {
-        //             clearTimeout(timeout);
-        //             timeout = setTimeout(() => func.apply(this, args), delay);
-        //         };
-        //     }
-
-        //     // Fetch users initially or based on search
-        //     $('#search-input').on('keyup', debounce(function () {
-        //         const query = $(this).val();
-
-        //         if (query.length > 0) {
-        //             $.ajax({
-        //                 url: '/admin/searchUsers',
-        //                 method: 'GET',
-        //                 data: { query: query },
-        //                 success: function (data) {
-        //                     renderUsers(data);
-        //                 },
-        //                 error: function (err) {
-        //                     console.error("Error fetching users: ", err);
-        //                 }
-        //             });
-        //         } else {
-        //             $.ajax({
-        //                 url: '/admin/userManagementShow',
-        //                 method: 'GET',
-        //                 success: function (data) {
-        //                     renderUsers(data);
-        //                 },
-        //                 error: function (err) {
-        //                     console.error("Error fetching users: ", err);
-        //                 }
-        //             });
-        //         }
-        //     }, 300));
-
-        //     // Function to render users with block/unblock buttons
-        //     function renderUsers(data) {
-        //         $('.user-table tbody').empty();
-
-        //         data.forEach((user, index) => {
-        //             const buttonHtml = user.isBlocked === false
-        //                 ? `<button class="btn btn-danger btn-sm mng-btn action-btn" data-id="${user._id}" data-action="block">Block</button>`
-        //                 : `<button class="btn btn-success btn-sm mng-btn action-btn" data-id="${user._id}" data-action="unblock">Unblock</button>`;
-
-        //             $('.user-table tbody').append(`
-        //             <tr>
-        //                 <td>${index + 1}</td> <!-- Serial number -->
-        //                 <td>${user.username}</td>
-        //                 <td>${user.email}</td>
-        //                 <td>${user.phone}</td>
-        //                 <td class="action-buttons">
-        //                     ${buttonHtml} <!-- Dynamic button -->
-        //                 </td>
-        //             </tr>
-        //         `);
-        //         });
-
-        //         // Attach event listeners to the dynamically generated buttons
-        //         $('.action-btn').on('click', function () {
-        //             const userId = $(this).data('id');
-        //             const action = $(this).data('action');
-
-        //             // Call the updateUserStatus API
-        //             $.ajax({
-        //                 url: '/admin/updateUserStatus',
-        //                 method: 'POST',
-        //                 data: { userId: userId, action: action },
-        //                 success: function (response) {
-        //                     alert(response.message);
-        //                     $('#search-input').trigger('keyup'); // Re-trigger the search or reload users
-        //                 },
-        //                 error: function (err) {
-        //                     console.error('Error updating user status:', err);
-        //                 }
-        //             });
-        //         });
-        //     }
-        // });
-
 
         $(document).ready(function () {
             // Function to render users with block/unblock buttons

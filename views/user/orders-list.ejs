@@ -1,0 +1,1712 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pepper Castle</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&amp;family=Work+Sans:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.css">
+    <link rel='stylesheet' id='bootstrap-css' href='css/bootstrap/css/bootstrap.min.css' type='text/css' media='all' />
+    <!-- Font Awesome Icons CSS -->
+    <link rel='stylesheet' id='font-awesome' href='css/fontawesome/css/font-awesome.min.css' type='text/css'
+        media='all' />
+    <!-- Owl Carousel -->
+    <link rel='stylesheet' id='owl-carousel' href='js/owl-carousel/owl.carousel.min.css' type='text/css' media='all' />
+    <!-- Main CSS File -->
+    <link rel='stylesheet' id='caverta-style-css' href='/css/style.css' type='text/css' media='all' />
+    <!-- favicons -->
+    <link rel='stylesheet' id='caverta-style-css' href='/css/cart.css' type='text/css' media='all' />
+    <link rel="icon" href="/images/fav.png" sizes="32x32" />
+    <link rel="icon" href="/images/icons/favicon-192x192.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="/images/icons/favicon-180x180.png" />
+
+    <style>
+        /* Breadcrumb */
+        .breadcrumb {
+            margin: 20px;
+            font-size: 16px;
+        }
+
+        .breadcrumb a {
+            text-decoration: none;
+            color: #ff6600;
+        }
+
+        .breadcrumb span {
+            color: #555;
+        }
+
+        /* Profile Container */
+        .profile-container {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 95%;
+            margin: 40px auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        /* Sidebar */
+        .profile-sidebar {
+            width: 100%;
+            max-width: 400px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-sidebar .profile-image {
+            /* width: 120px; */
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+
+        .profile-sidebar h2 {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .profile-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .profile-menu li {
+            margin-bottom: 15px;
+        }
+
+        .profile-menu a {
+            text-decoration: none;
+            font-size: 18px;
+            color: #555;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .profile-menu a:hover,
+        .profile-menu .active {
+            background-color: #ff6600;
+            color: white;
+        }
+
+        /* Profile Details Section */
+        .profile-details {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            flex-grow: 2;
+            padding: 20px;
+            width: 100%;
+            margin: 2%;
+        }
+
+        .profile-details h2 {
+            font-size: 26px;
+            color: #333;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            /* Two equal columns */
+            gap: 20px;
+            /* Space between grid items */
+            /* max-width: 600px; */
+            margin: 0 auto;
+        }
+
+        /* Form Group Styles */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-group .error {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        /* Button Styles */
+        .save-btn {
+            background-color: #ff6600;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+            width: 30%;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+                /* Stack in one column for smaller screens */
+            }
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        /* Button Styles */
+        .save-btn {
+            background-color: #ff6600;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .save-btn:hover {
+            background-color: #ff6600;
+        }
+
+        @media (max-width: 1024px) {
+            .profile-container {
+                flex-direction: column;
+            }
+
+            .profile-details {
+                padding: 20px;
+                width: 100%;
+            }
+
+            .profile-sidebar {
+                max-width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .breadcrumb {
+                font-size: 14px;
+                margin: 10px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .profile-container {
+                flex-wrap: nowrap;
+            }
+
+            .profile-sidebar {
+                max-width: 300px;
+            }
+
+            .profile-details {
+                padding: 40px 60px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .profile-sidebar {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .profile-details {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .breadcrumb {
+                font-size: 14px;
+                margin: 10px;
+            }
+
+            .profile-sidebar {
+                padding: 20px;
+            }
+
+            .profile-details h2 {
+                font-size: 22px;
+            }
+
+            .save-btn {
+                padding: 10px 15px;
+            }
+        }
+
+        .fa-user {
+            color: #ff6600;
+        }
+
+        .id-span{
+            color: #333;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .order-span{
+            color: #1d1c1c;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+
+        /* .order-p{
+            margin-left: 5px;
+        } */
+        /* Order List Styles */
+        .hh-grayBox {
+    background-color: #F8F8F8;
+    margin-bottom: 20px;
+    padding: 35px;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pt45 {
+    padding-top: 45px;
+}
+
+.order-tracking {
+    text-align: center;
+    width: 25%;
+    position: relative;
+    display: block;
+}
+
+.order-tracking .is-complete {
+    display: block;
+    position: relative;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    background-color: #f7be16;
+    margin: 0 auto;
+    transition: background 0.25s linear;
+    z-index: 2;
+}
+
+.order-tracking.completed .is-complete {
+    background-color: #27aa80;
+}
+
+.order-tracking.processing .is-complete {
+    background-color: orange;
+}
+
+.order-tracking::before {
+    content: '';
+    display: block;
+    height: 3px;
+    width: calc(100% - 40px);
+    background-color: #f7be16;
+    top: 13px;
+    position: absolute;
+    left: calc(-50% + 20px);
+    z-index: 0;
+}
+
+.order-tracking:first-child:before {
+    display: none;
+}
+
+.order-tracking.completed::before {
+    background-color: #27aa80;
+}
+
+.order-tracking.processing::before {
+    background-color: orange;
+}
+
+.order-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Adjust for smaller screens */
+}
+
+.item h6 {
+    color: black;
+    font-size: 18px;
+}
+
+.order-summary h6 {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.view-details-btn {
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.view-details-btn:hover {
+    background-color: #ff6600;
+}
+
+.items-list {
+    margin-top: 10px;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.item-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+/* Responsive CSS */
+@media (max-width: 768px) {
+    .order-tracking {
+        width: 100%;  /* Full width tracking on smaller screens */
+        margin-bottom: 20px;
+    }
+
+    .order-summary {
+        flex-direction: column; /* Stack elements vertically */
+        text-align: center; /* Center content on small screens */
+    }
+
+    .item-image {
+        width: 80px;
+        height: 80px; /* Adjust image size for smaller screens */
+    }
+
+    .view-details-btn {
+        width: 100%;  /* Full width button on small screens */
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .item {
+        flex-direction: column; /* Stack image and text vertically */
+        text-align: center;
+    }
+
+    .item-image {
+        margin-bottom: 10px;
+    }
+
+    .order-summary h6, .item h6 {
+        font-size: 14px; /* Reduce font size for smaller screens */
+    }
+
+    .hh-grayBox {
+        padding: 20px; /* Reduce padding on very small screens */
+    }
+}
+
+
+
+        /* .hh-grayBox {
+            background-color: #F8F8F8;
+            margin-bottom: 20px;
+            padding: 35px;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .pt45 {
+            padding-top: 45px;
+        }
+
+        .order-tracking {
+            text-align: center;
+            width: 33.33%;
+            position: relative;
+            display: block;
+        }
+
+        .order-tracking .is-complete {
+            display: block;
+            position: relative;
+            border-radius: 50%;
+            height: 30px;
+            width: 30px;
+            border: 0px solid #AFAFAF;
+            background-color: #f7be16;
+            margin: 0 auto;
+            transition: background 0.25s linear;
+            z-index: 2;
+        }
+
+        .order-tracking .is-complete:after {
+            display: block;
+            position: absolute;
+            content: '';
+            height: 14px;
+            width: 7px;
+            top: -2px;
+            bottom: 0;
+            left: 5px;
+            margin: auto 0;
+            border: 0px solid #AFAFAF;
+            border-width: 0px 2px 2px 0;
+            transform: rotate(45deg);
+            opacity: 0;
+        }
+
+        .order-tracking.completed .is-complete {
+            border-color: #27aa80;
+            background-color: #27aa80;
+        }
+
+        .order-tracking.completed .is-complete:after {
+            border-color: #fff;
+            border-width: 0px 3px 3px 0;
+            width: 7px;
+            left: 11px;
+            opacity: 1;
+        }
+
+        .order-tracking p {
+            color: #A4A4A4;
+            font-size: 16px;
+            margin-top: 8px;
+            margin-bottom: 0;
+            line-height: 20px;
+        }
+
+        .order-tracking p span {
+            font-size: 14px;
+        }
+
+        .order-tracking.completed p {
+            color: #000;
+        }
+
+        .order-tracking::before {
+            content: '';
+            display: block;
+            height: 3px;
+            width: calc(100% - 40px);
+            background-color: #f7be16;
+            top: 13px;
+            position: absolute;
+            left: calc(-50% + 20px);
+            z-index: 0;
+        }
+
+        .order-tracking:first-child:before {
+            display: none;
+        }
+
+        .order-tracking.completed:before {
+            background-color: #27aa80;
+        }
+
+        /* Order List Styles */
+        .order-item {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .order-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .order-summary h6 {
+            margin: 0;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .order-summary p {
+            margin: 5px 0;
+            color: #666;
+        }
+
+        .view-details-btn {
+            background-color: #ff6600;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .view-details-btn:hover {
+            background-color: #ff6600;
+        }
+
+        .order-details {
+            margin-top: 15px;
+        }
+
+        .items-list {
+            display: flex;
+            flex-direction: column;
+            margin-top: 10px;
+        }
+
+        /* Item Styles */
+        .item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .item-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .order-tracking {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .order-item {
+                padding: 10px;
+            }
+
+            .order-summary h5 {
+                font-size: 16px;
+            }
+
+            .view-details-btn {
+                width: 100%;
+            }
+        } */
+
+
+
+
+        /* 
+        .hh-grayBox {
+    background-color: #F8F8F8;
+    margin-bottom: 20px;
+    padding: 35px;
+    margin-top: 20px;
+    border-radius: 8px;
+}
+
+.order-item {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.order-summary {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.order-details {
+    display: none;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.item-image {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.order-tracking {
+    text-align: center;
+    width: 33.33%;
+    position: relative;
+}
+
+.order-tracking .is-complete {
+    display: block;
+    position: relative;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    border: 0 solid #AFAFAF;
+    background-color: #f7be16;
+    margin: 0 auto;
+    transition: background 0.25s linear;
+    z-index: 2;
+}
+
+.order-tracking.completed .is-complete {
+    border-color: #27aa80;
+    background-color: #27aa80;
+}
+
+.order-tracking p {
+    color: #A4A4A4;
+    font-size: 16px;
+    margin-top: 8px;
+    margin-bottom: 0;
+    line-height: 20px;
+}
+
+.order-tracking.completed p {
+    color: #000;
+}
+
+@media (max-width: 768px) {
+    .order-summary {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .order-tracking {
+        width: 100%;
+    }
+} */
+
+
+
+
+
+        /* .order-item {
+            border: 1px solid #ccc;
+            padding: 16px;
+            margin-bottom: 16px;
+            border-radius: 8px;
+        }
+
+        .items-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .item {
+            flex: 1 1 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .item-image {
+            width: 100%;
+            max-width: 80px;
+            height: auto;
+            margin-right: 16px;
+        }
+
+        @media (min-width: 768px) {
+            .item {
+                flex: 1 1 calc(33.333% - 16px);
+            }
+        } */
+    </style>
+
+</head>
+
+<body class="home">
+    <div class="menu-mask"></div>
+    <!-- MOBILE MENU HOLDER -->
+    <div class="mobile-menu-holder">
+        <div class="modal-menu-container">
+            <div class="exit-mobile">
+                <span class="icon-bar1"></span>
+                <span class="icon-bar2"></span>
+            </div>
+            <!-- MOBILE MENU -->
+            <ul class="menu-mobile">
+                <li class="menu-item menu-item-has-children">
+                    <a href="#">Home</a>
+                </li>
+                <li class="menu-item menu-item-has-children">
+                    <a href="about.html">About</a>
+                </li>
+                <li class="menu-item menu-item-has-children">
+                    <a href="testimonials.html">Testimonials</a>
+                </li>
+                <li class="menu-item menu-item-has-children current-menu-item">
+                    <a href="our-menu.html">Our Menu</a>
+                </li>
+                <li class="menu-item menu-item-has-children">
+                    <a href="contact.html">Contact</a>
+                </li>
+                <li class="menu-item menu-item-has-children">
+                    <a href="#">Sign Up</a>
+                </li>
+                <li class="menu-item menu-item-has-children">
+                    <a href="#"><i class="fas fa-cart-plus"></i></a>
+                </li>
+            </ul>
+            <!-- /MOBILE MENU -->
+        </div>
+        <!-- modal-menu-container -->
+        <div class="menu-contact">
+            <div class="mobile-btn">
+                <a href="#" class="view-more">Order Now</a>
+            </div>
+            <ul class="mobile-contact">
+                <li class="mobile-address">58 Ralph Ave<br />
+                    New York, New York 1111
+                </li>
+                <li class="mobile-phone">+1 800 000 111</li>
+                <li class="mobile-email"><a href="#" class="__cf_email__"
+                        data-cfemail="01626e6f75606275416479606c716d642f626e6c">[email&#160;protected]</a></li>
+            </ul>
+            <ul class="social-media">
+                <li><a class="social-facebook" href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                <li><a class="social-instagram" href="https://www.instagram.com/pepper_castle_/?igshid=eddejyohhgwd"
+                        target="_blank"><i class="fab fa-instagram"></i></a></li>
+            </ul>
+        </div>
+        <!-- /menu-contact-->
+    </div>
+    <!-- /MOBILE MENU HOLDER -->
+    <!-- HEADER -->
+    <header id="header-1" class="headerHolder header-1 nav-fixed-top-cart">
+        <div class="nav-button-holder">
+            <button type="button" class="nav-button">
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <!-- /nav-button-holder-->
+        <!-- LOGO -->
+        <div class="logo logo-1"><a href="index.html"><img class="img-fluid" src="/images/Pepper-Castle_White.png"
+                    alt="Caverta" /></a></div>
+        <!-- MENU -->
+        <nav class="nav-holder nav-holder-1">
+            <ul class="menu-nav menu-nav-1">
+                <li class="menu-item menu-item-has-children">
+                    <a href="/">Home</a>
+                </li>
+                <li class="menu-item menu-item-has-children">
+                    <a href="/about">About</a>
+                </li>
+                <li class="menu-item menu-item-has-children">
+                    <a href="/testimonials">Testimonials</a>
+                </li>
+                <li class="menu-item menu-item-has-children">
+                    <a href="/our-menu">Our Menu</a>
+                </li>
+                <li class="menu-item menu-item-has-children">
+                    <a href="/contact">Contact</a>
+                </li>
+            </ul>
+        </nav>
+        <!-- /MENU -->
+        <div class="social-btn-top1">
+            <% if(!isUserAuth){ %>
+                <ul class="social-media social-media1 login-signup">
+                    <li class="menu-item menu-item-has-children">
+                        <!-- <a href="/signin">SignIn</a> -->
+                    </li>
+                </ul>
+                <% }else{ %>
+                    <ul class=" menu-nav menu-nav-1"></ul>
+                    <li class="menu-item menu-item-has-children list-unstyled" style="margin-left: 50px;">
+                        <a class="icon-link-white" href="profile"><i class="fas fa-user"></i></a>
+                    </li>
+                    <li class="menu-item menu-item-has-children list-unstyled current-menu-item"
+                        style="margin-left: 30px;margin-right: 30px;">
+                        <a class="icon-link-white" href="/cart"><i class="fas fa-cart-plus" id="cartIcon"></i></a>
+                    </li>
+                    </ul>
+                    <% } %>
+                        <% if(!isUserAuth){ %>
+                            <div class="btn-header btn-header1 profile-cart-btns">
+                                <a href="/signin" class="view-more">Order Now</a>
+                            </div>
+                            <% }else{ %>
+                                <div class="btn-header btn-header1 profile-cart-btns">
+                                    <a href="/our-menu" class="view-more">Order Now</a>
+                                </div>
+                                <% } %>
+        </div>
+        <!-- /social-btn-top1 -->
+    </header>
+    <!-- WRAP CONTENT -->
+    <div class="breadcrumb">
+        <a href="/">Home</a> &gt; <span>My Account</span>
+    </div>
+
+    <div class="profile-container">
+        <div class="profile-sidebar">
+            <!-- <img src="path_to_profile_image" alt="Profile" class="profile-image" /> -->
+            <h2 class="profile-name">
+                <%= username %>
+            </h2>
+            <ul class="profile-menu">
+                <li><a href="/profile">My Account</a></li>
+                <li><a href="/manage-address">Manage Address</a></li>
+                <li><a href="/order-history" class="active">Your Orders</a></li>
+                <li><a href="/change-password">Change Password</a></li>
+                <li><a href="/api/logout">Logout</a></li>
+            </ul>
+        </div>
+        <div class="profile-details">
+            <h2>Orders</h2>
+            <div class="order-summary">
+                <!-- <h6>Order</h6> -->
+                <!-- <p class="order-p">Status</p>
+                <p class="order-p">Items</p>
+                <p class="order-p">Price</p>
+                <p class="order-p">View Details</p> -->
+            </div>
+            <div id="order-list">
+                <!-- Orders will be appended here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+
+    <!-- /WRAP CONTENT -->
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-widgets">
+                <div class="row">
+                    <!-- FOOTER COLUMN 1 -->
+                    <div class="col-md-4">
+                        <div class="foo-block">
+                            <div id="text-2" class="widget widget-footer widget_text">
+                                <div class="textwidget">
+                                    <p><img class="size-full wp-image-665" src="/images/Pepper-Castle_White.png" alt=""
+                                            width="250" height="51"></p>
+                                    <p>We offer such food connoisseurs the very best of North Indian cuisine that is
+                                        healthy, tasty, and free from additives.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--foo-block-->
+                    </div>
+                    <!--col-md-3-->
+                    <!-- FOOTER COLUMN 2 -->
+                    <div class="col-md-3">
+                        <div class="foo-block">
+                            <div id="text-3" class="widget widget-footer widget_text">
+                                <h5 class="widgettitle"><span>Address</span></h5>
+                                <div class="textwidget">
+                                    <p>33 Lorong liput<br> 277744 Singapore
+                                    </p>
+                                    <p style="white-space: nowrap;"><i class="fas fa-phone-alt"></i>+65 97440747<br>
+                                        <i class="fas fa-envelope"></i><a href="#">peppercastle@hotmail.com</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--foo-block-->
+                    </div>
+                    <!--col-md-3-->
+
+                    <div class="col-md-3">
+                        <div class="foo-block foo-last">
+                            <div id="text-5" class="widget widget-footer widget_text">
+                                <h5 class="widgettitle"><span>Quick Links</span></h5>
+                                <div class="textwidget ftr-menu">
+                                    <ul>
+                                        <li><a href="index.html">-Home</a></li>
+                                        <li><a href="about.html">-About</a></li>
+                                        <li><a href="testimonials.html">-Testimonials</a></li>
+                                        <li><a href="#">-Our Menu</a></li>
+                                        <li><a href="contact.html">-Contact</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!--foo-block-->
+                    </div>
+                    <!-- FOOTER COLUMN 3 -->
+                    <div class="col-md-2">
+                        <div class="foo-block">
+                            <div id="text-4" class="widget widget-footer widget_text">
+                                <h5 class="widgettitle"><span>Hours</span></h5>
+                                <div class="textwidget">
+                                    <p style="white-space: nowrap;">Monday – Sunday<br>
+                                        11:00 AM - 11:00 PM
+                                    </p>
+                                </div>
+                                <ul class="footer-social">
+                                    <li><a class="social-facebook" href="#" target="_blank"><i
+                                                class="fab fa-facebook-f"></i></a></li>
+                                    <li><a class="social-instagram"
+                                            href="https://www.instagram.com/pepper_castle_/?igshid=eddejyohhgwd"
+                                            target="_blank"><i class="fab fa-instagram"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!--foo-block-->
+                    </div>
+                    <!--col-md-3-->
+                    <!-- FOOTER COLUMN 4 -->
+
+                    <!--col-md-3-->
+                </div>
+                <!--row-->
+            </div>
+            <!-- footer-widgets -->
+            <div class="copyright">
+                <!-- COPYRIGHT -->
+                <div class="footer-copy">
+                    <p>© 2023 - Pepper Castle. All Rights Reserved.</p>
+                </div>
+                <!-- SOCIAL ICONS -->
+
+            </div>
+            <!--copyright-->
+        </div>
+        <!--container-->
+    </footer>
+    <!-- /FOOTER -->
+    <div class="scrollup">
+        <a class="scrolltop" href="#">
+            <i class="fa fa-chevron-up"></i>
+        </a>
+    </div>
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        const userId = `<%= userId %>`;
+        $(document).ready(function () {
+            updateCartCount();
+        });
+
+        function updateCartCount() {
+            const userId = `<%= userId %>`;  // Make sure userId is defined here
+            if (!userId) {
+                console.error("userId is not defined!");
+                return;
+            }
+
+            $.ajax({
+                url: '/api/itemCount',
+                method: 'GET',
+                data: { userId: userId },
+                success: function (response) {
+                    console.log("Cart Count Response:", response);
+                    cartCountDisplay(response.cartItemCount);  // Pass the cart item count directly
+                },
+                error: function () {
+                    console.error("Error fetching cart count");
+                }
+            });
+        }
+
+        function cartCountDisplay(cartItemCount) {
+            const cartIcon = document.getElementById('cartIcon');
+
+            // Remove any existing counter to avoid duplication
+            const existingCounter = cartIcon.querySelector('span');
+            if (existingCounter) {
+                cartIcon.removeChild(existingCounter);
+            }
+
+            // Create a new span element for the cart count
+            const counter = document.createElement('span');
+            counter.style.position = 'absolute';
+            counter.style.borderRadius = '50%';
+            counter.style.backgroundColor = 'var(--headings-color)';
+            counter.style.width = '14px';
+            counter.style.height = '14px';
+            counter.style.top = '20px';
+            // counter.style.right = '0'; 
+            counter.style.textAlign = 'center';
+            counter.style.lineHeight = '15px';
+            counter.style.fontSize = '10px';
+            counter.style.color = '#fff';
+            counter.textContent = cartItemCount;  // Use the count returned from the server
+
+            // Append the counter to the cart icon
+            cartIcon.appendChild(counter);
+        }
+
+
+
+        //         document.addEventListener('DOMContentLoaded', function () {
+        //             const userId = '<%= userId %>';  // Assuming userId is passed to the front-end
+        //             fetchOrders(userId);
+        //         });
+
+        //         function fetchOrders(userId) {
+        //     fetch(`/api/orderslist?userId=${userId}`)
+        //         .then(response => {
+        //             if (!response.ok) {
+        //                 throw new Error('Network response was not ok');
+        //             }
+        //             return response.json();
+        //         })
+        //         .then(data => {
+        //             const orderList = document.getElementById('order-list');
+        //             orderList.innerHTML = '';  // Clear previous content
+        //             if (data.orders.length === 0) {
+        //                 orderList.innerHTML = '<p>No orders found.</p>';
+        //                 return;
+        //             }
+        //             data.orders.forEach(order => {
+        //                 const orderDiv = document.createElement('div');
+        //                 orderDiv.classList.add('order-item');
+        //                 orderDiv.innerHTML = `
+        //                     <h5>Order ID: ${order.orderId}</h5>
+        //                     <p>Date: ${new Date(order.createdAt)}</p>
+        //                     <p>Status: ${order.status}</p>
+        //                     <p>Total Price: $${order.total}</p>
+        //                     <button class="view-details-btn" data-order-id="${order.id}">View Details</button>
+        //                     <div class="order-details" id="details-${order.id}" style="display:none;">
+        //                         <p>Items Purchased:</p>
+        //                         <div class="items-list">
+        //                             ${order.items.map(item => `
+        //                                 <div class="item">
+        //                                     <img src="${item.image[0]}" alt="${item.name}" class="item-image" />
+        //                                     <span>${item.item} - $${item.price}</span>
+        //                                 </div>
+        //                             `).join('')}
+        //                         </div>
+        //                         <p>Shipping Address: ${order.shippingAddress}</p>
+        //                         <p>Payment Method: ${order.paymentMethod}</p>
+        //                     </div>
+        //                 `;
+        //                 orderList.appendChild(orderDiv);
+
+        //                 // Add event listener for 'View Details' button
+        //                 orderDiv.querySelector('.view-details-btn').addEventListener('click', function () {
+        //                     const detailsDiv = document.getElementById(`details-${order.id}`);
+        //                     detailsDiv.style.display = detailsDiv.style.display === 'none' ? 'block' : 'none';
+        //                 });
+        //             });
+        //         })
+        //         .catch(error => console.error('Error fetching orders:', error));
+        // }
+
+
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     const userId = '<%= userId %>';  // Assuming userId is passed to the front-end
+        //     fetchOrders(userId);
+        // });
+
+        // function fetchOrders(userId) {
+        //     fetch(`/api/orderslist?userId=${userId}`)
+        //         .then(response => {
+        //             if (!response.ok) {
+        //                 throw new Error('Network response was not ok');
+        //             }
+        //             return response.json();
+        //         })
+        //         .then(data => {
+        //             const orderList = document.getElementById('order-list');
+        //             orderList.innerHTML = '';  // Clear previous content
+
+        //             if (data.orders.length === 0) {
+        //                 orderList.innerHTML = '<p>No orders found.</p>';
+        //                 return;
+        //             }
+
+        //             data.orders.forEach(order => {
+        //                 const orderDiv = document.createElement('div');
+        //                 orderDiv.classList.add('order-item');
+        //                 orderDiv.innerHTML = `
+        //             <div class="order-summary">
+        //                 <h5>Order ID: ${order.orderId}</h5>
+        //                 <p>Status: ${order.status}</p>
+        //                 <p>Order Time: ${new Date(order.createdAt).toLocaleString()}</p>
+        //                 <p>Total Price: $${order.total}</p>
+        //                 <button class="view-details-btn" data-order-id="${order.id}">View Details</button>
+        //             </div>
+        //             <div class="order-details" id="details-${order.id}" style="display:none;">
+        //                 <p>Items Purchased:</p>
+        //                 <div class="items-list">
+        //                     ${order.items.map(item => `
+        //                         <div class="item">
+        //                             <img src="${item.image}" alt="${item.name}" class="item-image" />
+        //                             <span>${item.name} - Quantity: ${item.quantity} - $${item.price}</span>
+        //                         </div>
+        //                     `).join('')}
+        //                 </div>
+        //                 <p>Shipping Address: ${order.shippingAddress}</p>
+        //                 <p>Payment Method: ${order.paymentMethod}</p>
+        //             </div>
+        //         `;
+        //                 orderList.appendChild(orderDiv);
+
+        //                 // Add event listener for 'View Details' button
+        //                 orderDiv.querySelector('.view-details-btn').addEventListener('click', function () {
+        //                     const detailsDiv = document.getElementById(`details-${order.id}`);
+        //                     detailsDiv.style.display = detailsDiv.style.display === 'none' ? 'block' : 'none';
+        //                 });
+        //             });
+        //         })
+        //         .catch(error => console.error('Error fetching orders:', error));
+        // }
+
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     const userId = '<%= userId %>';  // Assuming userId is passed to the front-end
+        //     fetchOrders(userId);
+        // });
+
+        // function fetchOrders(userId) {
+        //     fetch(`/api/orderslist?userId=${userId}`)
+        //         .then(response => {
+        //             if (!response.ok) {
+        //                 throw new Error('Network response was not ok');
+        //             }
+        //             return response.json();
+        //         })
+        //         .then(data => {
+        //             const orderList = document.getElementById('order-list');
+        //             orderList.innerHTML = '';  // Clear previous content
+
+        //             if (data.orders.length === 0) {
+        //                 orderList.innerHTML = '<p>No orders found.</p>';
+        //                 return;
+        //             }
+
+        //             data.orders.forEach(order => {
+        //                 const orderDiv = document.createElement('div');
+        //                 orderDiv.classList.add('order-item', 'hh-grayBox');
+        //                 orderDiv.innerHTML = `
+        //             <div class="order-summary">
+        //                 <h5>Order ID: ${order.orderId}</h5>
+        //                 <p>Status: ${order.status}</p>
+        //                 <p>Order Time: ${new Date(order.createdAt).toLocaleString()}</p>
+        //                 <p>Total Price: $${order.total}</p>
+        //                 <button class="view-details-btn" data-order-id="${order.id}">View Details</button>
+        //             </div>
+        //             <div class="order-details" id="details-${order.id}">
+        //                 <p>Items Purchased:</p>
+        //                 <div class="items-list">
+        //                     ${order.items.map(item => `
+        //                         <div class="item">
+        //                             <img src="${item.image[0]}" alt="${item.name}" class="item-image" />
+        //                             <span>${item.name} - Quantity: ${item.quantity} - $${item.price}</span>
+        //                         </div>
+        //                     `).join('')}
+        //                 </div>
+        //                 <p>Shipping Address: ${order.shippingAddress}</p>
+        //                 <p>Payment Method: ${order.paymentMethod}</p>
+        //             </div>
+        //             <div class="order-tracking-container">
+        //                 <div class="row justify-content-between">
+        //                     <div class="order-tracking completed">
+        //                         <span class="is-complete"></span>
+        //                         <p>Ordered<br><span>${new Date(order.createdAt).toLocaleDateString()}</span></p>
+        //                     </div>
+        //                     <div class="order-tracking ${order.status === 'Shipped' ? 'completed' : ''}">
+        //                         <span class="is-complete"></span>
+        //                         <p>Shipped<br><span>${new Date(order.shippedAt || order.createdAt).toLocaleDateString()}</span></p>
+        //                     </div>
+        //                     <div class="order-tracking ${order.status === 'Delivered' ? 'completed' : ''}">
+        //                         <span class="is-complete"></span>
+        //                         <p>Delivered<br><span>${new Date(order.deliveredAt || order.createdAt).toLocaleDateString()}</span></p>
+        //                     </div>
+        //                 </div>
+        //             </div>
+        //         `;
+        //                 orderList.appendChild(orderDiv);
+
+        //                 // Add event listener for 'View Details' button
+        //                 orderDiv.querySelector('.view-details-btn').addEventListener('click', function () {
+        //                     const detailsDiv = document.getElementById(`details-${order.id}`);
+        //                     detailsDiv.style.display = detailsDiv.style.display === 'none' ? 'block' : 'none';
+        //                 });
+        //             });
+        //         })
+        //         .catch(error => console.error('Error fetching orders:', error));
+        // }
+
+
+
+        //         document.addEventListener('DOMContentLoaded', function () {
+        //     const userId = '<%= userId %>';  // Assuming userId is passed to the front-end
+        //     fetchOrders(userId);
+        // });
+
+        // function fetchOrders(userId) {
+        //     fetch(`/api/orderslist?userId=${userId}`)
+        //         .then(response => {
+        //             if (!response.ok) {
+        //                 throw new Error('Network response was not ok');
+        //             }
+        //             return response.json();
+        //         })
+        //         .then(data => {
+        //             const orderList = document.getElementById('order-list');
+        //             orderList.innerHTML = '';  // Clear previous content
+
+        //             if (data.orders.length === 0) {
+        //                 orderList.innerHTML = '<p>No orders found.</p>';
+        //                 return;
+        //             }
+
+        //             data.orders.forEach(order => {
+        //                 const orderDiv = document.createElement('div');
+        //                 orderDiv.classList.add('order-item');
+        //                 orderDiv.innerHTML = `
+        //                     <div class="order-summary">
+        //                         <h5>Order ID: ${order.orderId}</h5>
+        //                         <p>Status: <span class="${getOrderStatusClass(order.status)}">${order.status}</span></p>
+        //                         <p>Order Time: ${new Date(order.createdAt).toLocaleString()}</p>
+        //                         <p>Total Price: $${order.total}</p>
+        //                         <button class="view-details-btn" data-order-id="${order.id}">View Details</button>
+        //                     </div>
+        //                     <div class="order-details" id="details-${order.id}" style="display:none;">
+        //                         <p>Items Purchased:</p>
+        //                         <div class="items-list">
+        //                             ${order.items.map(item => `
+        //                                 <div class="item">
+        //                                     <img src="${item.image}" alt="${item.name}" class="item-image" />
+        //                                     <span>${item.name} - Quantity: ${item.quantity} - $${item.price}</span>
+        //                                 </div>
+        //                             `).join('')}
+        //                         </div>
+        //                         <p>Shipping Address: ${order.shippingAddress}</p>
+        //                         <p>Payment Method: ${order.paymentMethod}</p>
+        //                     </div>
+        //                 `;
+        //                 orderList.appendChild(orderDiv);
+
+        //                 // Add event listener for 'View Details' button
+        //                 orderDiv.querySelector('.view-details-btn').addEventListener('click', function () {
+        //                     const detailsDiv = document.getElementById(`details-${order.id}`);
+        //                     detailsDiv.style.display = detailsDiv.style.display === 'none' ? 'block' : 'none';
+        //                 });
+        //             });
+        //         })
+        //         .catch(error => console.error('Error fetching orders:', error));
+        // }
+
+        // function getOrderStatusClass(status) {
+        //     switch (status.toLowerCase()) {
+        //         case 'completed':
+        //             return 'completed';
+        //         case 'shipped':
+        //             return 'shipped';
+        //         case 'pending':
+        //             return 'pending';
+        //         default:
+        //             return '';
+        //     }
+        // }
+
+
+        //--------------------------------------------
+
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     const userId = '<%= userId %>';  // Assuming userId is passed to the front-end
+        //     fetchOrders(userId);
+        // });
+
+        // function fetchOrders(userId) {
+        //     fetch(`/api/orderslist?userId=${userId}`)
+        //         .then(response => {
+        //             if (!response.ok) {
+        //                 throw new Error('Network response was not ok');
+        //             }
+        //             return response.json();
+        //         })
+        //         .then(data => {
+        //             const orderList = document.getElementById('order-list');
+        //             orderList.innerHTML = '';  // Clear previous content
+
+        //             if (data.orders.length === 0) {
+        //                 orderList.innerHTML = '<p>No orders found.</p>';
+        //                 return;
+        //             }
+
+        //             // Reverse the orders array
+        //             data.orders.reverse();
+
+        //             data.orders.forEach(order => {
+        //                 const orderDiv = document.createElement('div');
+        //                 orderDiv.classList.add('order-item');
+        //                 orderDiv.innerHTML = `
+        //             <div class="order-summary">
+        //                 <h6>Order ID: ${order.orderId}</h6>
+        //                 <p>Status: ${order.status}</p>
+        //                 <p>Price: $${order.totalAmount}</p>
+        //                 <p>Items:<br> ${order.items.map(item => `${item.item} <br> (Qty: ${item.quantity})`).join(', <br>')}</p>
+        //                 <button class="view-details-btn" data-order-id="${order.id}">View Details</button>
+        //             </div>
+        //             <div class="order-details" id="details-${order.id}" style="display:none;">
+        //                 <h2 class="text-center">Order Tracking</h2>
+        //                 <div class="container">
+        //                     <div class="row">
+        //                         <div class="col-12 col-md-12 hh-grayBox pt45 pb20">
+        //                             <div class="row justify-content-between">
+        //                                 <div class="order-tracking ${order.status === 'Ordered' ? 'completed' : ''}">
+        //                                     <span class="is-complete"></span>
+        //                                     <p>Ordered<br><span>${new Date(order.createdAt).toLocaleDateString()}</span></p>
+        //                                 </div>
+        //                                 <div class="order-tracking ${order.status === 'Shipped' || order.status === 'Delivered' ? 'completed' : ''}">
+        //                                     <span class="is-complete"></span>
+        //                                     <p>Shipped<br><span>${order.shippedDate ? new Date(order.shippedDate).toLocaleDateString() : 'Pending'}</span></p>
+        //                                 </div>
+        //                                 <div class="order-tracking ${order.status === 'Delivered' ? 'completed' : ''}">
+        //                                     <span class="is-complete"></span>
+        //                                     <p>Delivered<br><span>${order.deliveredDate ? new Date(order.deliveredDate).toLocaleDateString() : 'Pending'}</span></p>
+        //                                 </div>
+        //                             </div>
+        //                             <p>Items Purchased:</p>
+        //                             <div class="items-list">
+        //                                 ${order.items.map(item => `
+        //                                     <div class="item">
+        //                                         <img src="${item.image}" alt="${item.name}" class="item-image" />
+        //                                         <span>${item.name} - Quantity: ${item.quantity} - $${item.price}</span>
+        //                                     </div>
+        //                                 `).join('')}
+        //                             </div>
+        //                             <p>Shipping Address: ${order.shippingAddress}</p>
+        //                             <p>Payment Method: ${order.paymentMethod}</p>
+        //                         </div>
+        //                     </div>
+        //                 </div>
+        //             </div>
+        //         `;
+        //                 orderList.appendChild(orderDiv);
+
+        //                 // Add event listener for 'View Details' button
+        //                 orderDiv.querySelector('.view-details-btn').addEventListener('click', function () {
+        //                     const detailsDiv = document.getElementById(`details-${order.id}`);
+        //                     detailsDiv.style.display = detailsDiv.style.display === 'none' ? 'block' : 'none';
+        //                 });
+        //             });
+        //         })
+        //         .catch(error => console.error('Error fetching orders:', error));
+        // }
+
+
+
+
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     const userId = '<%= userId %>';  // Assuming userId is passed to the front-end
+        //     fetchOrders(userId);
+        // });
+
+        // function fetchOrders(userId) {
+        //     fetch(`/api/orderslist?userId=${userId}`)
+        //         .then(response => {
+        //             if (!response.ok) {
+        //                 throw new Error('Network response was not ok');
+        //             }
+        //             return response.json();
+        //         })
+        //         .then(data => {
+        //             const orderList = document.getElementById('order-list');
+        //             orderList.innerHTML = '';  // Clear previous content
+
+        //             if (data.orders.length === 0) {
+        //                 orderList.innerHTML = '<p>No orders found.</p>';
+        //                 return;
+        //             }
+
+        //             // Reverse the orders array
+        //             data.orders.reverse();
+
+        //             data.orders.forEach(order => {
+        //                 const orderDiv = document.createElement('div');
+        //                 orderDiv.classList.add('order-item');
+        //                 orderDiv.innerHTML = `
+        //         <div class="order-summary">
+        //             <h6>${order.orderId}</h6>
+        //             <p>${order.status}</p>
+        //             <p> ${order.items.map(item => `${item.item} (Qty: ${item.quantity})`).join(', <br>')}</p>
+        //             <p>$${order.totalAmount}</p>
+        //             <button class="view-details-btn" data-order-id="${order.id}">View Details</button>
+        //         </div>
+        //         <div class="order-details" id="details-${order.id}" style="display:none;">
+        //             <h2 class="text-center">Order Tracking</h2>
+        //             <div class="container">
+        //                 <div class="row">
+        //                     <div class="col-12 col-md-12 hh-grayBox pt45 pb20">
+        //                         <div class="row justify-content-between">
+        //                             <div class="order-tracking ${order.status === 'Ordered' ? 'completed' : ''}">
+        //                                 <span class="is-complete"></span>
+        //                                 <p>Ordered<br><span>${new Date(order.createdAt).toLocaleDateString()}</span></p>
+        //                             </div>
+        //                             <div class="order-tracking ${order.status === 'Shipped' || order.status === 'Delivered' ? 'completed' : order.status === 'Processing' ? 'processing' : ''}">
+        //                                 <span class="is-complete"></span>
+        //                                 <p>Shipped<br><span>${order.shippedDate ? new Date(order.shippedDate).toLocaleDateString() : 'Pending'}</span></p>
+        //                             </div>
+        //                             <div class="order-tracking ${order.status === 'Delivered' ? 'completed' : ''}">
+        //                                 <span class="is-complete"></span>
+        //                                 <p>Delivered<br><span>${order.deliveredDate ? new Date(order.deliveredDate).toLocaleDateString() : 'Pending'}</span></p>
+        //                             </div>
+        //                         </div>
+        //                         <p>Items Purchased:</p>
+        //                         <div class="items-list">
+        //                             ${order.items.map(item => `
+        //                                 <div class="item">
+        //                                     <img src="${item.image}" alt="${item.name}" class="item-image" />
+        //                                     <span>${item.name} - Quantity: ${item.quantity} - $${item.price}</span>
+        //                                 </div>
+        //                             `).join('')}
+        //                         </div>
+        //                         <p>Shipping Address: ${order.shippingAddress}</p>
+        //                         <p>Payment Method: ${order.paymentMethod}</p>
+        //                     </div>
+        //                 </div>
+        //             </div>
+        //         </div>
+        //         `;
+        //                 orderList.appendChild(orderDiv);
+
+        //                 // Add event listener for 'View Details' button
+        //                 orderDiv.querySelector('.view-details-btn').addEventListener('click', function () {
+        //                     const detailsDiv = document.getElementById(`details-${order.id}`);
+        //                     detailsDiv.style.display = detailsDiv.style.display === 'none' ? 'block' : 'none';
+        //                 });
+        //             });
+        //         })
+        //         .catch(error => console.error('Error fetching orders:', error));
+        // }
+
+
+
+    //     document.addEventListener('DOMContentLoaded', function () {
+    //     const userId = '<%= userId %>';  // Assuming userId is passed to the front-end
+    //     fetchOrders(userId);
+    // });
+
+    // function fetchOrders(userId) {
+    //     fetch(`/api/orderslist?userId=${userId}`)
+    //         .then(response => {
+    //             if (!response.ok) {
+    //                 throw new Error('Network response was not ok');
+    //             }
+    //             return response.json();
+    //         })
+    //         .then(data => {
+    //             const orderList = document.getElementById('order-list');
+    //             orderList.innerHTML = '';  // Clear previous content
+
+    //             if (data.orders.length === 0) {
+    //                 orderList.innerHTML = '<p>No orders found.</p>';
+    //                 return;
+    //             }
+
+    //             // Reverse the orders array
+    //             data.orders.reverse();
+
+    //             data.orders.forEach((order, index) => {
+    //                 const orderDiv = document.createElement('div');
+    //                 orderDiv.classList.add('order-item');
+    //                 orderDiv.innerHTML = `
+    //                     <div class="order-summary">
+    //                         <h6>Order ID: ${order.orderId}</h6>
+    //                         <p>Status: ${order.status}</p>
+    //                         <p>Price: $${order.totalAmount}</p>
+    //                         <p>Items:<br> ${order.items.map(item => `${item.item} <br> (Qty: ${item.quantity})`).join(', <br>')}</p>
+    //                         <button class="view-details-btn" data-order-id="${order.id}" id="btn-${index}">View Details</button>
+    //                     </div>
+    //                     <div class="order-details" id="details-${index}" style="display:none;">
+    //                         <h2 class="text-center">Order Tracking</h2>
+    //                         <div class="container">
+    //                             <div class="row">
+    //                                 <div class="col-12 col-md-12 hh-grayBox pt45 pb20">
+    //                                     <div class="row justify-content-between">
+    //                                         <div class="order-tracking ${order.status === 'Ordered' ? 'completed' : ''}">
+    //                                             <span class="is-complete"></span>
+    //                                             <p>Ordered<br><span>${new Date(order.createdAt).toLocaleDateString()}</span></p>
+    //                                         </div>
+    //                                         <div class="order-tracking ${order.status === 'Processing' ? 'completed' : ''}">
+    //                                             <span class="is-complete"></span>
+    //                                             <p>Processing<br><span>${order.processingDate ? new Date(order.processingDate).toLocaleDateString() : 'Pending'}</span></p>
+    //                                         </div>
+    //                                         <div class="order-tracking ${order.status === 'Shipped' ? 'completed' : ''}">
+    //                                             <span class="is-complete"></span>
+    //                                             <p>Shipped<br><span>${order.shippedDate ? new Date(order.shippedDate).toLocaleDateString() : 'Pending'}</span></p>
+    //                                         </div>
+    //                                         <div class="order-tracking ${order.status === 'Delivered' ? 'completed' : ''}">
+    //                                             <span class="is-complete"></span>
+    //                                             <p>Delivered<br><span>${order.deliveredDate ? new Date(order.deliveredDate).toLocaleDateString() : 'Pending'}</span></p>
+    //                                         </div>
+    //                                     </div>
+    //                                     <p class="mt-3" >Items Purchased:</p>
+    //                                     <div class="items-list mt-3">
+    //                                         ${order.items.map(item => `
+    //                                             <div class="item">
+    //                                                 <img src="${item.image}" alt="${item.name}" class="item-image" />
+    //                                                 <span>${item.name} - Quantity: ${item.quantity} - $${item.price}</span>
+    //                                             </div>
+    //                                         `).join('')}
+    //                                     </div>
+    //                                     <p>Shipping Address: ${order.shippingAddress}</p>
+    //                                     <p>Payment Method: ${order.paymentMethod}</p>
+    //                                 </div>
+    //                             </div>
+    //                         </div>
+    //                     </div>
+    //                 `;
+    //                 orderList.appendChild(orderDiv);
+
+    //                 // Add event listener for 'View Details' button using the index
+    //                 document.getElementById(`btn-${index}`).addEventListener('click', function () {
+    //                     const detailsDiv = document.getElementById(`details-${index}`);
+    //                     detailsDiv.style.display = detailsDiv.style.display === 'none' ? 'block' : 'none';
+    //                 });
+    //             });
+    //         })
+    //         .catch(error => console.error('Error fetching orders:', error));
+    // }
+
+    document.addEventListener('DOMContentLoaded', function () {
+    const userId = '<%= userId %>';  // Assuming userId is passed to the front-end
+    fetchOrders(userId);
+});
+
+function fetchOrders(userId) {
+    fetch(`/api/orderslist?userId=${userId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const orderList = document.getElementById('order-list');
+            orderList.innerHTML = '';  // Clear previous content
+
+            if (data.orders.length === 0) {
+                orderList.innerHTML = '<p>No orders found.</p>';
+                return;
+            }
+
+            // Reverse the orders array
+            data.orders.reverse();
+
+            data.orders.forEach((order, index) => {
+                const orderDiv = document.createElement('div');
+                orderDiv.classList.add('order-item');
+                orderDiv.innerHTML = `
+                    <div class="order-summary">
+                        <p>Order ID: <span class="id-span">${order.orderId}<span></p>
+                        <p>Status: ${order.status}</p>
+
+                        <p>Items:<br> ${order.items.map(item => `${item.item} (Qty: ${item.quantity})`).join(', <br>')}</p>
+                        <button class="view-details-btn" data-order-id="${order.id}" id="btn-${index}">View Details</button>
+                    </div>
+                    <div class="order-details" id="details-${index}" style="display:none;">
+                        <h2 class="text-center">Order Tracking</h2>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12 col-md-12 hh-grayBox pt45 pb20">
+                                    <div class="row justify-content-between">
+                                        <div class="order-tracking ${['Ordered', 'Processing', 'Shipped', 'Delivered'].indexOf(order.status) >= 0 ? 'completed' : ''}">
+                                            <span class="is-complete"></span>
+                                            <p>Ordered<br>
+                                        </div>
+                                        <div class="order-tracking ${['Processing', 'Shipped', 'Delivered'].indexOf(order.status) >= 0 ? 'completed' : ''}">
+                                            <span class="is-complete"></span>
+                                            <p>Processing<br></p>
+                                        </div>
+                                        <div class="order-tracking ${['Shipped', 'Delivered'].indexOf(order.status) >= 0 ? 'completed' : ''}">
+                                            <span class="is-complete"></span>
+                                            <p>Shipped<br></p>
+                                        </div>
+                                        <div class="order-tracking ${order.status === 'Delivered' ? 'completed' : ''}">
+                                            <span class="is-complete"></span>
+                                            <p>Delivered<br></p>
+                                        </div>
+                                    </div>
+                                    <p class="mt-5" >Items Purchased:</p>
+                                    <div class="items-list mt-3">
+                                        ${order.items.map(item => `
+                                            <div class="item">
+                                                <img src="${item.image}" alt="${item.name}" class="item-image" /><br>
+                                                <h6>${item.item}</h6> &nbsp;&nbsp;&nbsp;&nbsp; <span> Quantity: ${item.quantity}  &nbsp;&nbsp;&nbsp;&nbsp;  Price: S$${item.price}</span>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                    <p class="mt-5">Total Amound: <span class="id-span">S$${order.totalAmount}</span></p>
+                                    <p>Shipping Address: <span class="order-span"> ${order.address.structuredAddress}</span></p>
+                                    <p>Payment Method: <span class="id-span">${order.paymentMethod === 'cod' ? 'Cash On Delivery' : 'Online'}</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                orderList.appendChild(orderDiv);
+
+                // Add event listener for 'View Details' button using the index
+                document.getElementById(`btn-${index}`).addEventListener('click', function () {
+                    const detailsDiv = document.getElementById(`details-${index}`);
+                    detailsDiv.style.display = detailsDiv.style.display === 'none' ? 'block' : 'none';
+                });
+            });
+        })
+        .catch(error => console.error('Error fetching orders:', error));
+}
+
+
+    </script>
+
+    <!-- Removed redundant jQuery script -->
+    <!-- <script src='js/jquery.js'></script> -->
+    <script src='js/jquery-migrate.min.js'></script>
+    <script src='css/bootstrap/js/popper.min.js'></script>
+    <script src='css/bootstrap/js/bootstrap.min.js'></script>
+    <script src='js/jquery.easing.min.js'></script>
+    <script src='js/jquery.fitvids.js'></script>
+    <script src='js/owl-carousel/owl.carousel.min.js'></script>
+    <script src='js/jquery.magnific-popup.min.js'></script>
+    <!-- MAIN JS -->
+    <script src='js/init.js'></script>
+    <!-- CONTACT FORM JS -->
+    <script src='js/jquery.form.min.js'></script>
+    <script src='js/contactform-home.js'></script>
+
+</body>
+
+</html>

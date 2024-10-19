@@ -212,3 +212,12 @@
 .breadcrumb-current {
   color: #6c757d; /* Secondary text color for current page */
 }
+
+.error{
+  color: red;
+  margin-left: 5px;
+}
+
+.button_len{
+  width: 100px;
+}

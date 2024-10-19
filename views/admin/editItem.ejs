@@ -1,63 +1,65 @@
-<!--
-=========================================================
-* Paper Dashboard 2 - v2.0.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/paper-dashboard-2
-* Copyright 2020 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <link rel="apple-touch-icon" sizes="76x76" href="/admin/img/apple-icon.png">
     <link rel="icon" type="image/png" href="images/fav.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>
-        Pepper Castle Admin
-    </title>
-    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
-        name='viewport' />
-    <!--     Fonts and icons     -->
-    <!-- <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" /> -->
+    <title>Pepper Castle Admin</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
-    <!-- CSS Files -->
     <link href="/admin/css/bootstrap.min.css" rel="stylesheet" />
     <link href="/admin/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
-    <!-- <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" /> -->
-    <link href="/admin/css/bootstrap.min.css" rel="stylesheet" />
-    <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="/admin/demo/demo.css" rel="stylesheet" />
     <style>
-        .image-preview {
+        .image-preview-container {
+            position: relative;
             display: flex;
-            align-items: center;
-            justify-content: space-between;
+            align-items: flex-start;
             margin-top: 10px;
         }
 
+        .image-preview {
+            position: relative; /* To position the close button */
+            margin-right: 20px; /* Space between image and other form elements */
+        }
+
         .image-preview img {
-            max-width: 150px;
+            max-width: 200px; /* Adjust image size */
             border-radius: 10px;
         }
 
-        .image-preview .remove-btn {
-            background-color: #ff0000;
+        .image-name {
+            font-weight: bold;
+            text-align: center; /* Center the image name */
+            margin-bottom: 5px; /* Space between name and image */
+        }
+
+        .remove-btn {
+            background-color: #ff0000; /* Red background */
             color: white;
             border: none;
             padding: 5px 10px;
             cursor: pointer;
+            font-size: 14px;
+            border-radius: 50%; /* Make it circular */
+            position: absolute; /* Position it absolutely */
+            top: 5px; /* Adjust as needed */
+            right: 5px; /* Adjust as needed */
+            display: none; /* Initially hidden */
+        }
+
+        .change-image-btn {
+            margin-top: 10px; /* Space between image and button */
+            display: block; /* Make the button a block element */
+            width: 20%; /* Full width */
+        }
+        .error{
+            color: #ff0000;
+            margin-left: 5px;
         }
     </style>
 </head>
-
 <body class="">
     <div class="wrapper ">
         <div class="sidebar" data-color="white" data-active-color="danger">
@@ -66,80 +68,28 @@ Coded by www.creative-tim.com
                     <div class="logo-image-small">
                         <img src="images/fav.png">
                     </div>
-                    <!-- <p>CT</p> -->
                 </a>
-                <a href="https://www.creative-tim.com" class="simple-text logo-normal">
-                    Pepper Castle
-                    <!-- <div class="logo-image-big">
-            <img src="/admin/img/logo-big.png">
-          </div> -->
-                </a>
+                <a href="https://www.creative-tim.com" class="simple-text logo-normal">Pepper Castle</a>
             </div>
             <div class="sidebar-wrapper">
                 <ul class="nav">
-                    <li>
-                        <a href="/dashboard">
-                            <i class="nc-icon nc-bank"></i>
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/orderManagement">
-                            <i class="nc-icon nc-bag-16"></i>
-                            <p>Order Management</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/userManagement">
-                            <i class="nc-icon nc-single-02"></i>
-                            <p>User Management</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/categoryManagement">
-                            <i class="nc-icon nc-minimal-down"></i>
-                            <p>Category Management</p>
-                        </a>
-                    </li>
-                    <li class="active">
-                        <a href="/itemManagement">
-                            <i class="nc-icon nc-tile-56"></i>
-                            <p>Item Management</p>
-                        </a>
-                    </li>
-                    <li class="active-pro">
-                        <a href="./upgrade.html">
-                            <i class="nc-icon nc-simple-remove"></i>
-                            <p>Logout</p>
-                        </a>
-                    </li>
+                    <li><a href="/dashboard"><i class="nc-icon nc-bank"></i><p>Dashboard</p></a></li>
+                    <li><a href="/orderManagement"><i class="nc-icon nc-bag-16"></i><p>Order Management</p></a></li>
+                    <li><a href="/userManagement"><i class="nc-icon nc-single-02"></i><p>User Management</p></a></li>
+                    <li><a href="/categoryManagement"><i class="nc-icon nc-minimal-down"></i><p>Category Management</p></a></li>
+                    <li class="active"><a href="/itemManagement"><i class="nc-icon nc-tile-56"></i><p>Item Management</p></a></li>
+                    <li class="active-pro"><a href="/admin/logout"><i class="nc-icon nc-simple-remove"></i><p>Logout</p></a></li>
                 </ul>
             </div>
         </div>
         <div class="main-panel">
-            <!-- Navbar -->
             <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
                 <div class="container-fluid">
                     <div class="navbar-wrapper">
-                        <div class="navbar-toggle">
-                            <button type="button" class="navbar-toggler">
-                                <span class="navbar-toggler-bar bar1"></span>
-                                <span class="navbar-toggler-bar bar2"></span>
-                                <span class="navbar-toggler-bar bar3"></span>
-                            </button>
-                        </div>
                         <a class="navbar-brand" href="javascript:;">Item Management</a>
                     </div>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
-                        aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-bar navbar-kebab"></span>
-                        <span class="navbar-toggler-bar navbar-kebab"></span>
-                        <span class="navbar-toggler-bar navbar-kebab"></span>
-                    </button>
-
                 </div>
             </nav>
-            <!-- End Navbar -->
             <div class="content">
                 <div class="row">
                     <div class="col-md-12">
@@ -148,71 +98,71 @@ Coded by www.creative-tim.com
                                 <h5 class="card-title">Add Item</h5>
                             </div>
                             <div class="card-body">
-                                <form action="/admin/addItem" method="POST" enctype="multipart/form-data" novalidate>
-                                    <!-- Item Name -->
+                                <form action="/admin/editItem?id=<%= item._id %>" method="POST" enctype="multipart/form-data" novalidate>
                                     <div class="row">
                                         <div class="col-md-6 pr-1">
                                             <div class="form-group">
                                                 <label>Item Name</label>
-                                                <input type="text" class="form-control h-25"  placeholder="Enter Item Name" name="item"/>
+                                                <input type="text" class="form-control h-25" value="<%= item.item %>" placeholder="Enter Item Name" name="item"/>
+                                                <% if (errors && errors.item) { %>
+                                                    <span class="error"><%= errors.item %></span>
+                                                <% } %>
                                             </div>
                                         </div>
-
-                                        <!-- Category Dropdown -->
                                         <div class="col-md-6 pl-1">
                                             <div class="form-group">
                                                 <label>Category</label>
                                                 <select class="form-control h-25" name="category">
-                                                    <option value="">Select Category</option>
+                                                    <option value="<%= item.category %>"><%= item.category %></option>
                                                     <% for(let i = 0; i < category.length; i++) { %>
                                                         <option value="<%= category[i].category %>"><%= category[i].category %></option>
                                                     <% } %>
                                                 </select>
+                                                <% if (errors && errors.category) { %>
+                                                    <span class="error"><%= errors.category %></span>
+                                                <% } %>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!-- Price -->
                                     <div class="row">
                                         <div class="col-md-6 pr-1">
                                             <div class="form-group">
                                                 <label>Price</label>
-                                                <input type="any" class="form-control" placeholder="Enter Price" name="price"/>
+                                                <input type="number" class="form-control" value="<%= item.price %>" placeholder="Enter Price" name="price"/>
+                                                <% if (errors && errors.price) { %>
+                                                    <span class="error"><%= errors.price %></span>
+                                                <% } %>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!-- Description -->
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>Description</label>
-                                                <textarea class="form-control"
-                                                    placeholder="Enter Description" name="description"></textarea>
+                                                <textarea class="form-control" placeholder="Enter Description" name="description"><%= item.description %></textarea>
+                                                <% if (errors && errors.description) { %>
+                                                    <span class="error"><%= errors.description %></span>
+                                                <% } %>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!-- Image File Input -->
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <div class="mb-3">
-                                                    <label for="image" class="form-label">Image</label>
-                                                    <input class="form-control border border-dark" type="file" name="image" id="imageInput">
-                                                    <p class="err-msg d-flex justify-content-end" id="errorElement2" style="color: red; font-size: 14px;"></p>
-                                                    
-                                                    <!-- Image Preview Container -->
-                                                    <div class="position-relative mt-2">
-                                                        <img id="imagePreview" src="#" alt="Preview" style="width: 200px; display: none;">
-                                                        <button type="button" id="deleteImageBtn" style="position: absolute; top: 5px; right: 5px; display: none; background-color: transparent; border: none; cursor: pointer; font-size: 14px;">X</button>
+                                                <label for="image" class="form-label">Image</label>
+                                                <div class="image-preview-container">
+                                                    <div class="image-preview">
+                                                        <div class="image-name" id="imageName"></div>
+                                                        <img id="imagePreview" src="<%= item.image %>" alt="Preview" />
+                                                        <button type="button" id="deleteImageBtn" class="remove-btn">X</button>
                                                     </div>
+                                                    <input class="form-control border border-dark" type="file" name="image" id="imageInput" style="display: none;">
                                                 </div>
+                                                <button type="button" id="changeImageBtn" class="btn btn-secondary change-image-btn">Change Image</button>
+                                                <p class="err-msg d-flex justify-content-end" id="errorElement2" style="color: red; font-size: 14px;"></p>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!-- Submit Button -->
                                     <div class="row">
                                         <div class="update ml-auto mr-auto">
                                             <button type="submit" class="btn btn-primary btn-round">Submit</button>
@@ -221,81 +171,64 @@ Coded by www.creative-tim.com
                                 </form>
                             </div>
                         </div>
-                        <!--   Core JS Files   -->
                         <script src="/admin/js/core/jquery.min.js"></script>
                         <script src="/admin/js/core/popper.min.js"></script>
                         <script src="/admin/js/core/bootstrap.min.js"></script>
-                        <script src="/admin/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-                        <!--  Google Maps Plugin    -->
-                        <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-                        <!-- Chart JS -->
-                        <script src="/admin/js/plugins/chartjs.min.js"></script>
-                        <!--  Notifications Plugin    -->
-                        <script src="/admin/js/plugins/bootstrap-notify.js"></script>
-                        <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
-                        <script src="/admin/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script>
-                        <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
-                        <script src="/admin/demo/demo.js"></script>
                         <script>
-                            function setupImagePreview() {
-                                const input = document.getElementById('imageInput');
-                                const preview = document.getElementById('imagePreview');
-                                const deleteBtn = document.getElementById('deleteImageBtn');
-                                const errorElement = document.getElementById('errorElement2');
-                    
-                                input.addEventListener('change', function () {
-                                    const file = this.files[0];
-                    
-                                    // Clear previous error messages
-                                    errorElement.textContent = '';
-                    
-                                    if (file) {
-                                        var imageType = /^image\//; // Regular expression to check image type
-                    
-                                        // Check if the file is an image
-                                        if (!imageType.test(file.type)) {
-                                            errorElement.textContent = 'Only image files are allowed.';
-                                            input.value = ''; // Clear the file input
-                                            preview.style.display = 'none';
-                                            deleteBtn.style.display = 'none';
-                                            return;
-                                        }
-                    
-                                        // Check file size (in bytes)
-                                        var maxSizeMB = 5; // Set maximum size limit to 5MB
-                                        if (file.size > maxSizeMB * 1024 * 1024) {
-                                            errorElement.textContent = 'File size exceeds 5MB limit.';
-                                            input.value = ''; // Clear the file input
-                                            preview.style.display = 'none';
-                                            deleteBtn.style.display = 'none';
-                                            return;
-                                        }
-                    
-                                        const reader = new FileReader();
-                    
-                                        reader.onload = function (e) {
-                                            preview.src = e.target.result;
-                                            preview.style.display = 'block';
-                                            deleteBtn.style.display = 'block';
-                                        };
-                    
-                                        reader.readAsDataURL(file);
-                                    } else {
-                                        preview.style.display = 'none';
-                                        deleteBtn.style.display = 'none';
-                                    }
-                                });
-                    
-                                deleteBtn.addEventListener('click', function () {
-                                    // Clear the file input and hide the preview and delete button
-                                    input.value = '';
-                                    preview.style.display = 'none';
-                                    deleteBtn.style.display = 'none';
-                                });
-                            }
-                    
-                            setupImagePreview();
-                        </script>
-</body>
+                            const imageInput = document.getElementById('imageInput');
+                            const imagePreview = document.getElementById('imagePreview');
+                            const deleteImageBtn = document.getElementById('deleteImageBtn');
+                            const changeImageBtn = document.getElementById('changeImageBtn');
+                            const imageNameDisplay = document.getElementById('imageName');
 
+                            // Original image source for reverting
+                            const originalImageSrc = imagePreview.src;
+
+                            // Change image button functionality
+                            changeImageBtn.addEventListener('click', function () {
+                                imageInput.click();
+                            });
+
+                            // Handle file input change
+                            imageInput.addEventListener('change', function (event) {
+                                const file = event.target.files[0];
+                                if (file) {
+                                    const reader = new FileReader();
+                                    reader.onload = function (e) {
+                                        imagePreview.src = e.target.result;
+                                        imageNameDisplay.textContent = file.name; // Display the image name
+                                        deleteImageBtn.style.display = 'block'; // Show the delete button
+                                    };
+                                    reader.readAsDataURL(file);
+                                }
+                            });
+
+                            // Handle delete image button click
+                            deleteImageBtn.addEventListener('click', function () {
+                                imageInput.value = ''; // Clear the file input
+                                imagePreview.src = originalImageSrc; // Revert to the original image
+                                imageNameDisplay.textContent = ''; // Clear the image name
+                                deleteImageBtn.style.display = 'none'; // Hide the delete button
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <!-- <footer class="footer">
+                <div class="container-fluid">
+                    <nav>
+                        <ul>
+                            <li><a href="#"></a></li>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Blog</a></li>
+                        </ul>
+                    </nav>
+                    <div class="copyright" id="copyright">
+                        &copy; 2024, made with <i class="fa fa-heart heart"></i> by 
+                    </div>
+                </div>
+            </footer> -->
+        </div>
+    </div>
+</body>
 </html>

@@ -74,7 +74,9 @@ exports.categoryManagement=(req,res)=>{
 // }
 
 exports.addCategory=(req,res)=>{
-    res.render("admin/addCategory",(err,html)=>{
+    const { errors } = req.session
+    delete req.session.errors
+    res.render("admin/addCategory",{errors},(err,html)=>{
         if(err){
             console.log('render err',err);
             return res.send('Internal server  err');
@@ -94,10 +96,12 @@ exports.unlistCategory=(req,res)=>{
 }
 
 exports.editCategory=(req,res)=>{
+    const { errors } = req.session
+    delete req.session.errors
     const id=req.query.id;
     axios.get(`http://localhost:${process.env.PORT}/admin/editCategoryShow?id=${id}`) 
     .then(function (response){
-        res.render("admin/editCategory",{category: response.data,message: req.session.categoryerr });
+        res.render("admin/editCategory",{category: response.data,message: req.session.categoryerr,errors });
     })
     .catch(err => {
         res.render('error', { error: err });
@@ -140,9 +144,11 @@ exports.adminAddItem=(req,res)=>{
 }
 
 exports.addItem=(req,res)=>{
+    const { errors } = req.session
+    delete req.session.errors
     axios.get(`http://localhost:${process.env.PORT}/admin/categoryShow`)
     .then(function (response){
-        res.render("admin/addItem",{category: response.data });
+        res.render("admin/addItem",{category: response.data, errors });
     })
     .catch(err => {
         res.render('error', { error: err });
@@ -151,13 +157,15 @@ exports.addItem=(req,res)=>{
 }
 
 exports.editItem=(req,res)=>{
+    const { errors } = req.session
+    delete req.session.errors
     const id=req.query.id
     axios.all([
      axios.get(`http://localhost:${process.env.PORT}/admin/editItemShow?id=${id}`) ,
      axios.get(`http://localhost:${process.env.PORT}/admin/categoryShow`) 
   ])
   .then(axios.spread((data1,data2)=>{
-     res.render("admin/editItem",{product:data1.data,category:data2.data}) 
+     res.render("admin/editItem",{item:data1.data,category:data2.data, errors}) 
   })).catch(err=>{
      res.send(err)
   })

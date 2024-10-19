@@ -4,6 +4,8 @@ const nodemailer = require("nodemailer");
 const Mailgen = require("mailgen");
 const geolib = require('geolib');
 
+const axios = require('axios');
+
 
 
 const User = require("../../model/userSchema");
@@ -46,19 +48,104 @@ const OtpDb = require("../../model/otpSchema")
 //     }
 // };
 
+// exports.signUp = async (req, res) => {
+//   const { username, email, password, confirmPassword, phone, street, block, unitnum, postal } = req.body;
+
+//   try {
+//     const existingUser = await User.findOne({ email });
+//     if (existingUser) {
+//       console.log('User already exists');
+//       req.session.signUpError = "User already exists with this email.";
+//       return res.redirect('/signup');
+//     }
+
+//     if (password !== confirmPassword) {
+//       req.session.signUpError = "Passwords do not match.";
+//       return res.redirect('/signup');
+//     }
+
+//     const hashedPassword = await bcrypt.hash(password, 10);
+
+//     const newUser = new User({
+//       username,
+//       email,
+//       password: hashedPassword,
+//       phone,
+//     });
+
+//     await newUser.save();
+
+//     const structuredAddress = `${username}, ${phone}, ${street}, ${block}, ${unitnum}, ${postal}`
+//     // const newAddress = new AddressDb({
+//     //     userId: newUser._id,
+//     //     address: {
+//     //         username,
+//     //         phone,
+//     //         street,
+//     //         block,
+//     //         unitnum,
+//     //         postal,
+//     //         structuredAddress
+//     //     },
+//     //     defaultAddress: null,
+//     // });
+
+//     // await newAddress.save();
+//     const newAddress = new AddressDb({
+//       userId: newUser._id,
+//       address: [{
+//         _id: new mongoose.Types.ObjectId(),
+//         username,
+//         phone,
+//         street,
+//         block,
+//         unitnum,
+//         postal,
+//         structuredAddress
+//       }],
+//       defaultAddress: null
+//     });
+
+//     const savedAddress = await newAddress.save();
+
+//     const addressId = savedAddress.address[0]._id;
+
+//     await AddressDb.findByIdAndUpdate(
+//       savedAddress._id,
+//       { defaultAddress: addressId },
+//       { new: true }
+//     );
+//     req.session.username = newUser.username;
+//     req.session.email = newUser.email;
+//     req.session.userId = newUser._id;
+//     req.session.isUserAuthenticated = true;
+//     req.session.isUserAuth = true;
+
+//     res.redirect('/');
+//   } catch (err) {
+//     console.error(err);
+//     req.session.signUpError = "An error occurred during signup.";
+//     res.redirect('/signup');
+//   }
+// };
+
 exports.signUp = async (req, res) => {
   const { username, email, password, confirmPassword, phone, street, block, unitnum, postal } = req.body;
+
+  const errors = {};
 
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      console.log('User already exists');
-      req.session.signUpError = "User already exists with this email.";
-      return res.redirect('/signup');
+      errors.signUpError = "User already exists with this email.";
     }
 
     if (password !== confirmPassword) {
-      req.session.signUpError = "Passwords do not match.";
+      errors.signUpError = "Passwords do not match.";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      req.session.errors= errors;
       return res.redirect('/signup');
     }
 
@@ -73,22 +160,8 @@ exports.signUp = async (req, res) => {
 
     await newUser.save();
 
-    const structuredAddress = `${username}, ${phone}, ${street}, ${block}, ${unitnum}, ${postal}`
-    // const newAddress = new AddressDb({
-    //     userId: newUser._id,
-    //     address: {
-    //         username,
-    //         phone,
-    //         street,
-    //         block,
-    //         unitnum,
-    //         postal,
-    //         structuredAddress
-    //     },
-    //     defaultAddress: null,
-    // });
+    const structuredAddress = `${username}, ${phone}, ${street}, ${block}, ${unitnum}, ${postal}`;
 
-    // await newAddress.save();
     const newAddress = new AddressDb({
       userId: newUser._id,
       address: [{
@@ -107,12 +180,12 @@ exports.signUp = async (req, res) => {
     const savedAddress = await newAddress.save();
 
     const addressId = savedAddress.address[0]._id;
-
     await AddressDb.findByIdAndUpdate(
       savedAddress._id,
       { defaultAddress: addressId },
       { new: true }
     );
+
     req.session.username = newUser.username;
     req.session.email = newUser.email;
     req.session.userId = newUser._id;
@@ -122,31 +195,36 @@ exports.signUp = async (req, res) => {
     res.redirect('/');
   } catch (err) {
     console.error(err);
-    req.session.signUpError = "An error occurred during signup.";
+    req.session.errors= { signUpError: "An error occurred during signup." };
     res.redirect('/signup');
   }
 };
 
 exports.signIn = async (req, res) => {
-  const log = {
-    emailOrPhone: req.body.emailOrPhone, // Accepting either email or phone
-    password: req.body.password,
-  };
+  const { emailOrPhone, password } = req.body;
+  
+  const errors = {};
 
   try {
-    // Find user by email or phone
     const foundUser = await User.findOne({
-      $or: [{ email: log.emailOrPhone }, { phone: log.emailOrPhone }]
+      $or: [{ email: emailOrPhone }, { phone: emailOrPhone }]
     });
 
     if (!foundUser) {
-      req.session.validEmail = "User with this email or phone number does not exist";
+      errors.signInError = "User with this email or phone number does not exist.";
+      req.session.errors = errors;
       return res.redirect("/signin");
     }
 
-    const isPasswordMatch = await bcrypt.compare(log.password, foundUser.password);
+    const isPasswordMatch = await bcrypt.compare(password, foundUser.password);
 
-    if (isPasswordMatch && !foundUser.isBlocked) {
+    if (isPasswordMatch) {
+      if (foundUser.isBlocked) {
+        errors.signInError = "Your account has been blocked by the admin. Please contact support.";
+        req.session.errors = errors; 
+        return res.redirect("/signin");
+      }
+
       req.session.username = foundUser.username;
       req.session.email = foundUser.email;
       req.session.phone = foundUser.phone;
@@ -155,21 +233,62 @@ exports.signIn = async (req, res) => {
       req.session.isUserAuthenticated = true;
       return res.redirect("/");
     } else {
-      // Handle wrong password or blocked account
-      if (!isPasswordMatch) {
-        req.session.wrongPassword = "Wrong Password";
-        return res.redirect("/signin");
-      }
-      if (foundUser.isBlocked) {
-        req.session.validEmail = "User is blocked by admin";
-        return res.redirect("/signin");
-      }
+      errors.signInError = "The password you entered is incorrect. Please try again.";
+      req.session.errors = errors; 
+      return res.redirect("/signin");
     }
   } catch (err) {
     console.error(err);
+    req.session.errors = { signInError: "An unexpected error occurred during signin. Please try again." };
     res.redirect("/signin");
   }
-}
+};
+
+
+
+// exports.signIn = async (req, res) => {
+//   const log = {
+//     emailOrPhone: req.body.emailOrPhone, // Accepting either email or phone
+//     password: req.body.password,
+//   };
+
+//   try {
+//     // Find user by email or phone
+//     const foundUser = await User.findOne({
+//       $or: [{ email: log.emailOrPhone }, { phone: log.emailOrPhone }]
+//     });
+
+//     if (!foundUser) {
+//       req.session.validEmail = "User with this email or phone number does not exist";
+//       return res.redirect("/signin");
+//     }
+
+//     const isPasswordMatch = await bcrypt.compare(log.password, foundUser.password);
+
+//     if (isPasswordMatch && !foundUser.isBlocked) {
+//       req.session.username = foundUser.username;
+//       req.session.email = foundUser.email;
+//       req.session.phone = foundUser.phone;
+//       req.session.userId = foundUser._id;
+//       req.session.isUserAuth = true;
+//       req.session.isUserAuthenticated = true;
+//       return res.redirect("/");
+//     } else {
+//       // Handle wrong password or blocked account
+//       if (!isPasswordMatch) {
+//         req.session.wrongPassword = "Wrong Password";
+//         return res.redirect("/signin");
+//       }
+//       if (foundUser.isBlocked) {
+//         req.session.validEmail = "User is blocked by admin";
+//         return res.redirect("/signin");
+//       }
+//     }
+//   } catch (err) {
+//     console.error(err);
+//     res.redirect("/signin");
+//   }
+// }
 
 
 // OTP genneration , forgot password section
@@ -255,71 +374,65 @@ const deleteOtpFromdb = async (_id) => {
 // };
 
 const forgotOtpSendOtpMail = async (req, res) => {
-  const otp = otpGenrator();
-  console.log(otp);
-
+  const otp = otpGenrator();  // Generate new OTP
   const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.AUTH_EMAIL,
-      pass: process.env.AUTH_PASS,
-    },
+      service: "gmail",
+      auth: {
+          user: process.env.AUTH_EMAIL,
+          pass: process.env.AUTH_PASS,
+      },
   });
 
   const MailGenerator = new Mailgen({
-    theme: "default",  // Default Mailgen theme
-    product: {
-      name: "Pepper Castle", // Company name
-      link: "https://peppercastle.com/",
-      logo: "assets/images/fav.png",
-      theme: {
-        header: {
-          backgroundColor: '#fc5000',  // Custom theme color
-        },
+      theme: "default",  
+      product: {
+          name: "Pepper Castle",
+          link: "https://peppercastle.com/",
       },
-    },
   });
 
   const response = {
-    body: {
-      name: req.session.name,  // Personalized with the user's name
-      intro: `Your OTP for Pepper Castle verification is:`,
-      table: {
-        data: [
-          {
-            OTP: otp,
+      body: {
+          name: req.session.username,
+          intro: `Your OTP for Pepper Castle verification is:`,
+          table: {
+              data: [
+                  { OTP: `<strong style="font-size: 24px;color:#000">${otp}</strong>` },
+              ],
           },
-        ],
+          outro: "If you did not request this OTP, please ignore this email.",
+          signature: "Thank you for choosing Pepper Castle!",
       },
-      outro: "If you did not request this OTP, please ignore this email.",
-      signature: "Thank you for choosing Pepper Castle!",
-    },
   };
 
   const mail = MailGenerator.generate(response);
-
   const message = {
-    from: process.env.AUTH_EMAIL,
-    to: req.session.user,
-    subject: "Pepper Castle OTP Verification",
-    html: mail,
+      from: process.env.AUTH_EMAIL,
+      to: req.session.forgotuser,
+      subject: "Pepper Castle OTP Verification",
+      html: mail,
   };
 
   try {
-    const newOtp = new OtpDb({
-      email: req.session.forgotuser,
-      otp: otp,
-      createdAt: Date.now(),
-      expiresAt: Date.now() + 60000,
-    });
-    const data = await newOtp.save();
-    req.session.forgototpId = data._id;
-    res.status(200).redirect("/otp-verification");
-    await transporter.sendMail(message);
+      // Save new OTP and expiration time in the database
+      const newOtp = new OtpDb({
+          email: req.session.forgotuser,
+          otp: otp,
+          createdAt: Date.now(),
+          expiresAt: Date.now() + 60000,  // OTP expires in 60 seconds
+      });
+      const data = await newOtp.save();
+      
+      req.session.forgototpId = data._id;
+      req.session.rTime = 60;  // Reset countdown time to 60 seconds
+      res.status(200).redirect("/otp-verification");
+      
+      await transporter.sendMail(message);
   } catch (error) {
-    console.log(error);
+      console.log(error);
   }
 };
+
 
 
 const forgotuserOtpVerify = async (req, res) => {
@@ -366,7 +479,7 @@ exports.forgotOtp = async (req, res) => {
     req.session.message = "user not exist";
     return res.redirect("/forgot-password");
   }
-
+  req.session.username = foundUser.username
   req.session.forgotuser = req.body.email;
 
   forgotOtpSendOtpMail(req, res);
@@ -375,37 +488,41 @@ exports.forgotOtp = async (req, res) => {
 
 exports.forgototpverification = async (req, res) => {
   try {
-    if (!req.body.otp) {
-      req.session.err = "This Field is required";
-    }
-    if (req.session.err) {
-      req.session.rTime = req.body.rTime;
-      return res.status(200).redirect("/otp-verification");
-    }
-    const response = await forgotuserOtpVerify(req, res);
+      if (!req.body.otp) {
+          req.session.err = "This Field is required";
+          return res.status(200).redirect("/otp-verification");
+      }
 
-    if (response) {
-      deleteOtpFromdb(req.session.forgotOtpResend);
-      req.session.verifyChangePassPage = true;
-      res.status(200).redirect("/reset-password");
-    }
+      const response = await forgotuserOtpVerify(req, res);
+
+      if (response) {
+          deleteOtpFromdb(req.session.forgotOtpResend);  // Delete used OTP from database
+          req.session.verifyChangePassPage = true;
+          res.status(200).redirect("/reset-password");
+      }
   } catch (err) {
-    console.log("Internal delete error", err);
-    res.status(500).send("Error while quering data err");
+      console.log("Internal error", err);
+      res.status(500).send("Error while querying data");
   }
 };
+
 
 exports.forgotOtpResend = async (req, res) => {
   try {
-    deleteOtpFromdb(req.session.forgotOtpResend);
-    forgotOtpSendOtpMail(req, res, "/otp-verification");
+      // Delete previous OTP from database
+      deleteOtpFromdb(req.session.forgotOtpResend);
+      
+      // Resend a new OTP and restart countdown
+      forgotOtpSendOtpMail(req, res);
 
-    delete req.session.err;
-    delete req.session.rTime;
+      // Clear session errors and reset countdown time
+      delete req.session.err;
+      req.session.rTime = 60;  // Reset countdown to 60 seconds
   } catch (err) {
-    console.log("Resend Mail err:", err);
+      console.log("Resend Mail error:", err);
   }
 };
+
 
 
 
@@ -489,72 +606,184 @@ exports.getUserDetails = async (req, res) => {
   }
 }
 
-exports.changePassword = async (req, res) => {
-  const userid = req.session.userId;
-  console.log(userid);
-  const {oldpassword, newpassword } = req.body
-  console.log(oldpassword, newpassword)
-  // res.redirect("/userProfile")
-  try {
-    const foundUser = await User.findOne({ _id: userid });
-    const isPasswordMatch = await bcrypt.compare(
-      oldpassword,
-      foundUser.password
-    );
-    const hashedpassword = await bcrypt.hash(newpassword, 10);
-    if (!isPasswordMatch) {
-      console.log(isPasswordMatch);
+// exports.changePassword = async (req, res) => {
+//   const userid = req.session.userId;
+//   console.log(userid);
+//   const {oldpassword, newpassword } = req.body
+//   console.log(oldpassword, newpassword)
+//   // res.redirect("/userProfile")
+//   try {
+//     const foundUser = await User.findOne({ _id: userid });
+//     const isPasswordMatch = await bcrypt.compare(
+//       oldpassword,
+//       foundUser.password
+//     );
+//     const hashedpassword = await bcrypt.hash(newpassword, 10);
+//     if (!isPasswordMatch) {
+//       console.log(isPasswordMatch);
       
-      req.session.message = "Wrong Password"
-      res.redirect("/change-password")
-    } else {
-      await User.updateOne({ _id: userid }, {
-        $set: {
-          password: hashedpassword
-        }
-      })
-      req.session.isUserAuth = false;
-      req.session.isUserAuthenticated = false;
-      delete req.session.email
-      delete req.session.phone
-      delete req.session.userId
-      res.redirect("/signin")
-    }
-  } catch (err) {
-    res.status(500).send(err)
+//       req.session.message = "Wrong Password"
+//       res.redirect("/change-password")
+//     } else {
+//       await User.updateOne({ _id: userid }, {
+//         $set: {
+//           password: hashedpassword
+//         }
+//       })
+//       req.session.isUserAuth = false;
+//       req.session.isUserAuthenticated = false;
+//       delete req.session.email
+//       delete req.session.phone
+//       delete req.session.userId
+//       res.redirect("/signin")
+//     }
+//   } catch (err) {
+//     res.status(500).send(err)
+//   }
+// }
+
+exports.changePassword = async (req, res) => {
+  const userId = req.session.userId;
+  const { oldpassword, newpassword, confirmpassword } = req.body;
+
+  const errors = {};
+
+  if (!oldpassword || !newpassword || !confirmpassword) {
+    if (!oldpassword) errors.oldpassword = "Old password is required.";
+    if (!newpassword) errors.newpassword = "New password is required.";
+    if (!confirmpassword) errors.confirmpassword = "Confirm password is required.";
   }
-}
+
+  if (newpassword !== confirmpassword) {
+    errors.confirmpassword = "New password and confirm password do not match.";
+  }
+
+  if (Object.keys(errors).length > 0) {
+    req.session.errors = errors;
+    return res.redirect("/change-password");
+  }
+
+  try {
+    const foundUser = await User.findOne({ _id: userId });
+    if (!foundUser) {
+      req.session.errors = { oldpassword: "User not found." };
+      return res.redirect("/change-password");
+    }
+
+    const isPasswordMatch = await bcrypt.compare(oldpassword, foundUser.password);
+    if (!isPasswordMatch) {
+      req.session.errors = { oldpassword: "Old password is incorrect." };
+      return res.redirect("/change-password");
+    }
+
+    const hashedPassword = await bcrypt.hash(newpassword, 10);
+    await User.updateOne({ _id: userId }, { $set: { password: hashedPassword } });
+
+    req.session.isUserAuth = false;
+    req.session.isUserAuthenticated = false;
+    delete req.session.email;
+    delete req.session.phone;
+    delete req.session.userId;
+    res.redirect("/signin");
+  } catch (err) {
+    console.error(err);
+    req.session.errors = { general: "An error occurred. Please try again." };
+    res.redirect("/change-password");
+  }
+};
+
 
 exports.changeProfile = async (req, res) => {
-  const userid = req.session.userId;
-  console.log(userid);
-  const {username, phone, email, password } = req.body
-  console.log(username, phone, email,password)
+  const userId = req.session.userId;
+  const { username, phone, password } = req.body;
+  const errors = {};
+
+  if (!username || !phone || !password) {
+    if (!username) errors.username = "Username is required.";
+    if (!phone) errors.phone = "Phone number is required.";
+    if (!password) errors.password = "Password is required.";
+  }
+
+  if (Object.keys(errors).length > 0) {
+    req.session.errors = errors;
+    return res.redirect("/profile");
+  }
+
   try {
-    const foundUser = await User.findOne({ _id: userid });
-    const isPasswordMatch = await bcrypt.compare(
-      password,
-      foundUser.password
-    );
-    if (!isPasswordMatch) {
-      console.log(isPasswordMatch);
-      req.session.message = "Wrong Password"
-      res.redirect("/profile")
-    } else {
-      await User.updateOne({ _id: userid }, {
-        $set: {
-          username: username,
-          phone: phone
-        }
-      })
-
-      req.session.username = username 
-      req.session.phone = phone
-
-      res.redirect("/profile")
+    const foundUser = await User.findOne({ _id: userId });
+    if (!foundUser) {
+      req.session.errors = { general: "User not found." };
+      return res.redirect("/profile");
     }
+
+    const isPasswordMatch = await bcrypt.compare(password, foundUser.password);
+    if (!isPasswordMatch) {
+      req.session.errors = { password: "Password is incorrect." };
+      return res.redirect("/profile");
+    }
+
+    await User.updateOne({ _id: userId }, {
+      $set: {
+        username: username,
+        phone: phone
+      }
+    });
+
+    req.session.username = username;
+    req.session.phone = phone;
+
+    res.redirect("/profile");
   } catch (err) {
-    res.status(500).send(err)
+    console.error(err);
+    req.session.errors = { general: "An error occurred. Please try again." };
+    res.redirect("/profile");
+  }
+};
+
+
+exports.getGoogleMaplocation = async (req, res) => {
+  const { pincode } = req.body;
+  console.log(pincode);
+  
+  if (!pincode) {
+    return res.status(400).json({ message: 'Pincode is required' });
+  }
+
+  try {
+    // Use Google Maps Geocoding API to get latitude and longitude from pincode
+    const apiKey = 'AIzaSyDrI6NNSHKGcRHyaxv3UnjfjUAmt07DlJ8'; // Replace with your actual API key
+    const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${pincode}&key=${apiKey}`;
+    // console.log(geocodeUrl);
+    
+    const response = await axios.get(geocodeUrl);
+    const { data } = response;
+    console.log(response.data);
+    
+
+    if (data.status !== 'OK' || !data.results.length) {
+      return res.status(400).json({ message: 'Invalid pincode or location not found' });
+    }
+
+    // Get user's latitude and longitude from the geocoding response
+    const userLocation = data.results[0].geometry.location;
+    const userLatitude = userLocation.lat;
+    const userLongitude = userLocation.lng;
+
+    // Calculate the distance between the shop and user's location
+    const distance = calculateDistance(11.873567564458085, 75.38882081116785, userLatitude, userLongitude);
+
+    // Check if the distance is within 10 km
+    if (distance <= 10) {
+      return res.status(200).json({ message: 'Success, within 10 km', distance });
+    } else {
+      return res.status(400).json({ message: 'Failure, out of range', distance });
+    }
+
+  } catch (error) {
+    console.error('Error fetching location from Google Maps API:', error);
+    return res.status(500).json({ message: 'Internal Server Error', error });
   }
 }
+
+
 

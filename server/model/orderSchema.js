@@ -83,6 +83,10 @@ const orderSchema = new mongoose.Schema({
         type: String, 
         default: null 
     },
+    payment_intent: {
+        type: String, 
+        default: null
+    },
     status: { 
         type: String, 
         default: null

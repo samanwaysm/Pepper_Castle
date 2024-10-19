@@ -5,6 +5,8 @@ var Category = require("../../model/categorySchema");
 var Item = require("../../model/itemSchema");
 const Order = require("../../model/orderSchema");
 
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
 
 exports.adminLogin = async (req, res) => {
   const admin = {
@@ -27,7 +29,8 @@ exports.adminLogin = async (req, res) => {
 };
 
 exports.adminLogout = async (req, res) => {
-
+  req.session.isAdminAuthenticated = false;
+  return res.redirect("/adminlogin");
 };
 
 //Dashboard
@@ -87,31 +90,72 @@ exports.userunBlock = async (req, res) => {
 
 // cateogary managment
 
+// exports.addCategory = async (req, res) => {
+//   const categoryName = req.body.category;
+//   const categoryExists = await Category.findOne({
+//     category: { $regex: new RegExp(categoryName, "i") },
+//   });
+//   console.log('hii', req.body);
+//   if (categoryExists) {
+//     return res.redirect("/addCategory");
+//   }
+
+//   const category = new Category({
+//     category: categoryName,
+//   });
+//   category
+//     .save(category)
+//     .then((data) => {
+//       res.redirect("/categoryMangement");
+//     })
+//     .catch((err) => {
+//       res.status(400).send({
+//         message: err.message || "some error occured while creating option ",
+//       });
+//     });
+// };
+
 exports.addCategory = async (req, res) => {
-  const categoryName = req.body.category;
-  const categoryExists = await Category.findOne({
-    category: { $regex: new RegExp(categoryName, "i") },
-  });
-  console.log('hii', req.body);
-  if (categoryExists) {
-    req.session.categoryerr = "Category already in use";
-    return res.redirect("/adminAddCategory");
+  const categoryName = req.body.category ? req.body.category.trim() : ""; // Trim spaces
+  const errors = {};
+
+  // Validate input
+  if (!categoryName || categoryName === "") {
+    errors.category = "Category name is required.";
   }
 
-  const category = new Category({
-    category: categoryName,
-  });
-  category
-    .save(category)
-    .then((data) => {
-      res.redirect("/adminCategoryMange");
-    })
-    .catch((err) => {
-      res.status(400).send({
-        message: err.message || "some error occured while creating option ",
-      });
+  try {
+    // Check if the category already exists (case-insensitive)
+    const categoryExists = await Category.findOne({
+      category: { $regex: new RegExp(`^${categoryName}$`, "i") }, // Case-insensitive check
     });
+
+    if (categoryExists) {
+      errors.category = "Category name is already in use.";
+    }
+
+    // If validation errors, store them in session and redirect
+    if (Object.keys(errors).length > 0) {
+      req.session.errors = errors; // Store errors in session
+      return res.redirect("/addCategory");
+    }
+
+    // Create and save new category if validation passes
+    const category = new Category({
+      category: categoryName, // Save as it is (no capitalization)
+    });
+
+    await category.save();
+    req.session.success = "Category added successfully."; // Optional success message
+    res.redirect("/categoryManagement");
+  } catch (err) {
+    console.error(err);
+    req.session.errors = { general: "An error occurred. Please try again." }; // General error message
+    res.redirect("/addCategory");
+  }
 };
+
+
 
 exports.CategoryManagementShow = async (req, res) => {
   const categoryList = await Category.find({ status: true });
@@ -137,10 +181,10 @@ exports.unlistCategory = async (req, res) => {
   ) {
     await Category.updateOne({ _id: id }, { $set: { status: false } });
 
-    // await Item.updateMany(
-    //   { category: categorydata[0].category },
-    //   { $set: { isCategory: false } }
-    // );
+    await Item.updateMany(
+      { category: categorydata[0].category },
+      { $set: { isCategory: false } }
+    );
     res.status(200).redirect("/categoryManagement");
   }
 };
@@ -154,31 +198,76 @@ exports.listCategory = async (req, res) => {
     categorydata[0].status === false
   ) {
     await Category.updateOne({ _id: id }, { $set: { status: true } });
-    // await Item.updateMany(
-    //   { category: categorydata[0].category },
-    //   { $set: { isCategory: true } }
-    // );
+    await Item.updateMany(
+      { category: categorydata[0].category },
+      { $set: { isCategory: true } }
+    );
     res.status(200).redirect("/unlistCategory");
   }
 };
 
 exports.editCategory = async (req, res) => {
-  const categoryName = req.body.category
+  const categoryName = req.body.category ? req.body.category.trim() : ""; // Trim spaces
   const editId = req.query.id;
-  console.log(req.body, editId);
+  const errors = {};
+
+  // Validate input
+  if (!categoryName || categoryName === "") {
+    errors.category = "Category name is required.";
+  }
 
   try {
+    // Check if category with the same name already exists (case-insensitive, excluding the current category being edited)
+    const existingCategory = await Category.findOne({
+      _id: { $ne: editId },
+      category: { $regex: new RegExp(`^${categoryName}$`, 'i') }, // Case-insensitive check
+    });
+    
+    if (existingCategory) {
+      errors.category = "Category name is already in use.";
+    }
+
+    // If there are validation errors, store them in session and redirect
+    if (Object.keys(errors).length > 0) {
+      req.session.errors = errors; // Store errors in session
+      const referrer = req.get("Referer"); // Get the page the request came from
+      return res.redirect(referrer);
+    }
+
+    // Proceed with updating the category if validation passes
     await Category.updateOne(
       { _id: editId },
       { $set: { category: categoryName } }
     );
+
+    req.session.success = "Category updated successfully."; // Optional success message
     res.redirect("/categoryManagement");
   } catch (err) {
-    req.session.categoryerr = "Category already in use";
-    const referrer = req.get("Referer");
+    console.error(err);
+    req.session.errors = { general: "An error occurred. Please try again." }; // General error message
+    const referrer = req.get("Referer"); 
     res.redirect(referrer);
   }
 };
+
+
+// exports.editCategory = async (req, res) => {
+//   const categoryName = req.body.category
+//   const editId = req.query.id;
+//   console.log(req.body, editId);
+
+//   try {
+//     await Category.updateOne(
+//       { _id: editId },
+//       { $set: { category: categoryName } }
+//     );
+//     res.redirect("/categoryManagement");
+//   } catch (err) {
+//     req.session.categoryerr = "Category already in use";
+//     const referrer = req.get("Referer");
+//     res.redirect(referrer);
+//   }
+// };
 exports.editCategoryShow = async (req, res) => {
   const categoryEditId = req.query.id;
   const data = await Category.findOne({ _id: categoryEditId })
@@ -198,42 +287,214 @@ exports.editCategoryShow = async (req, res) => {
 
 // item managment
 
-exports.addItem = (req, res) => {
-  if (!req.body) {
-    res.status(400).send({ message: "hi you entered any thing" });
-    return;
-  }
-  console.log(req);
+// exports.addItem = (req, res) => {
+//   const file = req.files;
+//   const images = file.map((values) => `/uploads/${values.filename}`);
+//   console.log('dcs');
 
+//   const item = new Item({
+//     item: req.body.item,
+//     category: req.body.category,
+//     description: req.body.description,
+//     price: req.body.price,
+//     image: images,
+//   });
+//   item
+//     .save(item)
+//     .then((data) => {
+//       res.redirect("/itemManagement");
+//     })
+//     .catch((err) => {
+//       res.status(400).send({
+//         message: err.message || "some error occured while creating option ",
+//       });
+//     });
+// };
+
+exports.addItem = async (req, res) => {
   const file = req.files;
-  const images = file.map((values) => `/uploads/${values.filename}`);
-  console.log('dcs');
+  const images = file ? file.map((values) => `/uploads/${values.filename}`) : [];
+  const { item, category, description, price } = req.body;
+  const errors = {};
 
-  // save in db
-  const item = new Item({
-    item: req.body.item,
-    category: req.body.category,
-    description: req.body.description,
-    price: req.body.price,
-    image: images,
+  // Validate input fields
+  if (!item || item.trim() === "") {
+      errors.item = "Item name is required.";
+  }
+  if (!category || category.trim() === "") {
+      errors.category = "Category is required.";
+  }
+  if (!description || description.trim() === "") {
+      errors.description = "Description is required.";
+  }
+  if (!price || isNaN(price) || Number(price) <= 0) {
+      errors.price = "Valid price is required.";
+  }
+
+  // Check for image format
+  const allowedImageFormats = ['image/jpeg', 'image/png', 'image/gif'];
+  if (file && file.length > 0) {
+      const invalidImages = file.filter(file => !allowedImageFormats.includes(file.mimetype));
+      if (invalidImages.length > 0) {
+          errors.images = "Only JPG, PNG, and GIF formats are allowed for images.";
+      }
+  }
+
+  // Check if item already exists in the database
+  const existingItem = await Item.findOne({
+    item: { $regex: new RegExp(`^${item.trim()}$`, 'i') } // Case-insensitive check
   });
-  item
-    .save(item)
-    .then((data) => {
-      // console.log("done")
-      res.redirect("/itemManagement");
-    })
-    .catch((err) => {
-      res.status(400).send({
-        message: err.message || "some error occured while creating option ",
+  if (existingItem) {
+      errors.item = "An item with this name already exists.";
+  }
+
+  // If there are errors, redirect back with error messages
+  if (Object.keys(errors).length > 0) {
+      req.session.errors = errors; // Store errors in session
+      return res.redirect('/addItem'); // You can redirect to a different route if needed
+  }
+
+  try {
+      // Create new item
+      const newItem = new Item({
+          item: item.trim(), // Trim spaces
+          category: category.trim(),
+          description: description.trim(),
+          price: Number(price), // Ensure price is stored as a number
+          image: images,
       });
-    });
+
+      // Save the item to the database
+      await newItem.save();
+      req.session.success = "Item added successfully."; // Optional: Success message
+      res.redirect("/itemManagement");
+  } catch (err) {
+      console.error(err);
+      req.session.errors = { general: "An error occurred. Please try again." }; // General error
+      res.redirect('/itemManagement');
+  }
 };
 
-exports.edititem = async (req, res) => {
+exports.editItem = async (req, res) => {
+  const editId = req.query.id;
+  const file = req.files;
+  const images = file ? file.map((values) => `/uploads/${values.filename}`) : [];
+  const { item, category, description, price } = req.body;
+  const errors = {};
+
+  // Validate input fields
+  if (!item || item.trim() === "") {
+      errors.item = "Item name is required.";
+  }
+  if (!category || category.trim() === "") {
+      errors.category = "Category is required.";
+  }
+  if (!description || description.trim() === "") {
+      errors.description = "Description is required.";
+  }
+  if (!price || isNaN(price) || Number(price) <= 0) {
+      errors.price = "Valid price is required.";
+  }
+
+  // Check for image format
+  const allowedImageFormats = ['image/jpeg', 'image/png', 'image/gif'];
+  if (file && file.length > 0) {
+      const invalidImages = file.filter(file => !allowedImageFormats.includes(file.mimetype));
+      if (invalidImages.length > 0) {
+          errors.images = "Only JPG, PNG, and GIF formats are allowed for images.";
+      }
+  }
+
+  // Check if item already exists in the database (excluding the current item)
+  const existingItem = await Item.findOne({
+    item: { $regex: new RegExp(`^${item.trim()}$`, 'i') }, // Case-insensitive check
+    _id: { $ne: editId }, // Exclude the current item
+  });
+  if (existingItem) {
+      errors.item = "An item with this name already exists.";
+  }
+
+  // If there are errors, redirect back with error messages
+  if (Object.keys(errors).length > 0) {
+      req.session.errors = errors; // Store errors in session
+      return res.redirect(`/editItem?id=${editId}`);
+  }
+
+  try {
+      // Update item details
+      await Item.updateOne(
+          { _id: editId },
+          {
+              $set: {
+                  item: item.trim(), // Trim spaces
+                  category: category.trim(),
+                  description: description.trim(),
+                  price: Number(price) // Ensure price is stored as a number
+              }
+          }
+      );
+
+      // Update images if provided
+      if (images.length > 0) {
+          await Item.updateOne({ _id: editId }, { $set: { image: images } });
+      }
+
+      req.session.success = "Item updated successfully."; // Optional: Success message
+      res.redirect('/itemManagement');
+  } catch (error) {
+      console.error(error);
+      req.session.errors = { general: "An error occurred. Please try again." }; // General error
+      res.redirect(`/itemManagement?id=${editId}`);
+  }
 };
 
-exports.edititemShow = async (req, res) => {
+// exports.editItem = async (req, res) => {
+//   const editId = req.query.id;
+//   const file = req.files; 
+//   const images = file.map((values) => `/uploads/${values.filename}`);
+//   try {
+//         await Item.updateOne(
+//           { _id: editId },
+//           { $set: { 
+//             item: req.body.item,
+//             category: req.body.category,
+//             description: req.body.description,
+//             price: req.body.price 
+//           } }
+//         );
+//         if (images.length == 0) {
+//           return res.redirect("/itemManagement");
+//         }
+//         if (images.length > 0) {
+//           await Item.updateOne({ _id: editId }, { $set: { image: images } });
+//           res.status(200).redirect('/itemManagement');
+//         }
+//       } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ message: 'Internal server error' });
+//     }
+// };
+
+exports.editItemShow = async (req, res) => {
+  const { id } = req.query; // Get the ID from the request parameters
+  console.log(id);
+
+  try {
+      // Find the item by ID
+      const item = await Item.findById(id);
+
+      if (!item) {
+          return res.status(404).json({ message: 'Item not found' });
+      }
+
+      console.log(item);
+      
+      // Return the item data to the client
+      res.status(200).json(item);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+  }
 
 };
 
@@ -428,6 +689,68 @@ exports.getOrderDetails = async (req, res) => {
   } catch (error) {
     console.error('Error fetching order details:', error);
     return res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+};
+
+exports.updateOrderStatus = async (req, res) => {
+  const { orderId, status } = req.body;
+
+  try {
+      const order = await Order.findOneAndUpdate(
+          { orderId: orderId },
+          { status: status },
+          { new: true }
+      );
+      if(order.status === 'Cancelled' && order.paymentMethod === 'online' && order.paymentStatus === 'success' && order.completed === true ){
+        refundPayment(order.payment_intent)
+      }
+
+      if (!order) {
+          return res.status(404).json({ message: 'Order not found' });
+      }
+
+      return res.status(200).json({ message: 'Order status updated successfully', order });
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Error updating order status' });
+  }
+}
+const refundPayment = async (paymentIntentId) => {
+// exports.refundPayment = async (req, res) => {
+  // const { paymentIntentId } = req.body;  // Only pass the paymentIntentId
+
+  try {
+      // Retrieve the PaymentIntent to validate and get the amount
+      const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+
+      if (!paymentIntent) {
+          return res.status(404).json({ success: false, message: 'PaymentIntent not found' });
+      }
+
+      // Validate that the payment has been captured and was successful
+      if (paymentIntent.status !== 'succeeded') {
+          return res.status(400).json({ success: false, message: 'Payment has not been captured or succeeded yet.' });
+      }
+
+      // Fetch the total amount received from the PaymentIntent
+      const amountToRefund = paymentIntent.amount_received;
+
+      // Create a refund for the total captured amount
+      const refund = await stripe.refunds.create({
+          payment_intent: paymentIntentId,  // Use the PaymentIntent ID
+          amount: amountToRefund,  // Refund the full amount received
+      });
+      console.log(refund, 'refund_is success');
+      
+
+      // return res.status(200).json({
+      //     success: true,
+      //     message: 'Refund issued successfully',
+      //     refund,
+      // });
+  } catch (error) {
+      console.error('Error issuing refund:', error);
+      // return res.status(500).json({ success: false, message: 'Error issuing refund', error: error.message });
   }
 };
 

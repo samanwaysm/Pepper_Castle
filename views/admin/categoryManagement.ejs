@@ -7,7 +7,8 @@
     <link rel="icon" type="image/png" href="images/fav.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>Pepper Castle Admin - Item Management</title>
-    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+        name='viewport' />
     <!-- Fonts and icons -->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
     <!-- CSS Files -->
@@ -17,6 +18,7 @@
     <link href="/admin/css/bootstrap.min.css" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="/admin/demo/demo.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         .category-card {
             display: flex;
@@ -51,7 +53,8 @@
         .action-buttons {
             margin-bottom: 20px;
         }
-        .button_len{
+
+        .button_len {
             width: 100px;
         }
     </style>
@@ -102,7 +105,7 @@
                     </li>
 
                     <li class="active-pro">
-                        <a href="./upgrade.html">
+                        <a href="/admin/logout">
                             <i class="nc-icon nc-simple-remove"></i>
                             <p>Logout</p>
                         </a>
@@ -123,7 +126,8 @@
                         </div>
                         <a class="navbar-brand" href="javascript:;">Category Management</a>
                     </div>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
+                        aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                         <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -146,7 +150,7 @@
                 <div class="breadcrumb">
                     <a href="/categoryManagement" class="breadcrumb-link">Category Management</a>
                 </div>
-                
+
                 <!-- Action Buttons -->
                 <div class="action-buttons">
                     <a href="/addCategory"><button class="btn btn-primary">Add Category</button></a>
@@ -154,23 +158,31 @@
                 </div>
 
                 <div class="row">
-                    <% categories.forEach(category => { %>
+                    <% categories.forEach(category=> { %>
                         <div class="col-md-12">
                             <div class="category-card">
                                 <div class="category-details">
-                                    <div class="category-name"><%= category.category %></div>
+                                    <div class="category-name">
+                                        <%= category.category %>
+                                    </div>
                                 </div>
                                 <div class="category-actions">
-                                    <a href="/editCategory?id=<%= category._id%>"><button class="button_len btn btn-warning btn-sm">
-                                        <i class="nc-icon nc-ruler-pencil"></i> Edit
-                                    </button></a>
-                                    <a href="/admin/unlistCategory?id=<%= category._id %>"><button class="button_len btn btn-danger btn-sm">
+                                    <a href="/editCategory?id=<%= category._id%>"><button
+                                            class="button_len btn btn-warning btn-sm">
+                                            <i class="nc-icon nc-ruler-pencil"></i> Edit
+                                        </button></a>
+                                    <!-- <a href="/admin/unlistCategory?id=<%#= category._id %>"><button class="button_len btn btn-danger btn-sm">
                                         <i class="nc-icon nc-simple-remove"></i> Unlist
-                                    </button></a>
+                                    </button></a> -->
+                                    <a href="javascript:void(0);" onclick="confirmUnlist('<%= category._id %>')">
+                                        <button class="button_len btn btn-danger btn-sm">
+                                            <i class="nc-icon nc-simple-remove"></i> Unlist
+                                        </button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
-                    <% }); %>
+                        <% }); %>
                 </div>
             </div>
             <script src="/admin/js/core/jquery.min.js"></script>
@@ -180,21 +192,21 @@
             <script src="/admin/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script>
             <script src="/admin/demo/demo.js"></script>
             <script>
-                function addItem() {
-                    // Logic to add a new item
-                    alert('Add Item clicked!');
+                function confirmUnlist(itemId) {
+                    Swal.fire({
+                        title: 'Are you sure unlist this category?',
+                        text: "",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, unlist it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/admin/unlistCategory?id=' + itemId;
+                        }
+                    });
                 }
-
-                function viewUnlistedItems() {
-                    // Logic to view unlisted items
-                    alert('View Unlisted Items clicked!');
-                }
-
-                function editItem(itemId) {
-                    // Logic to edit an item
-                    alert('Edit Item with ID: ' + itemId);
-                }
-
             </script>
         </div>
     </div>
