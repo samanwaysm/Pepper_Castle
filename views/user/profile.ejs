@@ -43,9 +43,10 @@
             color: #555;
         }
 
-        .fa-user{
+        .fa-user {
             color: #ff6600;
         }
+
         /* Profile Container */
         .profile-container {
             display: flex;
@@ -111,7 +112,7 @@
 
         /* Profile Details Section */
         .profile-details {
-            
+
             flex-grow: 2;
             padding: 20px;
             width: 100%;
@@ -266,6 +267,20 @@
                 padding: 10px 15px;
             }
         }
+
+        /*** Spinner ***/
+        #spinner {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .5s ease-out, visibility 0s linear .5s;
+            z-index: 99999;
+        }
+
+        #spinner.show {
+            transition: opacity .5s ease-out, visibility 0s linear 0s;
+            visibility: visible;
+            opacity: 1;
+        }
     </style>
 
 </head>
@@ -397,7 +412,9 @@
     <div class="profile-container">
         <div class="profile-sidebar">
             <!-- <img src="path_to_profile_image" alt="Profile" class="profile-image" /> -->
-            <h2 class="profile-name"><%= username %></h2>
+            <h2 class="profile-name">
+                <%= username %>
+            </h2>
             <ul class="profile-menu">
                 <li><a href="/profile" class="active">My Account</a></li>
                 <li><a href="/manage-address">Manage Address</a></li>
@@ -414,26 +431,33 @@
                         <label for="name">Name</label>
                         <input type="text" id="name" name="username" value="<%= user.username %>" />
                         <% if (errors && errors.username) { %>
-                            <span class="error"><%= errors.username %></span>
-                        <% } %>
+                            <span class="error">
+                                <%= errors.username %>
+                            </span>
+                            <% } %>
                     </div>
                     <div class="form-group">
                         <label for="phone">Phone</label>
                         <input type="text" id="phone" name="phone" value="<%= user.phone %>" />
                         <% if (errors && errors.phone) { %>
-                            <span class="error"><%= errors.phone %></span>
-                        <% } %>
+                            <span class="error">
+                                <%= errors.phone %>
+                            </span>
+                            <% } %>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" id="email" name="email" value="<%= user.email %>" disabled/>
+                        <input type="email" id="email" name="email" value="<%= user.email %>" disabled />
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" id="password" name="password" placeholder="password required for any changes"/>
+                        <input type="password" id="password" name="password"
+                            placeholder="password required for any changes" />
                         <% if (errors && errors.password) { %>
-                            <span class="error"><%= errors.password %></span>
-                        <% } %>
+                            <span class="error">
+                                <%= errors.password %>
+                            </span>
+                            <% } %>
                     </div>
                 </div>
                 <button class="save-btn">Save</button>
@@ -487,11 +511,11 @@
                                 <h5 class="widgettitle"><span>Quick Links</span></h5>
                                 <div class="textwidget ftr-menu">
                                     <ul>
-                                        <li><a href="index.html">-Home</a></li>
-                                        <li><a href="/about">-About</a></li>
-                                        <li><a href="testimonials.html">-Testimonials</a></li>
-                                        <li><a href="#">-Our Menu</a></li>
-                                        <li><a href="contact.html">-Contact</a></li>
+                                        <li><a href="/">- Home</a></li>
+                                        <li><a href="/about">- About</a></li>
+                                        <li><a href="/testimonials">- Testimonials</a></li>
+                                        <li><a href="/our-menu">- Our Menu</a></li>
+                                        <li><a href="/contact">- Contact</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -600,6 +624,24 @@
             // Append the counter to the cart icon
             cartIcon.appendChild(counter);
         }
+
+        (function ($) {
+            "use strict";
+
+            // Spinner
+            var spinner = function () {
+                setTimeout(function () {
+                    if ($('#spinner').length > 0) {
+                        $('#spinner').removeClass('show');
+                    }
+                }, 1);
+            };
+            spinner();
+
+
+            // Initiate the wowjs
+            new WOW().init();
+        })(jQuery);
 
     </script>
 

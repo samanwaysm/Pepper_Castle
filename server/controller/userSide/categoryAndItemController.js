@@ -75,7 +75,13 @@ exports.ourMenuList = async (req, res) => {
         console.log('Fetching menu for category:', req.query.category); // Debugging - Log category
         const category = req.query.category || 'Starters';
         const categories = await Category.find({ status: true });
-        const items = await Item.find({ category: category });
+        // const items = await Item.find({ category: category });
+        const items = await Item.find({ 
+            category: category, 
+            listed: true, 
+            isCategory: true 
+        });
+          
 
         const data = {
             items: items,

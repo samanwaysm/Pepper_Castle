@@ -137,161 +137,172 @@
 
         /* Individual card design */
         .info-card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #ffffff;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-    padding: 10px;
-    transition: box-shadow 0.3s ease;
-    width: 100%;
-    margin: 5px 0;
-}
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+            padding: 10px;
+            transition: box-shadow 0.3s ease;
+            width: 100%;
+            margin: 5px 0;
+        }
 
-.info-card:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+        .info-card:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-/* Header section with fixed width */
-.info-header {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 300px; /* Fixed width for desktop view */
-}
+        /* Header section with fixed width */
+        .info-header {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 300px;
+            /* Fixed width for desktop view */
+        }
 
-.info-header .name {
-    font-size: 18px;
-    font-weight: 500;
-    color: #333;
-}
+        .info-header .name {
+            font-size: 18px;
+            font-weight: 500;
+            color: #333;
+        }
 
-.info-header .email {
-    font-size: 14px;
-    color: #777;
-}
+        .info-header .email {
+            font-size: 14px;
+            color: #777;
+        }
 
-/* Body section with fixed width for details */
-.info-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 400px; /* Fixed width for body */
-    font-size: 14px;
-    color: #555;
-}
+        /* Body section with fixed width for details */
+        .info-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 400px;
+            /* Fixed width for body */
+            font-size: 14px;
+            color: #555;
+        }
 
-.info-body p {
-    margin: 5px 0;
-}
+        .info-body p {
+            margin: 5px 0;
+        }
 
-/* Action buttons aligned to the right with fixed width */
-.info-action {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 10px;
-    width: 150px; /* Fixed width for action buttons */
-}
+        /* Action buttons aligned to the right with fixed width */
+        .info-action {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+            width: 150px;
+            /* Fixed width for action buttons */
+        }
 
-.action-btn,
-.delete-btn {
-    background-color: #ff6600;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-}
+        .action-btn,
+        .delete-btn {
+            background-color: #ff6600;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
 
-.action-btn:hover {
-    background-color: #e65c00;
-}
+        .action-btn:hover {
+            background-color: #e65c00;
+        }
 
-.delete-btn {
-    background-color: #ff3333;
-}
+        .delete-btn {
+            background-color: #ff3333;
+        }
 
-.delete-btn:hover {
-    background-color: #cc0000;
-}
+        .delete-btn:hover {
+            background-color: #cc0000;
+        }
 
-.add-address-btn {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 20px;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    background-color: #ff6600;
-}
+        .add-address-btn {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            margin-left: 20px;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            background-color: #ff6600;
+        }
 
-/* Responsive Design for Tablets */
-@media (max-width: 1024px) {
-    .info-header {
-        width: 250px; /* Adjusted width */
-    }
+        /* Responsive Design for Tablets */
+        @media (max-width: 1024px) {
+            .info-header {
+                width: 250px;
+                /* Adjusted width */
+            }
 
-    .info-body {
-        width: 300px; /* Adjusted width */
-    }
+            .info-body {
+                width: 300px;
+                /* Adjusted width */
+            }
 
-    .info-action {
-        width: 120px; /* Adjusted width */
-    }
-}
+            .info-action {
+                width: 120px;
+                /* Adjusted width */
+            }
+        }
 
-/* Responsive Design for Mobile */
-@media (max-width: 768px) {
-    .info-card {
-        flex-direction: column; /* Stack elements in a column */
-        align-items: flex-start;
-    }
+        /* Responsive Design for Mobile */
+        @media (max-width: 768px) {
+            .info-card {
+                flex-direction: column;
+                /* Stack elements in a column */
+                align-items: flex-start;
+            }
 
-    .info-header, .info-body, .info-action {
-        width: 100%; /* Full width for all sections on mobile */
-    }
+            .info-header,
+            .info-body,
+            .info-action {
+                width: 100%;
+                /* Full width for all sections on mobile */
+            }
 
-    .info-header {
-        margin-bottom: 10px;
-    }
+            .info-header {
+                margin-bottom: 10px;
+            }
 
-    .info-action {
-        justify-content: flex-start;
-    }
+            .info-action {
+                justify-content: flex-start;
+            }
 
-    .action-btn,
-    .delete-btn {
-        font-size: 12px; /* Smaller buttons for mobile */
-        padding: 6px 10px;
-    }
-}
+            .action-btn,
+            .delete-btn {
+                font-size: 12px;
+                /* Smaller buttons for mobile */
+                padding: 6px 10px;
+            }
+        }
 
-/* Mobile view - All items 1/1 */
-@media (max-width: 480px) {
-    .info-body {
-        font-size: 12px;
-    }
+        /* Mobile view - All items 1/1 */
+        @media (max-width: 480px) {
+            .info-body {
+                font-size: 12px;
+            }
 
-    .info-header .name {
-        font-size: 16px;
-    }
+            .info-header .name {
+                font-size: 16px;
+            }
 
-    .info-header .email {
-        font-size: 12px;
-    }
+            .info-header .email {
+                font-size: 12px;
+            }
 
-    .action-btn,
-    .delete-btn {
-        font-size: 11px;
-        padding: 5px 8px;
-    }
-}
+            .action-btn,
+            .delete-btn {
+                font-size: 11px;
+                padding: 5px 8px;
+            }
+        }
 
 
 
@@ -839,11 +850,11 @@
                                 <h5 class="widgettitle"><span>Quick Links</span></h5>
                                 <div class="textwidget ftr-menu">
                                     <ul>
-                                        <li><a href="index.html">-Home</a></li>
-                                        <li><a href="about.html">-About</a></li>
-                                        <li><a href="testimonials.html">-Testimonials</a></li>
-                                        <li><a href="/our-menu">-Our Menu</a></li>
-                                        <li><a href="contact.html">-Contact</a></li>
+                                        <li><a href="/">- Home</a></li>
+                                        <li><a href="/about">- About</a></li>
+                                        <li><a href="/testimonials">- Testimonials</a></li>
+                                        <li><a href="/our-menu">- Our Menu</a></li>
+                                        <li><a href="/contact">- Contact</a></li>
                                     </ul>
                                 </div>
                             </div>

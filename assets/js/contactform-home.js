@@ -9,6 +9,24 @@
 	
 	})(jQuery);
 
+	(function ($) {
+		"use strict";
+	
+		// Spinner
+		var spinner = function () {
+			setTimeout(function () {
+				if ($('#spinner').length > 0) {
+					$('#spinner').removeClass('show');
+				}
+			}, 1);
+		};
+		spinner();
+		
+		
+		// Initiate the wowjs
+		new WOW().init();
+	})(jQuery);
+
 function showResponseContact(responseText, statusText)  { 
 	if (statusText == 'success') {
 		jQuery('#contact-holder-home').html('<h5>Message sent</h5>'); 

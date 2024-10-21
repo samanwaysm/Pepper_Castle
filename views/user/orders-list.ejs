@@ -271,13 +271,13 @@
             color: #ff6600;
         }
 
-        .id-span{
+        .id-span {
             color: #333;
             font-size: 15px;
             font-weight: 600;
         }
 
-        .order-span{
+        .order-span {
             color: #1d1c1c;
             font-size: 15px;
             font-weight: 600;
@@ -289,159 +289,169 @@
         } */
         /* Order List Styles */
         .hh-grayBox {
-    background-color: #F8F8F8;
-    margin-bottom: 20px;
-    padding: 35px;
-    margin-top: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
+            background-color: #F8F8F8;
+            margin-bottom: 20px;
+            padding: 35px;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
 
-.pt45 {
-    padding-top: 45px;
-}
+        .pt45 {
+            padding-top: 45px;
+        }
 
-.order-tracking {
-    text-align: center;
-    width: 25%;
-    position: relative;
-    display: block;
-}
+        .order-tracking {
+            text-align: center;
+            width: 25%;
+            position: relative;
+            display: block;
+        }
 
-.order-tracking .is-complete {
-    display: block;
-    position: relative;
-    border-radius: 50%;
-    height: 30px;
-    width: 30px;
-    background-color: #f7be16;
-    margin: 0 auto;
-    transition: background 0.25s linear;
-    z-index: 2;
-}
+        .order-tracking .is-complete {
+            display: block;
+            position: relative;
+            border-radius: 50%;
+            height: 30px;
+            width: 30px;
+            background-color: #f7be16;
+            margin: 0 auto;
+            transition: background 0.25s linear;
+            z-index: 2;
+        }
 
-.order-tracking.completed .is-complete {
-    background-color: #27aa80;
-}
+        .order-tracking.completed .is-complete {
+            background-color: #27aa80;
+        }
 
-.order-tracking.processing .is-complete {
-    background-color: orange;
-}
+        .order-tracking.processing .is-complete {
+            background-color: orange;
+        }
 
-.order-tracking::before {
-    content: '';
-    display: block;
-    height: 3px;
-    width: calc(100% - 40px);
-    background-color: #f7be16;
-    top: 13px;
-    position: absolute;
-    left: calc(-50% + 20px);
-    z-index: 0;
-}
+        .order-tracking::before {
+            content: '';
+            display: block;
+            height: 3px;
+            width: calc(100% - 40px);
+            background-color: #f7be16;
+            top: 13px;
+            position: absolute;
+            left: calc(-50% + 20px);
+            z-index: 0;
+        }
 
-.order-tracking:first-child:before {
-    display: none;
-}
+        .order-tracking:first-child:before {
+            display: none;
+        }
 
-.order-tracking.completed::before {
-    background-color: #27aa80;
-}
+        .order-tracking.completed::before {
+            background-color: #27aa80;
+        }
 
-.order-tracking.processing::before {
-    background-color: orange;
-}
+        .order-tracking.processing::before {
+            background-color: orange;
+        }
 
-.order-summary {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap; /* Adjust for smaller screens */
-}
+        .order-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            /* Adjust for smaller screens */
+        }
 
-.item h6 {
-    color: black;
-    font-size: 18px;
-}
+        .item h6 {
+            color: black;
+            font-size: 18px;
+        }
 
-.order-summary h6 {
-    margin: 0;
-    font-size: 16px;
-    color: #333;
-}
+        .order-summary h6 {
+            margin: 0;
+            font-size: 16px;
+            color: #333;
+        }
 
-.view-details-btn {
-    background-color: #ff6600;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
-}
+        .view-details-btn {
+            background-color: #ff6600;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
 
-.view-details-btn:hover {
-    background-color: #ff6600;
-}
+        .view-details-btn:hover {
+            background-color: #ff6600;
+        }
 
-.items-list {
-    margin-top: 10px;
-}
+        .items-list {
+            margin-top: 10px;
+        }
 
-.item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
+        .item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
 
-.item-image {
-    width: 100px;
-    height: 100px;
-    border-radius: 4px;
-    margin-right: 10px;
-}
+        .item-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
 
-/* Responsive CSS */
-@media (max-width: 768px) {
-    .order-tracking {
-        width: 100%;  /* Full width tracking on smaller screens */
-        margin-bottom: 20px;
-    }
+        /* Responsive CSS */
+        @media (max-width: 768px) {
+            .order-tracking {
+                width: 100%;
+                /* Full width tracking on smaller screens */
+                margin-bottom: 20px;
+            }
 
-    .order-summary {
-        flex-direction: column; /* Stack elements vertically */
-        text-align: center; /* Center content on small screens */
-    }
+            .order-summary {
+                flex-direction: column;
+                /* Stack elements vertically */
+                text-align: center;
+                /* Center content on small screens */
+            }
 
-    .item-image {
-        width: 80px;
-        height: 80px; /* Adjust image size for smaller screens */
-    }
+            .item-image {
+                width: 80px;
+                height: 80px;
+                /* Adjust image size for smaller screens */
+            }
 
-    .view-details-btn {
-        width: 100%;  /* Full width button on small screens */
-        margin-top: 10px;
-    }
-}
+            .view-details-btn {
+                width: 100%;
+                /* Full width button on small screens */
+                margin-top: 10px;
+            }
+        }
 
-@media (max-width: 480px) {
-    .item {
-        flex-direction: column; /* Stack image and text vertically */
-        text-align: center;
-    }
+        @media (max-width: 480px) {
+            .item {
+                flex-direction: column;
+                /* Stack image and text vertically */
+                text-align: center;
+            }
 
-    .item-image {
-        margin-bottom: 10px;
-    }
+            .item-image {
+                margin-bottom: 10px;
+            }
 
-    .order-summary h6, .item h6 {
-        font-size: 14px; /* Reduce font size for smaller screens */
-    }
+            .order-summary h6,
+            .item h6 {
+                font-size: 14px;
+                /* Reduce font size for smaller screens */
+            }
 
-    .hh-grayBox {
-        padding: 20px; /* Reduce padding on very small screens */
-    }
-}
+            .hh-grayBox {
+                padding: 20px;
+                /* Reduce padding on very small screens */
+            }
+        }
 
 
 
@@ -625,11 +635,9 @@
             .view-details-btn {
                 width: 100%;
             }
-        } */
+        }
 
-
-
-
+        */
         /* 
         .hh-grayBox {
     background-color: #F8F8F8;
@@ -959,11 +967,11 @@
                                 <h5 class="widgettitle"><span>Quick Links</span></h5>
                                 <div class="textwidget ftr-menu">
                                     <ul>
-                                        <li><a href="index.html">-Home</a></li>
-                                        <li><a href="about.html">-About</a></li>
-                                        <li><a href="testimonials.html">-Testimonials</a></li>
-                                        <li><a href="#">-Our Menu</a></li>
-                                        <li><a href="contact.html">-Contact</a></li>
+                                        <li><a href="/">- Home</a></li>
+                                        <li><a href="/about">- About</a></li>
+                                        <li><a href="/testimonials">- Testimonials</a></li>
+                                        <li><a href="/our-menu">- Our Menu</a></li>
+                                        <li><a href="/contact">- Contact</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -1514,122 +1522,122 @@
 
 
 
-    //     document.addEventListener('DOMContentLoaded', function () {
-    //     const userId = '<%= userId %>';  // Assuming userId is passed to the front-end
-    //     fetchOrders(userId);
-    // });
+        //     document.addEventListener('DOMContentLoaded', function () {
+        //     const userId = '<%= userId %>';  // Assuming userId is passed to the front-end
+        //     fetchOrders(userId);
+        // });
 
-    // function fetchOrders(userId) {
-    //     fetch(`/api/orderslist?userId=${userId}`)
-    //         .then(response => {
-    //             if (!response.ok) {
-    //                 throw new Error('Network response was not ok');
-    //             }
-    //             return response.json();
-    //         })
-    //         .then(data => {
-    //             const orderList = document.getElementById('order-list');
-    //             orderList.innerHTML = '';  // Clear previous content
+        // function fetchOrders(userId) {
+        //     fetch(`/api/orderslist?userId=${userId}`)
+        //         .then(response => {
+        //             if (!response.ok) {
+        //                 throw new Error('Network response was not ok');
+        //             }
+        //             return response.json();
+        //         })
+        //         .then(data => {
+        //             const orderList = document.getElementById('order-list');
+        //             orderList.innerHTML = '';  // Clear previous content
 
-    //             if (data.orders.length === 0) {
-    //                 orderList.innerHTML = '<p>No orders found.</p>';
-    //                 return;
-    //             }
+        //             if (data.orders.length === 0) {
+        //                 orderList.innerHTML = '<p>No orders found.</p>';
+        //                 return;
+        //             }
 
-    //             // Reverse the orders array
-    //             data.orders.reverse();
+        //             // Reverse the orders array
+        //             data.orders.reverse();
 
-    //             data.orders.forEach((order, index) => {
-    //                 const orderDiv = document.createElement('div');
-    //                 orderDiv.classList.add('order-item');
-    //                 orderDiv.innerHTML = `
-    //                     <div class="order-summary">
-    //                         <h6>Order ID: ${order.orderId}</h6>
-    //                         <p>Status: ${order.status}</p>
-    //                         <p>Price: $${order.totalAmount}</p>
-    //                         <p>Items:<br> ${order.items.map(item => `${item.item} <br> (Qty: ${item.quantity})`).join(', <br>')}</p>
-    //                         <button class="view-details-btn" data-order-id="${order.id}" id="btn-${index}">View Details</button>
-    //                     </div>
-    //                     <div class="order-details" id="details-${index}" style="display:none;">
-    //                         <h2 class="text-center">Order Tracking</h2>
-    //                         <div class="container">
-    //                             <div class="row">
-    //                                 <div class="col-12 col-md-12 hh-grayBox pt45 pb20">
-    //                                     <div class="row justify-content-between">
-    //                                         <div class="order-tracking ${order.status === 'Ordered' ? 'completed' : ''}">
-    //                                             <span class="is-complete"></span>
-    //                                             <p>Ordered<br><span>${new Date(order.createdAt).toLocaleDateString()}</span></p>
-    //                                         </div>
-    //                                         <div class="order-tracking ${order.status === 'Processing' ? 'completed' : ''}">
-    //                                             <span class="is-complete"></span>
-    //                                             <p>Processing<br><span>${order.processingDate ? new Date(order.processingDate).toLocaleDateString() : 'Pending'}</span></p>
-    //                                         </div>
-    //                                         <div class="order-tracking ${order.status === 'Shipped' ? 'completed' : ''}">
-    //                                             <span class="is-complete"></span>
-    //                                             <p>Shipped<br><span>${order.shippedDate ? new Date(order.shippedDate).toLocaleDateString() : 'Pending'}</span></p>
-    //                                         </div>
-    //                                         <div class="order-tracking ${order.status === 'Delivered' ? 'completed' : ''}">
-    //                                             <span class="is-complete"></span>
-    //                                             <p>Delivered<br><span>${order.deliveredDate ? new Date(order.deliveredDate).toLocaleDateString() : 'Pending'}</span></p>
-    //                                         </div>
-    //                                     </div>
-    //                                     <p class="mt-3" >Items Purchased:</p>
-    //                                     <div class="items-list mt-3">
-    //                                         ${order.items.map(item => `
-    //                                             <div class="item">
-    //                                                 <img src="${item.image}" alt="${item.name}" class="item-image" />
-    //                                                 <span>${item.name} - Quantity: ${item.quantity} - $${item.price}</span>
-    //                                             </div>
-    //                                         `).join('')}
-    //                                     </div>
-    //                                     <p>Shipping Address: ${order.shippingAddress}</p>
-    //                                     <p>Payment Method: ${order.paymentMethod}</p>
-    //                                 </div>
-    //                             </div>
-    //                         </div>
-    //                     </div>
-    //                 `;
-    //                 orderList.appendChild(orderDiv);
+        //             data.orders.forEach((order, index) => {
+        //                 const orderDiv = document.createElement('div');
+        //                 orderDiv.classList.add('order-item');
+        //                 orderDiv.innerHTML = `
+        //                     <div class="order-summary">
+        //                         <h6>Order ID: ${order.orderId}</h6>
+        //                         <p>Status: ${order.status}</p>
+        //                         <p>Price: $${order.totalAmount}</p>
+        //                         <p>Items:<br> ${order.items.map(item => `${item.item} <br> (Qty: ${item.quantity})`).join(', <br>')}</p>
+        //                         <button class="view-details-btn" data-order-id="${order.id}" id="btn-${index}">View Details</button>
+        //                     </div>
+        //                     <div class="order-details" id="details-${index}" style="display:none;">
+        //                         <h2 class="text-center">Order Tracking</h2>
+        //                         <div class="container">
+        //                             <div class="row">
+        //                                 <div class="col-12 col-md-12 hh-grayBox pt45 pb20">
+        //                                     <div class="row justify-content-between">
+        //                                         <div class="order-tracking ${order.status === 'Ordered' ? 'completed' : ''}">
+        //                                             <span class="is-complete"></span>
+        //                                             <p>Ordered<br><span>${new Date(order.createdAt).toLocaleDateString()}</span></p>
+        //                                         </div>
+        //                                         <div class="order-tracking ${order.status === 'Processing' ? 'completed' : ''}">
+        //                                             <span class="is-complete"></span>
+        //                                             <p>Processing<br><span>${order.processingDate ? new Date(order.processingDate).toLocaleDateString() : 'Pending'}</span></p>
+        //                                         </div>
+        //                                         <div class="order-tracking ${order.status === 'Shipped' ? 'completed' : ''}">
+        //                                             <span class="is-complete"></span>
+        //                                             <p>Shipped<br><span>${order.shippedDate ? new Date(order.shippedDate).toLocaleDateString() : 'Pending'}</span></p>
+        //                                         </div>
+        //                                         <div class="order-tracking ${order.status === 'Delivered' ? 'completed' : ''}">
+        //                                             <span class="is-complete"></span>
+        //                                             <p>Delivered<br><span>${order.deliveredDate ? new Date(order.deliveredDate).toLocaleDateString() : 'Pending'}</span></p>
+        //                                         </div>
+        //                                     </div>
+        //                                     <p class="mt-3" >Items Purchased:</p>
+        //                                     <div class="items-list mt-3">
+        //                                         ${order.items.map(item => `
+        //                                             <div class="item">
+        //                                                 <img src="${item.image}" alt="${item.name}" class="item-image" />
+        //                                                 <span>${item.name} - Quantity: ${item.quantity} - $${item.price}</span>
+        //                                             </div>
+        //                                         `).join('')}
+        //                                     </div>
+        //                                     <p>Shipping Address: ${order.shippingAddress}</p>
+        //                                     <p>Payment Method: ${order.paymentMethod}</p>
+        //                                 </div>
+        //                             </div>
+        //                         </div>
+        //                     </div>
+        //                 `;
+        //                 orderList.appendChild(orderDiv);
 
-    //                 // Add event listener for 'View Details' button using the index
-    //                 document.getElementById(`btn-${index}`).addEventListener('click', function () {
-    //                     const detailsDiv = document.getElementById(`details-${index}`);
-    //                     detailsDiv.style.display = detailsDiv.style.display === 'none' ? 'block' : 'none';
-    //                 });
-    //             });
-    //         })
-    //         .catch(error => console.error('Error fetching orders:', error));
-    // }
+        //                 // Add event listener for 'View Details' button using the index
+        //                 document.getElementById(`btn-${index}`).addEventListener('click', function () {
+        //                     const detailsDiv = document.getElementById(`details-${index}`);
+        //                     detailsDiv.style.display = detailsDiv.style.display === 'none' ? 'block' : 'none';
+        //                 });
+        //             });
+        //         })
+        //         .catch(error => console.error('Error fetching orders:', error));
+        // }
 
-    document.addEventListener('DOMContentLoaded', function () {
-    const userId = '<%= userId %>';  // Assuming userId is passed to the front-end
-    fetchOrders(userId);
-});
+        document.addEventListener('DOMContentLoaded', function () {
+            const userId = '<%= userId %>';  // Assuming userId is passed to the front-end
+            fetchOrders(userId);
+        });
 
-function fetchOrders(userId) {
-    fetch(`/api/orderslist?userId=${userId}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const orderList = document.getElementById('order-list');
-            orderList.innerHTML = '';  // Clear previous content
+        function fetchOrders(userId) {
+            fetch(`/api/orderslist?userId=${userId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const orderList = document.getElementById('order-list');
+                    orderList.innerHTML = '';  // Clear previous content
 
-            if (data.orders.length === 0) {
-                orderList.innerHTML = '<p>No orders found.</p>';
-                return;
-            }
+                    if (data.orders.length === 0) {
+                        orderList.innerHTML = '<p>No orders found.</p>';
+                        return;
+                    }
 
-            // Reverse the orders array
-            data.orders.reverse();
+                    // Reverse the orders array
+                    data.orders.reverse();
 
-            data.orders.forEach((order, index) => {
-                const orderDiv = document.createElement('div');
-                orderDiv.classList.add('order-item');
-                orderDiv.innerHTML = `
+                    data.orders.forEach((order, index) => {
+                        const orderDiv = document.createElement('div');
+                        orderDiv.classList.add('order-item');
+                        orderDiv.innerHTML = `
                     <div class="order-summary">
                         <p>Order ID: <span class="id-span">${order.orderId}<span></p>
                         <p>Status: ${order.status}</p>
@@ -1677,17 +1685,17 @@ function fetchOrders(userId) {
                         </div>
                     </div>
                 `;
-                orderList.appendChild(orderDiv);
+                        orderList.appendChild(orderDiv);
 
-                // Add event listener for 'View Details' button using the index
-                document.getElementById(`btn-${index}`).addEventListener('click', function () {
-                    const detailsDiv = document.getElementById(`details-${index}`);
-                    detailsDiv.style.display = detailsDiv.style.display === 'none' ? 'block' : 'none';
-                });
-            });
-        })
-        .catch(error => console.error('Error fetching orders:', error));
-}
+                        // Add event listener for 'View Details' button using the index
+                        document.getElementById(`btn-${index}`).addEventListener('click', function () {
+                            const detailsDiv = document.getElementById(`details-${index}`);
+                            detailsDiv.style.display = detailsDiv.style.display === 'none' ? 'block' : 'none';
+                        });
+                    });
+                })
+                .catch(error => console.error('Error fetching orders:', error));
+        }
 
 
     </script>

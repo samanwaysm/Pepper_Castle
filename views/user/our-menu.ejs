@@ -58,6 +58,14 @@
 </head>
 
 <body class="home">
+   <!-- Spinner Start -->
+   <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-0 start-0 d-flex align-items-center justify-content-center">
+      <div class="spinner-border" style="width: 3rem; height: 3rem;color:#ff6600" role="status">
+          <span class="sr-only">Loading...</span>
+      </div>
+  </div>
+  <!-- Spinner End -->
+
    <div class="menu-mask"></div>
    <!-- MOBILE MENU HOLDER -->
    <div class="mobile-menu-holder">
@@ -282,11 +290,11 @@
                         <h5 class="widgettitle"><span>Quick Links</span></h5>
                         <div class="textwidget ftr-menu">
                            <ul>
-                              <li><a href="/">-Home</a></li>
-                              <li><a href="/about">-About</a></li>
-                              <li><a href="testimonials.html">-Testimonials</a></li>
-                              <li><a href="#">-Our Menu</a></li>
-                              <li><a href="/contact">-Contact</a></li>
+                              <li><a href="/">- Home</a></li>
+                              <li><a href="/about">- About</a></li>
+                              <li><a href="/testimonials">- Testimonials</a></li>
+                              <li><a href="/our-menu">- Our Menu</a></li>
+                              <li><a href="/contact">- Contact</a></li>
                            </ul>
                         </div>
                      </div>
@@ -342,6 +350,8 @@
    </div>
 
    <div id="toastContainer" style="position: fixed; top: 70px; right: 20px; z-index: 9999;"></div>
+
+   
 
    <!-- JS -->
    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -711,6 +721,24 @@
          }, 3000);
       }
 
+
+      (function ($) {
+    "use strict";
+
+    // Spinner
+    var spinner = function () {
+        setTimeout(function () {
+            if ($('#spinner').length > 0) {
+                $('#spinner').removeClass('show');
+            }
+        }, 1);
+    };
+    spinner();
+    
+    
+    // Initiate the wowjs
+    new WOW().init();
+})(jQuery);
    </script>
 </body>
 
