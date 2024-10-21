@@ -311,6 +311,70 @@ exports.editCategoryShow = async (req, res) => {
 //     });
 // };
 
+// exports.addItem = async (req, res) => {
+//   const file = req.files;
+//   const images = file ? file.map((values) => `/uploads/${values.filename}`) : [];
+//   const { item, category, description, price } = req.body;
+//   const errors = {};
+
+//   // Validate input fields
+//   if (!item || item.trim() === "") {
+//       errors.item = "Item name is required.";
+//   }
+//   if (!category || category.trim() === "") {
+//       errors.category = "Category is required.";
+//   }
+//   if (!description || description.trim() === "") {
+//       errors.description = "Description is required.";
+//   }
+//   if (!price || isNaN(price) || Number(price) <= 0) {
+//       errors.price = "Valid price is required.";
+//   }
+
+//   // Check for image format
+//   const allowedImageFormats = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
+//   if (file && file.length > 0) {
+//       const invalidImages = file.filter(file => !allowedImageFormats.includes(file.mimetype));
+//       if (invalidImages.length > 0) {
+//           errors.images = "Only JPG, PNG, and GIF formats are allowed for images.";
+//       }
+//   }
+
+//   // Check if item already exists in the database
+//   const existingItem = await Item.findOne({
+//     item: { $regex: new RegExp(`^${item.trim()}$`, 'i') } // Case-insensitive check
+//   });
+//   if (existingItem) {
+//       errors.item = "An item with this name already exists.";
+//   }
+
+//   // If there are errors, redirect back with error messages
+//   if (Object.keys(errors).length > 0) {
+//       req.session.errors = errors; // Store errors in session
+//       return res.redirect('/addItem'); // You can redirect to a different route if needed
+//   }
+
+//   try {
+//       // Create new item
+//       const newItem = new Item({
+//           item: item.trim(), // Trim spaces
+//           category: category.trim(),
+//           description: description.trim(),
+//           price: Number(price), // Ensure price is stored as a number
+//           image: images,
+//       });
+
+//       // Save the item to the database
+//       await newItem.save();
+//       req.session.success = "Item added successfully."; // Optional: Success message
+//       res.redirect("/itemManagement");
+//   } catch (err) {
+//       console.error(err);
+//       req.session.errors = { general: "An error occurred. Please try again." }; // General error
+//       res.redirect('/itemManagement');
+//   }
+// };
+
 exports.addItem = async (req, res) => {
   const file = req.files;
   const images = file ? file.map((values) => `/uploads/${values.filename}`) : [];
@@ -331,8 +395,13 @@ exports.addItem = async (req, res) => {
       errors.price = "Valid price is required.";
   }
 
+  // Check if images are provided
+  if (images.length === 0) {
+      errors.image = "image is required.";
+  }
+
   // Check for image format
-  const allowedImageFormats = ['image/jpeg', 'image/png', 'image/gif'];
+  const allowedImageFormats = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
   if (file && file.length > 0) {
       const invalidImages = file.filter(file => !allowedImageFormats.includes(file.mimetype));
       if (invalidImages.length > 0) {
@@ -397,7 +466,7 @@ exports.editItem = async (req, res) => {
   }
 
   // Check for image format
-  const allowedImageFormats = ['image/jpeg', 'image/png', 'image/gif'];
+  const allowedImageFormats = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
   if (file && file.length > 0) {
       const invalidImages = file.filter(file => !allowedImageFormats.includes(file.mimetype));
       if (invalidImages.length > 0) {

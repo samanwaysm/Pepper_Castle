@@ -45,7 +45,8 @@
             top: 0;
             right: 0;
             transform: translate(50%, -50%);
-            z-index: 1; /* Ensure the button is on top */
+            z-index: 1;
+            /* Ensure the button is on top */
         }
 
         .image-preview.hidden {
@@ -56,7 +57,8 @@
             margin-top: 10px;
             width: 20%;
         }
-        .error{
+
+        .error {
             color: #ff0000;
             margin-left: 5px;
         }
@@ -78,12 +80,24 @@
             </div>
             <div class="sidebar-wrapper">
                 <ul class="nav">
-                    <li><a href="/dashboard"><i class="nc-icon nc-bank"></i><p>Dashboard</p></a></li>
-                    <li><a href="/orderManagement"><i class="nc-icon nc-bag-16"></i><p>Order Management</p></a></li>
-                    <li><a href="/userManagement"><i class="nc-icon nc-single-02"></i><p>User Management</p></a></li>
-                    <li><a href="/categoryManagement"><i class="nc-icon nc-minimal-down"></i><p>Category Management</p></a></li>
-                    <li class="active"><a href="/itemManagement"><i class="nc-icon nc-tile-56"></i><p>Item Management</p></a></li>
-                    <li class="active-pro"><a href="/admin/logout"><i class="nc-icon nc-simple-remove"></i><p>Logout</p></a></li>
+                    <li><a href="/dashboard"><i class="nc-icon nc-bank"></i>
+                            <p>Dashboard</p>
+                        </a></li>
+                    <li><a href="/orderManagement"><i class="nc-icon nc-bag-16"></i>
+                            <p>Order Management</p>
+                        </a></li>
+                    <li><a href="/userManagement"><i class="nc-icon nc-single-02"></i>
+                            <p>User Management</p>
+                        </a></li>
+                    <li><a href="/categoryManagement"><i class="nc-icon nc-minimal-down"></i>
+                            <p>Category Management</p>
+                        </a></li>
+                    <li class="active"><a href="/itemManagement"><i class="nc-icon nc-tile-56"></i>
+                            <p>Item Management</p>
+                        </a></li>
+                    <li class="active-pro"><a href="/admin/logout"><i class="nc-icon nc-simple-remove"></i>
+                            <p>Logout</p>
+                        </a></li>
                 </ul>
             </div>
         </div>
@@ -126,10 +140,13 @@
                                         <div class="col-md-6 pr-1">
                                             <div class="form-group">
                                                 <label>Item Name</label>
-                                                <input type="text" class="form-control h-25" placeholder="Enter Item Name" name="item" />
+                                                <input type="text" class="form-control h-25"
+                                                    placeholder="Enter Item Name" name="item" />
                                                 <% if (errors && errors.item) { %>
-                                                    <span class="error"><%= errors.item %></span>
-                                                <% } %>
+                                                    <span class="error">
+                                                        <%= errors.item %>
+                                                    </span>
+                                                    <% } %>
                                             </div>
                                         </div>
                                         <div class="col-md-6 pl-1">
@@ -137,13 +154,17 @@
                                                 <label>Category</label>
                                                 <select class="form-control h-25" name="category">
                                                     <option value="">Select Category</option>
-                                                    <% for(let i = 0; i < category.length; i++) { %>
-                                                        <option value="<%= category[i].category %>"><%= category[i].category %></option>
-                                                    <% } %>
+                                                    <% for(let i=0; i < category.length; i++) { %>
+                                                        <option value="<%= category[i].category %>">
+                                                            <%= category[i].category %>
+                                                        </option>
+                                                        <% } %>
                                                 </select>
                                                 <% if (errors && errors.category) { %>
-                                                    <span class="error"><%= errors.category %></span>
-                                                <% } %>
+                                                    <span class="error">
+                                                        <%= errors.category %>
+                                                    </span>
+                                                    <% } %>
                                             </div>
                                         </div>
                                     </div>
@@ -151,10 +172,13 @@
                                         <div class="col-md-6 pr-1">
                                             <div class="form-group">
                                                 <label>Price</label>
-                                                <input type="any" class="form-control" placeholder="Enter Price" name="price" />
+                                                <input type="any" class="form-control" placeholder="Enter Price"
+                                                    name="price" />
                                                 <% if (errors && errors.price) { %>
-                                                    <span class="error"><%= errors.price %></span>
-                                                <% } %>
+                                                    <span class="error">
+                                                        <%= errors.price %>
+                                                    </span>
+                                                    <% } %>
                                             </div>
                                         </div>
                                     </div>
@@ -162,10 +186,13 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>Description</label>
-                                                <textarea class="form-control" placeholder="Enter Description" name="description"></textarea>
+                                                <textarea class="form-control" placeholder="Enter Description"
+                                                    name="description"></textarea>
                                                 <% if (errors && errors.description) { %>
-                                                    <span class="error"><%= errors.description %></span>
-                                                <% } %>
+                                                    <span class="error">
+                                                        <%= errors.description %>
+                                                    </span>
+                                                    <% } %>
                                             </div>
                                         </div>
                                     </div>
@@ -174,17 +201,27 @@
                                             <div class="form-group">
                                                 <label for="image">Image</label>
                                                 <div class="d-flex flex-column">
-                                                    <input type="file" name="image" id="imageInput" accept="image/*" class="d-none">
-                                                    <button type="button" class="btn btn-secondary select-image-btn" id="selectImageBtn">Select Image</button>
+                                                    <input type="file" name="image" id="imageInput" accept="image/*"
+                                                        class="d-none">
+                                                    <button type="button" class="btn btn-secondary select-image-btn"
+                                                        id="selectImageBtn">Select Image</button>
+                                                        <% if (errors && errors.image) { %>
+                                                            <span class="error">
+                                                                <%= errors.image %>
+                                                            </span>
+                                                        <% } %>
+                                                        <p class="err-msg d-flex justify-content-start" id="errorElement2"
+                                                    style="color: red; font-size: 13px;"></p>
                                                     <span id="imageName" class="mt-2"></span>
-                                                    
+
                                                     <!-- Image Preview Container -->
                                                     <div class="image-preview hidden" id="imagePreviewContainer">
                                                         <img id="imagePreview" src="#" alt="Preview">
-                                                        <button type="button" class="remove-btn" id="deleteImageBtn">X</button>
+                                                        <button type="button" class="remove-btn"
+                                                            id="deleteImageBtn">X</button>
                                                     </div>
                                                 </div>
-                                                <p class="err-msg d-flex justify-content-end" id="errorElement2" style="color: red; font-size: 14px;"></p>
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -214,6 +251,7 @@
                             const deleteImageBtn = document.getElementById('deleteImageBtn');
                             const selectImageBtn = document.getElementById('selectImageBtn');
                             const imageName = document.getElementById('imageName');
+                            const errorElement2 = document.getElementById('errorElement2');
 
                             // Open file input when the button is clicked
                             selectImageBtn.addEventListener('click', function () {
@@ -224,13 +262,29 @@
                             imageInput.addEventListener('change', function (event) {
                                 const file = event.target.files[0];
                                 if (file) {
-                                    const reader = new FileReader();
-                                    reader.onload = function (e) {
-                                        imagePreview.src = e.target.result;
-                                        imagePreviewContainer.classList.remove('hidden');
-                                        imageName.textContent = file.name; // Show the image name
-                                    };
-                                    reader.readAsDataURL(file);
+                                    const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+                                    if (!validTypes.includes(file.type)) {
+                                        errorElement2.textContent = 'Please upload a valid image (JPG, JPEG, or PNG).';
+                                        imageInput.value = '';  // Reset the input
+                                        imagePreviewContainer.classList.add('hidden');  // Hide the preview
+                                        imageName.textContent = '';  // Clear the image name
+                                    } else {
+                                        const reader = new FileReader();
+                                        reader.onload = function (e) {
+                                            imagePreview.src = e.target.result;
+                                            imagePreviewContainer.classList.remove('hidden');
+                                            imageName.textContent = file.name; // Show the image name
+                                            errorElement2.textContent = ''; // Clear error message
+                                        };
+                                        reader.readAsDataURL(file);
+                                    }
+                                    // const reader = new FileReader();
+                                    // reader.onload = function (e) {
+                                    //     imagePreview.src = e.target.result;
+                                    //     imagePreviewContainer.classList.remove('hidden');
+                                    //     imageName.textContent = file.name; // Show the image name
+                                    // };
+                                    // reader.readAsDataURL(file);
                                 }
                             });
 

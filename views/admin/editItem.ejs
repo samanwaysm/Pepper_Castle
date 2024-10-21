@@ -159,7 +159,7 @@
                                                     <input class="form-control border border-dark" type="file" name="image" id="imageInput" style="display: none;">
                                                 </div>
                                                 <button type="button" id="changeImageBtn" class="btn btn-secondary change-image-btn">Change Image</button>
-                                                <p class="err-msg d-flex justify-content-end" id="errorElement2" style="color: red; font-size: 14px;"></p>
+                                                <p class="err-msg d-flex justify-content-start" id="errorElement2" style="color: red; font-size: 13px;"></p>
                                             </div>
                                         </div>
                                     </div>
@@ -193,13 +193,29 @@
                             imageInput.addEventListener('change', function (event) {
                                 const file = event.target.files[0];
                                 if (file) {
-                                    const reader = new FileReader();
-                                    reader.onload = function (e) {
-                                        imagePreview.src = e.target.result;
-                                        imageNameDisplay.textContent = file.name; // Display the image name
-                                        deleteImageBtn.style.display = 'block'; // Show the delete button
-                                    };
-                                    reader.readAsDataURL(file);
+                                    const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+                                    if (!validTypes.includes(file.type)) {
+                                        errorElement2.textContent = 'Please upload a valid image (JPG, JPEG, or PNG).';
+                                        imageInput.value = '';  // Reset the input
+                                        imagePreviewContainer.classList.add('hidden');  // Hide the preview
+                                        imageName.textContent = '';  // Clear the image name
+                                    } else {
+                                        const reader = new FileReader();
+                                        reader.onload = function (e) {
+                                            imagePreview.src = e.target.result;
+                                            imagePreviewContainer.classList.remove('hidden');
+                                            imageName.textContent = file.name; // Show the image name
+                                            errorElement2.textContent = ''; // Clear error message
+                                        };
+                                        reader.readAsDataURL(file);
+                                    }
+                                    // const reader = new FileReader();
+                                    // reader.onload = function (e) {
+                                    //     imagePreview.src = e.target.result;
+                                    //     imageNameDisplay.textContent = file.name; // Display the image name
+                                    //     deleteImageBtn.style.display = 'block'; // Show the delete button
+                                    // };
+                                    // reader.readAsDataURL(file);
                                 }
                             });
 
