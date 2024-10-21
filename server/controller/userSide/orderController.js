@@ -82,7 +82,8 @@ exports.createOrder = async (req, res) => {
                     quantity: item.cartItems.quantity
                 })),
                 mode: 'payment',
-                success_url: `http://localhost:${process.env.PORT}/orderSuccess`,
+                // success_url: `http://localhost:${process.env.PORT}/orderSuccess`,
+                success_url: `https://pepper-castle.onrender.com/orderSuccess`,
                 // success_url: `http://localhost:${process.env.PORT}/api/success?orderId=${savedOrder._id}&userId=${userId}`,
                 // success_url: `https://pepper-castle.onrender.com/api/success?orderId=${savedOrder._id}&userId=${userId}`,
                 cancel_url: `https://example.com/cancel`,
