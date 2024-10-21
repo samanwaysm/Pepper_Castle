@@ -606,20 +606,9 @@
                 cartIcon.removeChild(existingCounter);
             }
 
-            // Create a new span element for the cart count
-            const counter = document.createElement('span');
-            counter.style.position = 'absolute';
-            counter.style.borderRadius = '50%';
-            counter.style.backgroundColor = 'var(--headings-color)';
-            counter.style.width = '14px';
-            counter.style.height = '14px';
-            counter.style.top = '20px';
-            // counter.style.right = '0'; 
-            counter.style.textAlign = 'center';
-            counter.style.lineHeight = '15px';
-            counter.style.fontSize = '10px';
-            counter.style.color = '#fff';
-            counter.textContent = cartItemCount;  // Use the count returned from the server
+              const counter = document.createElement('span');
+         counter.classList.add('cart-counter'); // Apply the CSS class for styling
+         counter.textContent = cartItemCount;  // Use the count returned from the server  // Use the count returned from the server
 
             // Append the counter to the cart icon
             cartIcon.appendChild(counter);

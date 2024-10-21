@@ -3583,3 +3583,49 @@ margin-left:0;margin-top:8px;}
           visibility: visible;
           opacity: 1;
        }
+
+
+             /* Basic styles for cart icon */
+#cartIcon {
+  position: relative; /* Needed to position the counter within the icon */
+}
+
+/* Style for the cart counter */
+.cart-counter {
+  position: absolute;
+  top: -10px; 
+  right: -10px;
+  background-color: var(--headings-color);
+  color: #fff;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 10px;
+  line-height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .cart-counter {
+    width: 12px;
+    height: 12px;
+    font-size: 8px;
+    line-height: 12px;
+    top: -8px;
+    right: -8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cart-counter {
+    width: 10px;
+    height: 10px;
+    font-size: 7px;
+    line-height: 10px;
+    top: -5px;
+    right: -6px;
+  }
+}

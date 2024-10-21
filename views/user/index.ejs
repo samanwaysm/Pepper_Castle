@@ -25,6 +25,9 @@
    <link rel="icon" href="images/fav.png" sizes="32x32" />
    <link rel="icon" href="images/icons/favicon-192x192.png" sizes="192x192" />
    <link rel="apple-touch-icon-precomposed" href="images/icons/favicon-180x180.png" />
+   <style>
+
+   </style>
 </head>
 
 <body class="home">
@@ -694,26 +697,35 @@
 
       const cartCount = `<%= JSON.stringify(cartCount.cartItemCount) %>`;
 
-
-      // Select the cart icon element
       const cartIcon = document.getElementById('cartIcon');
 
       // Create a span element for the counter
       const counter = document.createElement('span');
-      counter.style.position = 'absolute';
-      counter.style.borderRadius = '50%';
-      counter.style.backgroundColor = 'var(--headings-color)';
-      counter.style.width = '14px';
-      counter.style.height = '14px';
-      counter.style.top = '20px';
-      counter.style.textAlign = 'center';
-      counter.style.lineHeight = '15px';
-      counter.style.fontSize = '10px';
-      counter.style.color = '#fff';
+      counter.classList.add('cart-counter'); // Add a class for styling
       counter.textContent = cartCount;
 
       // Append the counter to the cart icon
       cartIcon.appendChild(counter);
+
+      // // Select the cart icon element
+      // const cartIcon = document.getElementById('cartIcon');
+
+      // // Create a span element for the counter
+      // const counter = document.createElement('span');
+      // counter.style.position = 'absolute';
+      // counter.style.borderRadius = '50%';
+      // counter.style.backgroundColor = 'var(--headings-color)';
+      // counter.style.width = '14px';
+      // counter.style.height = '14px';
+      // counter.style.top = '20px';
+      // counter.style.textAlign = 'center';
+      // counter.style.lineHeight = '15px';
+      // counter.style.fontSize = '10px';
+      // counter.style.color = '#fff';
+      // counter.textContent = cartCount;
+
+      // // Append the counter to the cart icon
+      // cartIcon.appendChild(counter);
    </script>
 </body>
 
