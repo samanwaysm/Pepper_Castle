@@ -450,7 +450,8 @@
                             submitOrder(); // Call submitOrder only if delivery is available
                         } else {
                             console.log(response);
-                            alert('Delivery is not available in your area.');
+                            // alert('Delivery is not available in your area.');
+                            submitOrder();
                         }
                     },
                     error: function () {

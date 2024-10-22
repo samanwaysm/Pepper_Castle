@@ -8,6 +8,8 @@ exports.homeRoutes = (req, res, next) => {
         axios.get(`http://localhost:${process.env.PORT}/api/itemCount?userId=${userId}`),
     ])
         .then(axios.spread((data1, data2) => {
+            console.log(data1.data);
+            
             res.render("user/index", { categories: data1.data, cartCount: data2.data, isUserAuthenticated, isUserAuth }, (err, html) => {
                 if (err) {
                     console.log(err);

@@ -54,17 +54,33 @@
          color: rgb(0, 0, 0);
          border: black solid 1px;
       }
+
+      /* @media (min-width: 1100px) {
+         .no-items-message {
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         color: #ff6600;
+         margin: 20px 0;
+         padding-left: 25px;
+         padding-right: 25px;
+         text-align: center;
+      }
+      } */
+
+      
    </style>
 </head>
 
 <body class="home">
    <!-- Spinner Start -->
-   <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-0 start-0 d-flex align-items-center justify-content-center">
+   <div id="spinner"
+      class="show bg-white position-fixed translate-middle w-100 vh-100 top-0 start-0 d-flex align-items-center justify-content-center">
       <div class="spinner-border" style="width: 3rem; height: 3rem;color:#ff6600" role="status">
-          <span class="sr-only">Loading...</span>
+         <span class="sr-only">Loading...</span>
       </div>
-  </div>
-  <!-- Spinner End -->
+   </div>
+   <!-- Spinner End -->
 
    <div class="menu-mask"></div>
    <!-- MOBILE MENU HOLDER -->
@@ -98,7 +114,7 @@
                <a href="/signin">Sign In</a>
             </li>
             <li class="menu-item ">
-                    <a href="/cart"><i class="fas fa-cart-plus"></i></a>
+               <a href="/cart"><i class="fas fa-cart-plus"></i></a>
             </li>
          </ul>
          <!-- /MOBILE MENU -->
@@ -351,7 +367,7 @@
 
    <div id="toastContainer" style="position: fixed; top: 70px; right: 20px; z-index: 9999;"></div>
 
-   
+
 
    <!-- JS -->
    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -457,7 +473,7 @@
                });
             } else {
                menuCards = `
-                  <div style="text-align: center; color: #ff6347; margin: 20px 0;">
+                  <div class="no-items-message">
                         <h3>No items available in this category.</h3>
                   </div>`;
             }
@@ -698,11 +714,11 @@
       function showToast(message, type) {
          const toastContainer = document.getElementById('toastContainer');
          const toast = document.createElement('div');
-         
+
          toast.style.position = 'relative';
          toast.style.minWidth = '200px';
          toast.style.marginBottom = '10px';
-         toast.style.marginTop= '10px';
+         toast.style.marginTop = '10px';
          toast.style.padding = '10px';
          toast.style.borderRadius = '5px';
          toast.style.color = '#000';
@@ -719,29 +735,29 @@
          toastContainer.appendChild(toast);
 
          // Automatically remove the toast after 3 seconds
-         setTimeout(function() {
+         setTimeout(function () {
             toast.remove();
          }, 3000);
       }
 
 
       (function ($) {
-    "use strict";
+         "use strict";
 
-    // Spinner
-    var spinner = function () {
-        setTimeout(function () {
-            if ($('#spinner').length > 0) {
-                $('#spinner').removeClass('show');
-            }
-        }, 1);
-    };
-    spinner();
-    
-    
-    // Initiate the wowjs
-    new WOW().init();
-})(jQuery);
+         // Spinner
+         var spinner = function () {
+            setTimeout(function () {
+               if ($('#spinner').length > 0) {
+                  $('#spinner').removeClass('show');
+               }
+            }, 1);
+         };
+         spinner();
+
+
+         // Initiate the wowjs
+         new WOW().init();
+      })(jQuery);
    </script>
 </body>
 

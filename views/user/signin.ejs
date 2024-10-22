@@ -8,6 +8,8 @@
     
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <style>
         body {
@@ -26,18 +28,21 @@
             max-width: 400px;
             width: 100%;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            text-align: center;
+            /* text-align: center; */
         }
         .logo {
-            width: 80px;
+            width: 20%;
             height: auto;
             margin-bottom: 10px;
+            margin-left: 40%;
+            margin-right: 40%;
         }
         .brand-name {
             font-size: 24px;
             color: #fff;
             font-weight: bold;
             margin-bottom: 20px;
+            text-align: center;
         }
         h3 {
             text-align: center;
@@ -64,6 +69,9 @@
         .forgot-password a:hover, .signup-link a:hover {
             text-decoration: underline;
         }
+        .forgot-password, .signup-link{
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -85,7 +93,14 @@
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password">
+                <div class="input-group">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password">
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                            <i class="fas fa-eye" id="eyeIcon"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
             <button type="submit" class="btn login-btn btn-block">Login</button>
             <div class="forgot-password mt-3">
@@ -101,25 +116,28 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- FontAwesome JS for icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
 
     <script>
-        function validateForm() {
-            const emailOrPhone = document.getElementById('emailOrPhone').value;
-            const password = document.getElementById('password').value;
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eyeIcon');
 
-            if (!emailOrPhone || !password) {
-                alert('Both email/phone and password are required!');
-                return false;
+        togglePassword.addEventListener('click', function () {
+            // Toggle the type attribute
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+
+            // Toggle the eye icon
+            if (type === 'password') {
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            } else {
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
             }
-
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (emailPattern.test(emailOrPhone) && !emailPattern.test(emailOrPhone)) {
-                alert('Please enter a valid email address.');
-                return false;
-            }
-
-            return true;
-        }
+        });
     </script>
 </body>
 </html>
