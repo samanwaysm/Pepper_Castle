@@ -50,6 +50,13 @@
             background-color: #e24600;
             /* Darker shade on hover */
         }
+
+        .cart-heading {
+            font-size: 32px;
+            font-weight: bold;
+            color: #fc5000; /* Keep it orange */
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 
@@ -149,8 +156,8 @@
                         <!-- <a href="/signin">SignIn</a> -->
                     </li>
                 </ul>
-                <% }else{ %>
-                    <ul class=" menu-nav menu-nav-1"></ul>
+            <% }else{ %>
+                <ul class=" menu-nav menu-nav-1"></ul>
                     <li class="menu-item menu-item-has-children list-unstyled" style="margin-left: 50px;">
                         <a class="icon-link-white" href="/profile"><i class="fas fa-user"></i></a>
                     </li>
@@ -158,22 +165,23 @@
                         style="margin-left: 30px;margin-right: 30px;">
                         <a class="icon-link-white" href="/cart"><i class="fas fa-cart-plus" id="cartIcon"></i></a>
                     </li>
-                    </ul>
-                    <% } %>
-                        <% if(!isUserAuth){ %>
-                            <div class="btn-header btn-header1 profile-cart-btns">
-                                <a href="/signin" class="view-more">Order Now</a>
-                            </div>
-                            <% }else{ %>
-                                <div class="btn-header btn-header1 profile-cart-btns">
-                                    <a href="/our-menu" class="view-more">Order Now</a>
-                                </div>
-                                <% } %>
+                </ul>
+            <% } %>
+            <% if(!isUserAuth){ %>
+                <div class="btn-header btn-header1 profile-cart-btns">
+                    <a href="/signin" class="view-more">Order Now</a>
+                </div>
+            <% }else{ %>
+                <div class="btn-header btn-header1 profile-cart-btns">
+                    <a href="/our-menu" class="view-more">Order Now</a>
+                </div>
+            <% } %>
         </div>
         <!-- /social-btn-top1 -->
     </header>
     <!-- WRAP CONTENT -->
     <div class="container-wrapper">
+        <h1 class="cart-heading">Cart</h1> 
         <div class="cart-container">
             <div class="product-section">
                 <% if (cart && cart.length> 0) { %>
@@ -196,20 +204,19 @@
                                 <i class="fas fa-trash delete-icon" data-item-id="<%= item.cartItems.itemId %>"></i>
                             </div>
                         </div>
-                        <% }); %>
-                            <% } else { %>
-                                <div class="empty-cart text-center align-items-center" id="emptyCartMessage">
-                                    <h3 class="empty-h">Your cart is empty.</h3>
-                                    <a href="/our-menu"><button class="add-products-link">Add Products</button></a>
-                                </div>
-                                <% } %>
-                                    <!-- <div id="empty-cart-message" style="display: none;">No items added in cart</div> -->
-                                    <div class="empty-cart text-center align-items-center" id="empty-cart-message" style="display: none;">
-                                        <h3 class="empty-h">Your cart is empty.</h3>
-                                        <a href="/our-menu"><button class="add-products-link">Add Products</button></a>
-                                    </div>
-
-            </div>
+                    <% }); %>
+                    <% } else { %>
+                        <div class="empty-cart text-center align-items-center" id="emptyCartMessage">
+                            <h3 class="empty-h">Your cart is empty.</h3>
+                            <a href="/our-menu"><button class="add-products-link">Add Products</button></a>
+                        </div>
+                    <% } %>
+                        <!-- <div id="empty-cart-message" style="display: none;">No items added in cart</div> -->
+                        <div class="empty-cart text-center align-items-center" id="empty-cart-message" style="display: none;">
+                            <h3 class="empty-h">Your cart is empty.</h3>
+                            <a href="/our-menu"><button class="add-products-link">Add Products</button></a>
+                        </div>
+                    </div>
 
             <div class="summary-section">
                 <div class="summary">
