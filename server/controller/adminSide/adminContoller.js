@@ -8,6 +8,14 @@ const Order = require("../../model/orderSchema");
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 
+function capitalizeFirstLetterOfEachWord(name) {
+  return name
+    .toLowerCase() // Make everything lowercase first
+    .split(' ') // Split the name into an array of words
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize the first letter of each word
+    .join(' '); // Join the words back into a string
+}
+
 exports.adminLogin = async (req, res) => {
   const admin = {
     email: process.env.ADMIN_EMAIL,
@@ -41,7 +49,6 @@ exports.Dashboard = async (req, res, next) => {
 exports.userManagement = async (req, res) => {
   try {
     const users = await userDb.find();
-    console.log(users);
     res.status(200).json(users);
   } catch (error) {
     console.error("Error fetching users: ", error);
@@ -116,7 +123,11 @@ exports.userunBlock = async (req, res) => {
 // };
 
 exports.addCategory = async (req, res) => {
-  const categoryName = req.body.category ? req.body.category.trim() : ""; // Trim spaces
+  // const categoryName = req.body.category ? req.body.category.trim() : "";
+  const categoryName = req.body.category 
+  ? capitalizeFirstLetterOfEachWord(req.body.category.trim()) 
+  : ""; 
+
   const errors = {};
 
   // Validate input
@@ -156,7 +167,6 @@ exports.addCategory = async (req, res) => {
 };
 
 
-
 exports.CategoryManagementShow = async (req, res) => {
   const categoryList = await Category.find({ status: true });
   res.send(categoryList);
@@ -171,7 +181,6 @@ exports.UnlistCategoryShow = async (req, res) => {
 
 exports.unlistCategory = async (req, res) => {
   const id = req.query.id;
-  console.log(id);
 
   const categorydata = await Category.find({ _id: id });
   if (
@@ -207,7 +216,10 @@ exports.listCategory = async (req, res) => {
 };
 
 exports.editCategory = async (req, res) => {
-  const categoryName = req.body.category ? req.body.category.trim() : ""; // Trim spaces
+  // const categoryName = req.body.category ? req.body.category.trim() : ""; // Trim spaces
+  const categoryName = req.body.category 
+  ? capitalizeFirstLetterOfEachWord(req.body.category.trim()) 
+  : ""; 
   const editId = req.query.id;
   const errors = {};
 
@@ -546,7 +558,6 @@ exports.editItem = async (req, res) => {
 
 exports.editItemShow = async (req, res) => {
   const { id } = req.query; // Get the ID from the request parameters
-  console.log(id);
 
   try {
       // Find the item by ID
@@ -555,8 +566,6 @@ exports.editItemShow = async (req, res) => {
       if (!item) {
           return res.status(404).json({ message: 'Item not found' });
       }
-
-      console.log(item);
       
       // Return the item data to the client
       res.status(200).json(item);
@@ -659,7 +668,6 @@ exports.getAllOrders = async (req, res) => {
       }
     ]);
 
-    console.log(orders);
     
     res.status(200).json({
       success: true,
@@ -722,7 +730,6 @@ exports.getOrderDetails = async (req, res) => {
       }
     ]);
 
-    // console.log('order-detail',orderDetails);
 
 
     if (orderDetails.length === 0) {
@@ -809,7 +816,6 @@ const refundPayment = async (paymentIntentId) => {
           payment_intent: paymentIntentId,  // Use the PaymentIntent ID
           amount: amountToRefund,  // Refund the full amount received
       });
-      console.log(refund, 'refund_is success');
       
 
       // return res.status(200).json({

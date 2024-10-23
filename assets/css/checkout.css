@@ -136,9 +136,33 @@
     background-color: #fc5000;
 }
 
+@media (max-width: 1100px) {
+    .checkout-container {
+        grid-template-columns: 1fr; 
+    }
+    .container-chk{
+        margin-top: 200px;
+    }
+}
+
 @media (max-width: 768px) {
     .checkout-container {
         grid-template-columns: 1fr; 
+    }
+    .container-chk{
+        margin-top: 200px;
+    }
+}
+
+@media (max-width: 500px) {
+    .checkout-container {
+        grid-template-columns: 1fr; 
+    }
+    .container-chk{
+        margin-top: 100px;
+    }
+    .change-address{
+        width: 50%;
     }
 }
 

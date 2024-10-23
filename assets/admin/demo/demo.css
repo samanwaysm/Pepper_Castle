@@ -221,3 +221,10 @@
 .button_len{
   width: 100px;
 }
+
+.navbar{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1030; /* Ensures the navbar stays above other content */
+}

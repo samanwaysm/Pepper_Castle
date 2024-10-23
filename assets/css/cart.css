@@ -34,6 +34,7 @@
     width: 90%;
     max-width: 1500px;
     gap: 40px;
+    margin-top: 80px;
 }
 
 .product-section {
@@ -184,6 +185,7 @@
     .cart-container {
         flex-direction: column; /* Stack elements vertically */
         padding: 10px;
+        margin-top: 180px;
     }
 
     .product-section {

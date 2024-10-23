@@ -475,7 +475,6 @@ exports.forgotOtp = async (req, res) => {
   }
   const foundUser = await User.findOne({ email: req.body.email });
   if (!foundUser) {
-    console.log(foundUser);
     req.session.message = "user not exist";
     return res.redirect("/forgot-password");
   }
@@ -527,7 +526,6 @@ exports.forgotOtpResend = async (req, res) => {
 
 
 exports.updatepassword = async (req, res) => {
-  console.log(req.session.forgotuser);
 
   const hashedpassword = await bcrypt.hash(req.body.password, 10);
 
@@ -535,13 +533,11 @@ exports.updatepassword = async (req, res) => {
     { email: req.session.forgotuser },
     { $set: { password: hashedpassword } }
   );
-  console.log(updateuser);
   res.redirect("/signin");
 };
 
 
 exports.signOut = async (req, res) => {
-  console.log('user sign out');
 
   req.session.isUserAuth = false;
   req.session.isUserAuthenticated = false;

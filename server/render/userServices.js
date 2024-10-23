@@ -4,12 +4,10 @@ const { render } = require('ejs');
 exports.homeRoutes = (req, res, next) => {
     const { isUserAuthenticated, isUserAuth, userId } = req.session
     axios.all([
-        axios.get(`http://localhost:${process.env.PORT}/admin/categoryShow`),
+        axios.get(`http://localhost:${process.env.PORT}/api/homeCategoryShow`),
         axios.get(`http://localhost:${process.env.PORT}/api/itemCount?userId=${userId}`),
     ])
         .then(axios.spread((data1, data2) => {
-            console.log(data1.data);
-            
             res.render("user/index", { categories: data1.data, cartCount: data2.data, isUserAuthenticated, isUserAuth }, (err, html) => {
                 if (err) {
                     console.log(err);
@@ -142,7 +140,7 @@ exports.cart = (req, res) => {
         });
 }
 
-exports.checkout = (req, res) => {
+exports.checkout = (req, res, next) => {
     const { isUserAuthenticated, isUserAuth, userId } = req.session
     axios.all([
         axios.get(`http://localhost:${process.env.PORT}/api/showCart?userId=${userId}`),
@@ -163,7 +161,7 @@ exports.checkout = (req, res) => {
             })
 
         })).catch(err => {
-            res.send(err)
+            next(err)
         })
 }
 
@@ -174,12 +172,21 @@ exports.orderSuccess = (req, res) => {
         if (err) {
             console.log(err);
         }
-        delete req.session.validEmail
-        delete req.session.wrongPassword
+        delete req.session.ordersuccess
         res.send(html)
     })
 }
 
+
+exports.orderFailed = (req, res) => {
+    const { isUserAuthenticated, isUserAuth, userId, username } = req.session
+    res.render("user/orderFailed",{isUserAuth,userId}, (err, html) => {
+        if (err) {
+            console.log(err);
+        }
+        res.send(html)
+    })
+}
 
 exports.forgotPassword = (req, res, next) => {
     res.render("user/forgot-password", (err, html) => {

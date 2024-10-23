@@ -704,7 +704,7 @@
     </div>
 
     <!-- Add Address Modal -->
-    <div id="addAddressModal" class="modal">
+    <!-- <div id="addAddressModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('addAddressModal')">&times;</span>
             <h4>Add Address</h4>
@@ -741,8 +741,52 @@
                 <button type="submit">Add Address</button>
             </form>
         </div>
-    </div>
+    </div> -->
 
+<!-- Add Address Modal -->
+<div id="addAddressModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('addAddressModal')">&times;</span>
+        <h4>Add Address</h4>
+        <form id="addAddressForm" class="modal-form">
+            <div class="form-row">
+                <label for="addUsername">Username</label>
+                <input type="text" id="username" name="username" required>
+                <span class="error-message" id="usernameError"></span>
+            </div>
+            <div class="form-row">
+                <label for="addPhone">Phone</label>
+                <input type="text" id="phone" name="phone" required>
+                <span class="error-message" id="phoneError"></span>
+            </div>
+            <div class="form-row">
+                <label for="addStreet">Street</label>
+                <input type="text" id="street" name="street" required>
+                <span class="error-message" id="streetError"></span>
+            </div>
+            <div class="form-row">
+                <label for="addApartment">Block</label>
+                <input type="text" id="block" name="block">
+            </div>
+            <div class="form-row">
+                <label for="addUnit">Unit</label>
+                <input type="text" id="unitnum" name="unitnum">
+            </div>
+            <div class="form-row">
+                <label for="addPostalCode">Postal Code</label>
+                <input type="text" id="postal" name="postal" required>
+                <span class="error-message" id="postalError"></span>
+            </div>
+            <!-- <div class="form-row">
+                <label class="add-def-lbl" for="addIsDefault">Set as Default</label>
+                <input type="checkbox" id="addIsDefault" name="addIsDefault">
+            </div> -->
+            <button type="submit">Add Address</button>
+        </form>
+    </div>
+</div>
+
+    
     <!-- Edit Address Modal -->
     <div id="editAddressModal" class="modal">
         <div class="modal-content">
@@ -911,6 +955,74 @@
     <!-- JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        // Add an event listener to the form submission
+document.getElementById('addAddressForm').addEventListener('submit', function (event) {
+    // Prevent form submission to allow validation
+    event.preventDefault();
+    validateForm();
+});
+
+function validateForm() {
+    // Get form field values
+    const username = document.getElementById('username').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const street = document.getElementById('street').value.trim();
+    const postal = document.getElementById('postal').value.trim();
+
+    // Error message elements
+    const usernameError = document.getElementById('usernameError');
+    const phoneError = document.getElementById('phoneError');
+    const streetError = document.getElementById('streetError');
+    const postalError = document.getElementById('postalError');
+
+    // Clear previous error messages
+    usernameError.textContent = '';
+    phoneError.textContent = '';
+    streetError.textContent = '';
+    postalError.textContent = '';
+
+    let isValid = true;
+
+    // Username validation (required)
+    if (!username) {
+        usernameError.textContent = 'Username is required.';
+        isValid = false;
+    }
+
+    // Phone number validation (required and should be digits only, min length 10)
+    const phonePattern = /^[0-9]{10}$/;
+    if (!phone) {
+        phoneError.textContent = 'Phone number is required.';
+        isValid = false;
+    } else if (!phonePattern.test(phone)) {
+        phoneError.textContent = 'Please enter a valid 10-digit phone number.';
+        isValid = false;
+    }
+
+    // Street validation (required)
+    if (!street) {
+        streetError.textContent = 'Street is required.';
+        isValid = false;
+    }
+
+    // Postal code validation (required, digits only, min length 5)
+    const postalPattern = /^[0-9]{5}$/;
+    if (!postal) {
+        postalError.textContent = 'Postal code is required.';
+        isValid = false;
+    } else if (!postalPattern.test(postal)) {
+        postalError.textContent = 'Please enter a valid 5-digit postal code.';
+        isValid = false;
+    }
+
+    // If the form is valid, submit it
+    if (isValid) {
+        document.getElementById('addAddressForm').submit();
+    }
+}
+
+    </script>
+    <script>
         const userId = `<%= userId %>`;
         $(document).ready(function () {
             updateCartCount();
@@ -986,8 +1098,8 @@
                                 <p><strong>Postal Code:</strong> ${address.postal}</p>
                             </div>
                             <div class="info-action">
-                                <button class="action-btn" onclick="editAddress(${index}, '${address._id}', '${address.username}', '${address.phone}', '${address.street}', '${address.block}', '${address.unitnum}', '${address.postal}')">Edit</button>
-                                <button class="delete-btn" onclick="deleteAddress(${index}, '${address._id}')">Delete</button>
+                                <button class="action-btn" onclick="editAddress(${index}, '${address._id}', '${address.username}', '${address.phone}', '${address.street}', '${address.block}', '${address.unitnum}', '${address.postal}')"><i class="fas fa-pen"></i> Edit</button>
+                                <button class="delete-btn" onclick="deleteAddress(${index}, '${address._id}')"><i class="fas fa-trash"></i>Delete</button>
                             </div>
                         </div>
                     `;

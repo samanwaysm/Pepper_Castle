@@ -31,13 +31,14 @@
 </head>
 
 <body class="home">
-   	<!-- Spinner Start -->
-	<div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-0 start-0 d-flex align-items-center justify-content-center">
-		<div class="spinner-border" style="width: 3rem; height: 3rem;color:#ff6600" role="status">
-			<span class="sr-only">Loading...</span>
-		</div>
-	</div>
-	<!-- Spinner End -->
+   <!-- Spinner Start -->
+   <div id="spinner"
+      class="show bg-white position-fixed translate-middle w-100 vh-100 top-0 start-0 d-flex align-items-center justify-content-center">
+      <div class="spinner-border" style="width: 3rem; height: 3rem;color:#ff6600" role="status">
+         <span class="sr-only">Loading...</span>
+      </div>
+   </div>
+   <!-- Spinner End -->
    <div class="menu-mask"></div>
    <!-- MOBILE MENU HOLDER -->
    <div class="mobile-menu-holder">
@@ -70,7 +71,7 @@
                <a href="/signin">Sign In</a>
             </li>
             <li class="menu-item ">
-                    <a href="/cart"><i class="fas fa-cart-plus"></i></a>
+               <a href="/cart"><i class="fas fa-cart-plus"></i></a>
             </li>
          </ul>
          <!-- /MOBILE MENU -->
@@ -165,7 +166,7 @@
                <div class="slider-text">
                   <div class="intro-txt">DINING AT</div>
                   <h2>Pepper Castle</h2>
-                  <p>Embering the test
+                  <p>Embering the taste
                   </p>
                </div>
             </div>
@@ -178,7 +179,7 @@
                <div class="slider-text">
                   <div class="intro-txt">EVENTS AT</div>
                   <h2>Pepper Castle</h2>
-                  <p>Embering the test
+                  <p>Embering the taste
                   </p>
                </div>
             </div>
@@ -191,7 +192,7 @@
                <div class="slider-text">
                   <div class="intro-txt">HAPPY HOURS AT</div>
                   <h2>Pepper Castle</h2>
-                  <p>Embering the test
+                  <p>Embering the taste
                   </p>
                </div>
             </div>
@@ -391,105 +392,158 @@
                      <h2 class="home-title">What Would You Like To Eat?</h2>
                   </div>
                   <div class="row">
-                     <div class="col-md-2">
-                        <div class="like-to-eat">
-                           <a href="/our-menu?category=Kebab Rolls">
-                              <div class="widgettitle"><img src="images/01.png"></div>
-                              <p>Kebab Rolls</p>
-                           </a>
-                        </div>
-                        <div class="mobile-margin-b48"></div>
-                     </div>
-                     <!-- /col-md-6 -->
-                     <div class="col-md-2">
-                        <div class="like-to-eat">
-                           <a href="/our-menu?category=Starters">
-                              <div class="widgettitle"><img src="images/02.png"></div>
-                              <p>Starters</p>
-                           </a>
-                        </div>
-                     </div>
-                     <div class="col-md-2">
-                        <div class="like-to-eat">
-                           <a href="/our-menu?category=Tandoor Appetisers">
-                              <div class="widgettitle"><img src="images/03.png"></div>
-                              <p>Tandoor Appetisers</p>
-                           </a>
-                        </div>
-                     </div>
-                     <div class="col-md-2">
-                        <div class="like-to-eat">
-                           <a href="/our-menu?category=Salads">
-                              <div class="widgettitle"><img src="images/04.png"></div>
-                              <p>Salads</p>
-                           </a>
-                        </div>
-                     </div>
-                     <div class="col-md-2">
-                        <div class="like-to-eat">
-                           <a href="/our-menu?category=Rice Specialities">
-                              <div class="widgettitle"><img src="images/05.png"></div>
-                              <p>Rice Specialities</p>
-                           </a>
-                        </div>
-                     </div>
-                     <div class="col-md-2">
-                        <div class="like-to-eat">
-                           <a href="/our-menu?category=Chaats">
-                              <div class="widgettitle"><img src="images/06.png"></div>
-                              <p>Chaat</p>
-                           </a>
-                        </div>
-                     </div>
-                     <div class="col-md-2">
-                        <div class="like-to-eat">
-                           <a href="/our-menu?category=">
-                              <div class="widgettitle"><img src="images/07.png"></div>
-                              <p>Breads From Tandoor</p>
-                           </a>
-                        </div>
-                     </div>
-                     <!-- <div class="col-md-2">
+                     <% if (categories.includes('starters')) { %>
+                        <div class="col-md-2">
                            <div class="like-to-eat">
-                              <a href="/our-menu">
-                                 <div class="widgettitle"><img src="images/08.png"></div>
-                                 <p>Vegetarian Mains</p>
+                              <a href="/our-menu?category=Starters">
+                                 <div class="widgettitle"><img src="images/02.png"></div>
+                                 <p>Starters</p>
                               </a>
                            </div>
-                        </div> -->
-                     <div class="col-md-2">
-                        <div class="like-to-eat">
-                           <a href="/our-menu?category=Seafood">
-                              <div class="widgettitle"><img src="images/09.png"></div>
-                              <p>Seafood</p>
-                           </a>
                         </div>
-                     </div>
-                     <div class="col-md-2">
-                        <div class="like-to-eat">
-                           <a href="/our-menu?category=Mutton">
-                              <div class="widgettitle"><img src="images/10.png"></div>
-                              <p>Mutton</p>
-                           </a>
+                     <% } %>
+                     <% if (categories.includes('chaats')) { %>
+                        <div class="col-md-2">
+                           <div class="like-to-eat">
+                              <a href="/our-menu?category=Chaats">
+                                 <div class="widgettitle"><img src="images/06.png"></div>
+                                 <p>Chaat</p>
+                              </a>
+                           </div>
                         </div>
-                     </div>
-                     <div class="col-md-2">
-                        <div class="like-to-eat">
-                           <a href="/our-menu?category=Chicken">
-                              <div class="widgettitle"><img src="images/11.png"></div>
-                              <p>Chicken</p>
-                           </a>
+                     <% } %>
+                     <% if (categories.includes('salads')) { %>
+                        <div class="col-md-2">
+                           <div class="like-to-eat">
+                              <a href="/our-menu?category=Salads">
+                                 <div class="widgettitle"><img src="images/04.png"></div>
+                                 <p>Salads</p>
+                              </a>
+                           </div>
                         </div>
+                     <% } %>
+                     <% if (categories.includes('kebab rolls')) { %>
+                        <div class="col-md-2">
+                           <div class="like-to-eat">
+                              <a href="/our-menu?category=Kebab Rolls">
+                                 <div class="widgettitle"><img src="images/01.png"></div>
+                                 <p>Kebab Rolls</p>
+                              </a>
+                           </div>
+                        <div class="mobile-margin-b48"></div>
                      </div>
-                     <div class="col-md-2">
-                        <div class="like-to-eat">
-                           <a href="/our-menu?category=Desserts">
-                              <div class="widgettitle"><img src="images/12.png"></div>
-                              <p>Desserts</p>
-                           </a>
+                     <% } %>
+                     <% if (categories.includes('tandoor appetisers')) { %>
+                        <div class="col-md-2">
+                           <div class="like-to-eat">
+                              <a href="/our-menu?category=Tandoor Appetisers">
+                                 <div class="widgettitle"><img src="images/03.png"></div>
+                                 <p>Tandoor Appetisers</p>
+                              </a>
+                           </div>
                         </div>
-                     </div>
-                     <!-- /col-md-6 -->
+                     <% } %>
+                     <% if(categories.includes('egg')){ %>
+                        <div class="col-md-2">
+                           <div class="like-to-eat">
+                              <a href="/our-menu?category=Egg">
+                                 <div class="widgettitle"><img src="images/Egg.png"></div>
+                                    <p>Egg</p>
+                              </a>
+                           </div>
+                        </div>
+                     <% } %>
+                     <% if (categories.includes('paneer')) { %>
+                        <div class="col-md-2">
+                           <div class="like-to-eat">
+                              <a href="/our-menu?category=Paneer">
+                                 <div class="widgettitle"><img src="images/paneer1.png"></div>
+                                 <p>Paneer</p>
+                              </a>
+                           </div>
+                        </div>
+                     <% } %>
+                     <% if (categories.includes('main course')) { %>
+                        <div class="col-md-2">
+                           <div class="like-to-eat">
+                              <a href="/our-menu?category=Main Course">
+                                 <div class="widgettitle"><img src="images/08.png"></div>
+                                 <p>Main Course</p>
+                              </a>
+                           </div>
+                        </div>
+                     <% } %>
+                     <% if (categories.includes('chicken')){ %>
+                        <div class="col-md-2">
+                           <div class="like-to-eat">
+                              <a href="/our-menu?category=Chicken">
+                                 <div class="widgettitle"><img src="images/11.png"></div>
+                                 <p>Chicken</p>
+                              </a>
+                           </div>
+                        </div>
+                     <% } %>     
+                     <% if (categories.includes('mutton')) {%>
+                        <div class="col-md-2">
+                           <div class="like-to-eat">
+                              <a href="/our-menu?category=Mutton">
+                                 <div class="widgettitle"><img src="images/10.png"></div>
+                                 <p>Mutton</p>
+                              </a>
+                           </div>
+                        </div>
+                     <% } %>
+                     <% if (categories.includes('seafood')) { %>
+                        <div class="col-md-2">
+                           <div class="like-to-eat">
+                              <a href="/our-menu?category=Seafood">
+                                 <div class="widgettitle"><img src="images/09.png"></div>
+                                 <p>Seafood</p>
+                              </a>
+                           </div>
+                        </div>
+                     <% } %>
+                     <% if (categories.includes('breads from tandoor')) { %>
+                        <div class="col-md-2">
+                           <div class="like-to-eat">
+                              <a href="/our-menu?category=Breads From Tandoor">
+                                 <div class="widgettitle"><img src="images/07.png"></div>
+                                 <p>Breads From Tandoor</p>
+                              </a>
+                           </div>
+                        </div>
+                     <% } %> 
+                     <% if (categories.includes('rice specialities')) { %>
+                        <div class="col-md-2">
+                           <div class="like-to-eat">
+                              <a href="/our-menu?category=Rice Specialities">
+                                 <div class="widgettitle"><img src="images/05.png"></div>
+                                 <p>Rice Specialities</p>
+                              </a>
+                           </div>
+                        </div>
+                     <% } %>
+                     <% if (categories.includes('dessert')) { %>
+                        <div class="col-md-2">
+                           <div class="like-to-eat">
+                              <a href="/our-menu?category=Desserts">
+                                 <div class="widgettitle"><img src="images/12.png"></div>
+                                 <p>Desserts</p>
+                              </a>
+                           </div>
+                        </div>                                                                  
+                     <% } %>
+                     <% if (categories.includes('drinks')) { %>
+                        <div class="col-md-2">
+                           <div class="like-to-eat">
+                              <a href="/our-menu?category=Drinks">
+                                 <div class="widgettitle"><img src="images/13.png"></div>
+                                 <p>Desserts</p>
+                              </a>
+                           </div>
+                        </div>
+                     <% } %>
+
                   </div>
                   <!-- /row -->
                   <div id="output-contact"></div>

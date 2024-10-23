@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 
 
 const {isUserAuthenticated,isUserNotAuthenticated} = require('../middleware/userAuth');
+const { isCart, isOrderSuccess } = require('../middleware/middlewares');
 const { jsonParser ,rawBodyParser} = require('../middleware/stripeRawBody');
 
 const services = require('../render/userServices');
@@ -28,8 +29,9 @@ route.get('/contact',services.contact)
 route.get('/testimonials',services.testimonials)
 route.get('/our-menu',services.ourMenuList)
 route.get('/cart',isUserAuthenticated,services.cart)
-route.get('/checkout',isUserAuthenticated,services.checkout)
+route.get('/checkout',isUserAuthenticated,isCart,services.checkout)
 route.get('/orderSuccess',isUserAuthenticated,services.orderSuccess)
+route.get('/orderFailed',services.orderFailed)
 route.get('/profile',isUserAuthenticated,services.profile)
 route.get('/manage-address',isUserAuthenticated,services.manageAddress)
 route.get('/orders-list',isUserAuthenticated,services.ordersList)
@@ -50,7 +52,7 @@ route.get('/api/forgotOtpResend',controller.forgotOtpResend)
 route.post('/api/create-order',orderController.createOrder)
 // route.get('/api/success',orderController.handlePaymentSuccess)
 
-// route.get('/api/',categoryAndItemContoller.homeCategoryShow)
+route.get('/api/homeCategoryShow',categoryAndItemContoller.homeCategoryShow)
 route.get('/api/ourMenuList',categoryAndItemContoller.ourMenuList)
 
 

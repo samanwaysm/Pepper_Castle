@@ -28,8 +28,27 @@
     <link rel="apple-touch-icon-precomposed" href="/images/icons/favicon-180x180.png" />
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMcXy8cM4lFpbpVg5gRZxY2t+GdA1sNFA1Y+" crossorigin="anonymous"> -->
     <style>
-        .fa-cart-plus{
+        .fa-cart-plus {
             color: #ff6600;
+        }
+        .empty-h{
+            color: rgb(63, 60, 60);
+            margin-bottom: 2%;
+        }
+
+        .add-products-link {
+            background-color: #fc5000;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .add-products-link:hover {
+            background-color: #e24600;
+            /* Darker shade on hover */
         }
     </style>
 </head>
@@ -180,10 +199,16 @@
                         <% }); %>
                             <% } else { %>
                                 <div class="empty-cart text-center align-items-center" id="emptyCartMessage">
-                                    <p>Your cart is empty.</p>
-                                    <a href="/our-menu" class="add-products-link">Add Products</a>
+                                    <h3 class="empty-h">Your cart is empty.</h3>
+                                    <a href="/our-menu"><button class="add-products-link">Add Products</button></a>
                                 </div>
                                 <% } %>
+                                    <!-- <div id="empty-cart-message" style="display: none;">No items added in cart</div> -->
+                                    <div class="empty-cart text-center align-items-center" id="empty-cart-message" style="display: none;">
+                                        <h3 class="empty-h">Your cart is empty.</h3>
+                                        <a href="/our-menu"><button class="add-products-link">Add Products</button></a>
+                                    </div>
+
             </div>
 
             <div class="summary-section">
@@ -441,6 +466,10 @@
                         // Update subtotal and total accordingly
                         updateCartSummary();
                         updateCartCount();
+
+                        if ($('.product-item').length === 0) {
+                            $('#empty-cart-message').show(); // Show "No items added in cart" message
+                        }
                     } else {
                         console.error('Error:', data.message);
                     }

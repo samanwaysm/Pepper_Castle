@@ -9,7 +9,7 @@ const session = require('express-session');
 const morgan = require('morgan')
 const bodyparser = require('body-parser');
 const path = require('path');
-// const errorMiddleware = require('./server/middleware/errorHandling')
+const errorMiddleware = require('./server/middleware/errorHandling')
 const connectDB = require('./server/database/connection')
 
 const router = require('./server/routes/userRoutes');
@@ -52,10 +52,10 @@ app.use(session({
   
 app.use('/',router );
 app.use('/',adminRouter );
-// app.get("*",function(req,res){
-//     res.status(404).render("userside/404Error")
-// })
-// app.use(errorMiddleware)
+app.get("*",function(req,res){
+    res.status(404).render("user/404Error")
+})
+app.use(errorMiddleware)
 
 
 app.listen(PORT, () => {

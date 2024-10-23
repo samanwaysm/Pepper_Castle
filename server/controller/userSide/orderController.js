@@ -9,12 +9,10 @@ const addressDb = require('../../model/addressSchema');
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-exports.createOrder = async (req, res) => {
+exports.createOrder = async (req, res, next) => {
     const { orderItems, paymentMethod, addressId, userId } = req.body; 
-    // console.log('Request Body:', req.body);
     try {
         const orderId =await generateOrderId();
-        console.log(orderId);
         
         const addressData = await getAddress(userId, addressId)
         const address = addressData[0].address
@@ -36,7 +34,6 @@ exports.createOrder = async (req, res) => {
                 image
             };
         });
-        // console.log(items,totalAmount);
 
         const { username, phone, street, block, unitnum, postal, structuredAddress } = addressData[0].address;
         
@@ -61,14 +58,14 @@ exports.createOrder = async (req, res) => {
             paymentStatus: 'pending' 
         });
         
-        // console.log(newOrder);
         const savedOrder = await newOrder.save();
+        console.log(req.headers.origin);
+        
 
         const orderIdStr = savedOrder._id ? savedOrder._id.toString() : null;
         const userIdStr = userId.toString();
 
         if (paymentMethod === 'online') {
-            console.log('entered');
         
             const session = await stripe.checkout.sessions.create({
                 line_items: cartItems.map(item => ({
@@ -83,10 +80,13 @@ exports.createOrder = async (req, res) => {
                 })),
                 mode: 'payment',
                 // success_url: `http://localhost:${process.env.PORT}/orderSuccess`,
-                success_url: `https://pepper-castle.onrender.com/orderSuccess`,
+                // cancel_url: `http://localhost:${process.env.PORT}/orderFailed`,
+                success_url: `${req.headers.origin}/orderSuccess`,
+                cancel_url: `${req.headers.origin}/orderFailed`,
+                // success_url: `https://pepper-castle.onrender.com/orderSuccess`,
+                // cancel_url: `https://pepper-castle.onrender.com/orderFailed`,
                 // success_url: `http://localhost:${process.env.PORT}/api/success?orderId=${savedOrder._id}&userId=${userId}`,
                 // success_url: `https://pepper-castle.onrender.com/api/success?orderId=${savedOrder._id}&userId=${userId}`,
-                cancel_url: `https://example.com/cancel`,
                 payment_intent_data: {
                     metadata: {
                         orderId: savedOrder._id.toString(),
@@ -101,12 +101,13 @@ exports.createOrder = async (req, res) => {
         } else {
             savedOrder.status = 'Ordered';
             savedOrder.completed = true
+            req.session.ordersuccess = true
             await savedOrder.save();
             await cartDb.updateOne(
                 { userId }, 
                 { $set: { cartItems: [] } }
             );
-            return res.json({ success: true, paymentUrl: '/orderSuccess' });
+            return res.status(200).json({ success: true, paymentUrl: '/orderSuccess' });
       }
     } catch (error) {
         console.error('Error fetching address data:', error);
@@ -201,13 +202,11 @@ const getCartItems = async (userId) => {
 // exports.handlePaymentSuccess = async (req, res) => {
 //     try {
 //       const { orderId,userId } = req.query;
-//       console.log(orderId);
 //       const order = await OrderDb.findById(orderId);
 //       if (!order) {
 //         return res.status(404).json({ success: false, error: 'Order not found.' });
 //       }
 //         // const paymentIntent = await stripe.paymentIntents.retrieve(order.stripeSessionId);
-//         // console.log('Payment Intent Details:', paymentIntent);
   
 //       order.paymentStatus = 'success';
 //       order.status = 'Ordered';
@@ -365,9 +364,7 @@ const getCartItems = async (userId) => {
 
 
 exports.orderslist = async (req, res) => {
-    const userId = req.query.userId; // Assuming user ID is stored in req.user (after authentication)
-    console.log('enteeeeeeeeeerd');
-    
+    const userId = req.query.userId; // Assuming user ID is stored in req.user (after authentication)    
     try {
         const orders = await OrderDb.aggregate([
             { 
@@ -399,7 +396,6 @@ exports.orderslist = async (req, res) => {
         if (!orders.length) {
             return res.status(404).json({ message: 'No orders found for this user.' });
         }
-        console.log(orders[0]);
         
         // Return the list of orders
         res.status(200).json({ orders });
