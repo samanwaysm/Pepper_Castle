@@ -221,7 +221,7 @@
         .status-select {
             border-radius: 5px;
             padding: 0.375rem 0.75rem;
-            max-width: 120px;
+            max-width: 125px;
         }
 
         .update-button {
@@ -247,11 +247,10 @@
             font-weight: bold;
         }
 
-        .nav{
+        .nav {
             margin-top: 1rem;
             margin-bottom: 1rem
         }
-
     </style>
 </head>
 
@@ -315,7 +314,8 @@
             </div>
         </div>
         <div class="main-panel">
-            <nav class="navbar navbar-expand-lg navbar-absolute fixed-top" style="position: fixed;background-color: #fff;color:black">
+            <nav class="navbar navbar-expand-lg navbar-absolute fixed-top"
+                style="position: fixed;background-color: #fff;color:black">
                 <div class="container-fluid">
                     <div class="navbar-wrapper">
                         <div class="navbar-toggle">
@@ -418,7 +418,7 @@
                     // Search functionality
                     $('#search-input').on('keyup', function () {
                         const searchValue = $(this).val().trim();
-            
+
                         $.ajax({
                             url: '/admin/searchOrders',  // New endpoint to handle search
                             method: 'GET',
@@ -426,10 +426,10 @@
                             success: function (response) {
                                 const orders = response.orders;
                                 console.log(response.orders);
-                                
+
                                 const tbody = $('#order-table-body');
                                 tbody.empty(); // Clear the table
-            
+
                                 if (orders.length > 0) {
                                     orders.forEach(order => {
                                         let itemsHTML = '<ul>';
@@ -437,12 +437,32 @@
                                             itemsHTML += `<li>${item.itemName} x ${item.quantity}</li>`;
                                         });
                                         itemsHTML += '</ul>';
-            
+
+                                        let statusHTML = '';
+                                        if (order.status === 'Delivered') {
+                                            statusHTML = '<button class="btn btn-success" disabled>Delivered</button>';
+                                        } else if (order.status === 'Cancelled') {
+                                            statusHTML = '<button class="btn btn-danger" disabled>Cancelled</button>';
+                                        } else {
+                                            statusHTML = `
+                                                <select class="form-control status-select">
+                                                    <option value="Ordered" ${order.status === 'Ordered' ? 'selected' : ''}>Ordered</option>
+                                                    <option value="Processing" ${order.status === 'Processing' ? 'selected' : ''}>Processing</option>
+                                                    <option value="Shipped" ${order.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                                                    <option value="Delivered" ${order.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                                                    <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                                                </select>
+                                                <button class="btn btn-success update-button">Update</button>
+                                            `;
+                                        }
+
                                         tbody.append(`
                                             <tr>
                                                 <td>${order.orderId}</td>
                                                 <td>${itemsHTML}</td>
-                                                <td>${order.status}</td>
+                                                <td>
+                                                    <div class="order-status-container">${statusHTML}</div>
+                                                </td>
                                                 <td>S$${order.totalAmount.toFixed(2)}</td>
                                                 <td><a href="/orderDetail?orderId=${order.orderId}" class="btn btn-info btn-sm">Order Details</a></td>
                                                 <td>---</td>
@@ -459,11 +479,30 @@
                         });
                     });
                 });
+                $(document).on('click', '.update-button', function () {
+                    const row = $(this).closest('tr');
+                    const orderId = row.find('td:first').text().trim(); // Get order ID from the first column
+                    const status = row.find('.status-select').val(); // Get the selected status
+
+                    $.ajax({
+                        url: '/admin/updateStatus',
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ orderId: orderId, status: status }),
+                        success: function (response) {
+                            alert(response.message);
+                            location.reload();
+                        },
+                        error: function (err) {
+                            alert('Error updating order status');
+                        }
+                    });
+                });
             </script>
 
-            
-    </div>
-    <!-- <script>
+
+        </div>
+        <!-- <script>
         $(document).on('click', '.update-button', function () {
             const row = $(this).closest('tr');
             const orderId = row.find('td:first').text().trim(); // Get order ID from the first column
@@ -484,11 +523,11 @@
             });
         });
     </script> -->
-    <script src="/admin/js/core/jquery.min.js"></script>
-    <script src="/admin/js/core/popper.min.js"></script>
-    <script src="/admin/js/core/bootstrap.min.js"></script>
-    <script src="/admin/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script>
-</div>
+        <script src="/admin/js/core/jquery.min.js"></script>
+        <script src="/admin/js/core/popper.min.js"></script>
+        <script src="/admin/js/core/bootstrap.min.js"></script>
+        <script src="/admin/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script>
+    </div>
 </body>
 
 </html>
