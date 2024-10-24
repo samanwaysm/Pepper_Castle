@@ -404,3 +404,43 @@ exports.orderslist = async (req, res) => {
         res.status(500).json({ message: 'An error occurred while fetching orders.', error });
     }
 }
+
+exports.searchOrders = async (req, res) => {
+    const userId = req.query.userId; // Assuming user ID is passed in the query
+    const search = req.query.search || ''; // Capture search query
+    try {
+        const orders = await OrderDb.aggregate([
+            {
+                $match: {
+                    user: new mongoose.Types.ObjectId(userId),
+                    completed: true,
+                    $or: [
+                        { orderId: { $regex: search, $options: 'i' } }, // Search by order ID
+                        { "items.itemName": { $regex: search, $options: 'i' } } // Search by item name
+                    ]
+                }
+            },
+            {
+                $project: {
+                    orderId: 1,
+                    items: 1,
+                    totalAmount: 1,
+                    status: 1,
+                    address: 1,
+                    createdAt: {
+                        $dateToString: {
+                            format: "%Y-%m-%d %H:%M:%S",
+                            date: { $dateAdd: { startDate: "$createdAt", unit: "hour", amount: 8 } } // Convert to Singapore Time (+8 hours)
+                        }
+                    }
+                }
+            }
+        ]);
+
+        // Return the filtered list of orders
+        res.status(200).json({ orders });
+    } catch (error) {
+        console.error('Error fetching orders:', error);
+        res.status(500).json({ message: 'An error occurred while fetching orders.', error });
+    }
+};

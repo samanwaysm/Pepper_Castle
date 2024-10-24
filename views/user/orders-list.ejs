@@ -1666,7 +1666,7 @@
                                             </div>
                                         `).join('')}
                                     </div>
-                                    <p class="mt-5">Total Amound: <span class="id-span">S$${order.totalAmount}</span></p>
+                                    <p class="mt-5">Total Amound: <span class="id-span">S$${order.totalAmount.toFixed(2)}</span></p>
                                     <p>Shipping Address: <span class="order-span"> ${order.address.structuredAddress}</span></p>
                                     <p>Payment Method: <span class="id-span">${order.paymentMethod === 'cod' ? 'Cash On Delivery' : 'Online'}</span></p>
                                 </div>

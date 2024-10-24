@@ -64,7 +64,7 @@ Coded by www.creative-tim.com
                             <p>User Management</p>
                         </a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="/categoryManagement">
                             <i class="nc-icon nc-minimal-down"></i>
                             <p>Category Management</p>
@@ -76,7 +76,7 @@ Coded by www.creative-tim.com
                             <p>Item Management</p>
                         </a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="/table-management">
                             <i class="nc-icon nc-email-85"></i>
                             <p>Table Management</p>
@@ -94,7 +94,7 @@ Coded by www.creative-tim.com
         </div>
         <div class="main-panel">
             <!-- Navbar -->
-            <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
+            <nav class="navbar navbar-expand-lg navbar-absolute fixed-top" style="position: fixed;background-color: #fff;color:black">
                 <div class="container-fluid">
                     <div class="navbar-wrapper">
                         <div class="navbar-toggle">
@@ -104,50 +104,133 @@ Coded by www.creative-tim.com
                                 <span class="navbar-toggler-bar bar3"></span>
                             </button>
                         </div>
-                        <a class="navbar-brand" href="javascript:;">Category Management</a>
+                        <a class="navbar-brand" href="javascript:;">Admin Dashboard</a>
                     </div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                     </button>
-                    
+                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
+                        <form>
+                            <div class="input-group no-border">
+                                <input type="text" value="" class="form-control" placeholder="Search...">
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <i class="nc-icon nc-zoom-split"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </nav>
             <!-- End Navbar -->
-            <div class="content  pb-5">
-                <div class="breadcrumb mb-5">
-                    <a href="/categoryManagement" class="breadcrumb-link">Category Management</a>
-                    <span class="breadcrumb-separator"> → </span>
-                    <span class="breadcrumb-current">Add Category</span>
-                </div>
-                <div class="row mb-5">
-                    <div class="col-md-12 mb-5">
-                        <div class="card card-user mb-5">
-                            <div class="card-header">
-                                <h5 class="card-title">Add Category</h5>
-                            </div>
-                            <div class="card-body">
-                                <form action="/admin/addCategory" method="POST" id="form">
-                                    <!-- Category Input -->
-                                    <div class="form-group">
-                                        <label>Category</label>
-                                        <input type="text" class="form-control" name="category" placeholder="Enter Category Name" />
-                                        <% if (errors && errors.category) { %>
-                                            <span class="error"><%= errors.category %></span>
-                                        <% } %>
-                                    </div>
 
-                                    <!-- Submit Button -->
-                                    <div class="text-center">
-                                        <button type="submit" name="submit" class="btn btn-primary btn-round">Submit</button>
-                                    </div>
-                                </form>
-                            </div>
+            <!-- Table Booking Cards Section -->
+            <div class="content">
+                <div class="breadcrumb">
+                    <a href="/itemManagement" class="breadcrumb-link">Table Management</a>
+                    <span class="breadcrumb-separator"> → </span>
+                    <span class="breadcrumb-current">Completed List</span>
+                </div>
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <a href="/table-management"><button class="btn btn-primary">Booked List</button></a>
+                    <a href="/table-accepted-list"><button class="btn btn-primary">Accepted List</button></a>
+                    <a href="/table-booking-completed"><button class="btn btn-primary">Completed List</button></a>
+                </div>
+                <div class="row">
+                    <!-- Loop through bookings and create cards dynamically -->
+                    <div class="container margin-b72">
+                        <div class="row" id="booking-cards-container">
+                            <!-- Cards will be appended here dynamically -->
                         </div>
                     </div>
+
+                    <!-- <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">Table #1</h5>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Name:</strong> John Doe</p>
+                                <p><strong>Guests:</strong> 4</p>
+                                <p><strong>Date:</strong> October 25, 2024</p>
+                                <p><strong>Time:</strong> 7:00 PM</p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-primary mb-2">Edit Booking</button>
+                                <button class="btn btn-danger">Cancel Booking</button>
+                            </div>
+                        </div>
+                    </div> -->
+
                 </div>
             </div>
+
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                $(document).ready(function() {
+                    // Function to fetch bookings and render them
+                    function fetchBookings() {
+                        $.ajax({
+                            type: 'GET',
+                            url: '/api/table-booking-data',
+                            data:{status:'completed'},
+                            success: function(response) {
+                                const bookings = response;                                
+                                let cardHtml = '';
+            
+                                // Loop through each booking and create a card
+                                bookings.forEach(function(booking) {
+                                    cardHtml += `
+                                        <div class="col-md-4">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <p><strong>Name: </strong>${booking.name}</p>
+                                                    <p><strong>Email: </strong>${booking.email}</p>
+                                                    <p><strong>Phone: </strong>${booking.phone}</p>
+                                                    <p><strong>Message: </strong>${booking.message}</p>
+                                                </div>
+                                                <div class="card-footer">
+                                                </div>
+                                            </div>
+                                        </div>`;
+                                });
+            
+                                // Insert the generated cards into the container
+                                $('#booking-cards-container').html(cardHtml);
+                            },
+                            error: function() {
+                                $('#booking-cards-container').html('<p>No data Available.</p>');
+                            }
+                        });
+                    }
+            
+                    // Call the function to fetch and display bookings
+                    fetchBookings();
+            
+                    // Event listeners for the Accept and Complete buttons
+                    $(document).on('click', '.accept-btn', function() {
+                        const bookingId = $(this).data('id');
+                        $.ajax({
+                            type: 'POST',
+                            url: `/api/updateStatus?id=${bookingId}`,
+                            data:{status:'accepted'},
+                            success: function(response) {
+                                // alert('Booking accepted successfully: ' + response.message);
+                                $(`[data-id="${bookingId}"]`).closest('.col-md-4').remove();
+                            },
+                            error: function(xhr) {
+                                alert(xhr.responseJSON.message || 'Error accepting the booking');
+                            }
+                        });
+                    });
+                });
+            </script>
+            
+
             <!--   Core JS Files   -->
             <script src="/admin/js/core/jquery.min.js"></script>
             <script src="/admin/js/core/popper.min.js"></script>

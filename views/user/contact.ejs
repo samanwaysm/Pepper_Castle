@@ -25,6 +25,13 @@
 	<link rel="icon" href="images/fav.png" sizes="32x32" />
 	<link rel="icon" href="images/icons/favicon-192x192.png" sizes="192x192" />
 	<link rel="apple-touch-icon-precomposed" href="images/icons/favicon-180x180.png" />
+	<style>
+		.error-message {
+			color: red;
+			font-size: 12px;
+			margin-top: 5px;
+		}
+	</style>
 </head>
 
 <body class="home">
@@ -216,25 +223,31 @@
 											<input name="name" value="" size="40" class="comm-field"
 												aria-required="true" aria-invalid="false" placeholder="Name"
 												type="text">
+											<span class="error-message" id="error-name"></span>
 										</div>
 										<!-- /col-md-4 -->
 										<div class="col-md-4">
 											<input name="email" value="" size="40" class="comm-field"
 												aria-required="true" aria-invalid="false" placeholder="Email"
 												type="email">
+											<span class="error-message" id="error-email"></span>
 										</div>
 										<!-- /col-md-4 -->
 										<div class="col-md-4">
 											<input name="phone" value="" size="40" class="comm-field"
 												aria-invalid="false" placeholder="Phone" type="text">
+											<span class="error-message" id="error-phone"></span>
 										</div>
 										<!-- /col-md-4 -->
 									</div>
 									<!-- /row -->
 								</div>
 								<!-- /contact-holder -->
-								<p><textarea name="message" cols="40" rows="5" id="msg-contact" aria-required="true"
-										aria-invalid="false" placeholder="Your Message"></textarea></p>
+								<p>
+									<textarea name="message" cols="40" rows="5" id="msg-contact" aria-required="true"
+										aria-invalid="false" placeholder="Your Message"></textarea>
+									<span class="error-message" id="error-message"></span>
+								</p>
 								<p class="antispam">Leave this empty: <input type="text" name="url" /></p>
 								<p class="alignc"><input value="Book Now" id="submit-contact" type="submit"></p>
 							</form>
@@ -400,22 +413,94 @@
 
 			cartIcon.appendChild(counter);
 		}
+
+
+		$(document).ready(function() {
+			$('#contact-form-home').on('submit', function(e) {
+				e.preventDefault(); // prevent the default form submission
+
+				// Clear any previous error messages and success message
+				$('.error-message').html('');
+				$('#output-contact').html(''); // Clear success message
+
+				$.ajax({
+					type: 'POST',
+					url: '/api/book-table', // make sure this matches your route in the backend
+					data: {
+						name: $('input[name="name"]').val(),
+						email: $('input[name="email"]').val(),
+						phone: $('input[name="phone"]').val(),
+						message: $('textarea[name="message"]').val()
+					},
+					success: function(response) {
+						// If successful, display success message in the #output-contact div
+						$('#output-contact').html('<p class="success-message">' + response.message + '</p>');
+						
+						// Optionally, reset the form if needed
+						$('#contact-form-home')[0].reset();
+					},
+					error: function(xhr, status, error) {
+						// Handle validation errors, display below respective fields
+						if (xhr.status === 400) {
+							const errors = xhr.responseJSON.errors;
+
+							// Show errors below each respective field
+							if (errors.name) {
+								$('#error-name').html(errors.name);
+							}
+							if (errors.email) {
+								$('#error-email').html(errors.email);
+							}
+							if (errors.phone) {
+								$('#error-phone').html(errors.phone);
+							}
+							if (errors.message) {
+								$('#error-message').html(errors.message);
+							}
+						} else {
+							// Handle unexpected errors here if needed
+						}
+					}
+				});
+			});
+		});
+		// $(document).ready(function () {
+		// 	$('#contact-form-home').on('submit', function (e) {
+		// 		e.preventDefault(); // prevent the default form submission
+		// 		$.ajax({
+		// 			type: 'POST',
+		// 			url: '/api/book-table', // make sure this matches your route in the backend
+		// 			data: {
+		// 				name: $('input[name="name"]').val(),
+		// 				email: $('input[name="email"]').val(),
+		// 				phone: $('input[name="phone"]').val(),
+		// 				message: $('textarea[name="message"]').val()
+		// 			},
+		// 			success: function (response) {
+		// 				$('#output-contact').html('<p>' + response.message + '</p>');
+		// 			},
+		// 			error: function (xhr, status, error) {
+		// 				$('#output-contact').html('<p>Error: ' + xhr.responseJSON.message + '</p>');
+		// 			}
+		// 		});
+		// 	});
+		// });
 	</script>
-		<!-- JS -->
-		<script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-		<script src='js/jquery.js'></script>
-		<script src='js/jquery-migrate.min.js'></script>
-		<script src='css/bootstrap/js/popper.min.js'></script>
-		<script src='css/bootstrap/js/bootstrap.min.js'></script>
-		<script src='js/jquery.easing.min.js'></script>
-		<script src='js/jquery.fitvids.js'></script>
-		<script src='js/owl-carousel/owl.carousel.min.js'></script>
-		<script src='js/jquery.magnific-popup.min.js'></script>
-		<!-- MAIN JS -->
-		<script src='js/init.js'></script>
-		<!-- CONTACT FORM JS -->
-		<script src='js/jquery.form.min.js'></script>
-		<script src='js/contactform-home.js'></script>
+	<!-- JS -->
+	<script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+	<script src='js/jquery.js'></script>
+	<script src='js/jquery-migrate.min.js'></script>
+	<script src='css/bootstrap/js/popper.min.js'></script>
+	<script src='css/bootstrap/js/bootstrap.min.js'></script>
+	<script src='js/jquery.easing.min.js'></script>
+	<script src='js/jquery.fitvids.js'></script>
+	<script src='js/owl-carousel/owl.carousel.min.js'></script>
+	<script src='js/jquery.magnific-popup.min.js'></script>
+	<!-- MAIN JS -->
+	<script src='js/init.js'></script>
+	<!-- CONTACT FORM JS -->
+	<script src='js/jquery.form.min.js'></script>
+	<script src='js/contactform-home.js'></script>
 </body>
 
 </html>

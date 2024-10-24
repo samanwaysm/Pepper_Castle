@@ -46,7 +46,7 @@ Coded by www.creative-tim.com
             </div>
             <div class="sidebar-wrapper">
                 <ul class="nav">
-                    <li class="active">
+                    <li>
                         <a href="/dashboard">
                             <i class="nc-icon nc-bank"></i>
                             <p>Dashboard</p>
@@ -76,7 +76,7 @@ Coded by www.creative-tim.com
                             <p>Item Management</p>
                         </a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="/table-management">
                             <i class="nc-icon nc-email-85"></i>
                             <p>Table Management</p>
@@ -126,6 +126,113 @@ Coded by www.creative-tim.com
                 </div>
             </nav>
             <!-- End Navbar -->
+
+            <!-- Table Booking Cards Section -->
+            <div class="content">
+                <div class="breadcrumb">
+                    <a href="/itemManagement" class="breadcrumb-link">Table Management</a>
+                    <span class="breadcrumb-separator"> → </span>
+                    <span class="breadcrumb-current">Accepted List</span>
+                </div>
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <a href="/table-management"><button class="btn btn-primary">Booked List</button></a>
+                    <a href="/table-accepted-list"><button class="btn btn-primary">Accepted List</button></a>
+                    <a href="/table-booking-completed"><button class="btn btn-primary">Completed List</button></a>
+                </div>
+                <div class="row">
+                    <!-- Loop through bookings and create cards dynamically -->
+
+                    <div class="container margin-b72">
+                        <div class="row" id="booking-cards-container">
+                            <!-- Cards will be appended here dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">Table #1</h5>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Name: </strong></p>
+                                <p><strong>Email: </strong></p>
+                                <p><strong>Phone: </strong></p>
+                                <p><strong>Message: </strong>qwertyui dfghjk dfghjkl sdcwvw greb</p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-primary mb-2">Accept</button>
+                                <button class="btn btn-primary mb-2">Completed</button>
+                            </div>
+                        </div>
+                    </div> -->
+
+                </div>
+            </div>
+
+
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                $(document).ready(function() {
+                    // Function to fetch bookings and render them
+                    function fetchBookings() {
+                        $.ajax({
+                            type: 'GET',
+                            url: '/api/table-booking-data',
+                            data:{status:'accepted'},
+                            success: function(response) {
+                                const bookings = response;
+                                
+                                let cardHtml = '';
+            
+                                // Loop through each booking and create a card
+                                bookings.forEach(function(booking) {
+                                    cardHtml += `
+                                        <div class="col-md-4">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <p><strong>Name: </strong>${booking.name}</p>
+                                                    <p><strong>Email: </strong>${booking.email}</p>
+                                                    <p><strong>Phone: </strong>${booking.phone}</p>
+                                                    <p><strong>Message: </strong>${booking.message}</p>
+                                                </div>
+                                                <div class="card-footer">
+                                                    <button class="btn btn-success mb-2 accept-btn" data-id="${booking._id}">Completed</button>
+                                                </div>
+                                            </div>
+                                        </div>`;
+                                });
+            
+                                // Insert the generated cards into the container
+                                $('#booking-cards-container').html(cardHtml);
+                            },
+                            error: function() {
+                                $('#booking-cards-container').html('<p>No data Available.</p>');
+                            }
+                        });
+                    }
+            
+                    // Call the function to fetch and display bookings
+                    fetchBookings();
+            
+                    // Event listeners for the Accept and Complete buttons
+                    $(document).on('click', '.accept-btn', function() {
+                        const bookingId = $(this).data('id');
+                        $.ajax({
+                            type: 'POST',
+                            url: `/api/updateStatus?id=${bookingId}`,
+                            data:{status:'completed'},
+                            success: function(response) {
+                                // alert('Booking accepted successfully: ' + response.message);
+                                $(`[data-id="${bookingId}"]`).closest('.col-md-4').remove();
+                            },
+                            error: function(xhr) {
+                                alert(xhr.responseJSON.message || 'Error accepting the booking');
+                            }
+                        });
+                    });
+                });
+            </script>
 
             <!--   Core JS Files   -->
             <script src="/admin/js/core/jquery.min.js"></script>

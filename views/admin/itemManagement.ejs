@@ -119,6 +119,12 @@
                             <p>Item Management</p>
                         </a>
                     </li>
+                    <li>
+                        <a href="/table-management">
+                            <i class="nc-icon nc-email-85"></i>
+                            <p>Table Management</p>
+                        </a>
+                    </li>
 
                     <li class="active-pro">
                         <a href="/admin/logout">
@@ -151,7 +157,7 @@
                     <div class="collapse navbar-collapse justify-content-end" id="navigation">
                         <form>
                             <div class="input-group no-border">
-                                <input type="text" value="" class="form-control" placeholder="Search...">
+                                <input type="text" value="" class="form-control" placeholder="Search..." id="search-input">
                                 <div class="input-group-append">
                                     <div class="input-group-text">
                                         <i class="nc-icon nc-zoom-split"></i>
@@ -172,7 +178,7 @@
                     <a href="/unlistItem"><button class="btn btn-primary">Unlisted Items</button></a>
                 </div>
 
-                <div class="row">
+                <div class="row" id="item-list">
                     <% items.forEach(item=> { %>
                         <div class="col-md-12">
                             <div class="item-card">
@@ -200,8 +206,54 @@
                         <% }); %>
                 </div>
             </div>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
             <script>
+                $(document).ready(function () {
+                    // AJAX search
+                    $('#search-input').on('keyup', function () {
+                        const searchValue = $(this).val().trim();
+                        console.log(searchValue);
+                        
+                        
+                        $.ajax({
+                            url: '/admin/searchItems',
+                            method: 'GET',
+                            data: { search: searchValue },
+                            success: function (response) {
+                                // Update the item list dynamically
+                                let itemListHTML = '';
+                                response.items.forEach(item => {
+                                    itemListHTML += `
+                                        <div class="col-md-12">
+                                            <div class="item-card">
+                                                <img src="${item.image}" alt="${item.item}" />
+                                                <div class="item-details">
+                                                    <div class="item-name">${item.item}</div>
+                                                    <div class="item-price">$${item.price.toFixed(2)}</div>
+                                                </div>
+                                                <div class="item-actions">
+                                                    <a href="/editItem?id=${item._id}"><button class="button_len btn btn-warning btn-sm">
+                                                        <i class="nc-icon nc-ruler-pencil"></i> Edit</button></a>
+                                                    <a href="javascript:void(0);" onclick="confirmUnlist('${item._id}')">
+                                                        <button class="button_len btn btn-danger btn-sm">
+                                                            <i class="nc-icon nc-simple-remove"></i> Unlist</button>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+                                });
+                                $('#item-list').html(itemListHTML);
+                            },
+                            error: function (err) {
+                                console.error('Error fetching items:', err);
+                            }
+                        });
+                    });
+                });
+            
+
                 function confirmUnlist(itemId) {
                     Swal.fire({
                         title: 'Are you sure unlist this item?',

@@ -32,6 +32,35 @@ exports.dashboard = (req, res) => {
     })
 }
 
+exports.tableManagement = (req, res) => {
+    // const { validEmail, wrongPassword, isUserAuthenticated } = req.session
+    res.render("admin/tableManagement", (err, html) => {
+        if (err) {
+            console.log(err);
+        }
+        res.send(html)
+    })
+}
+
+exports.tableBookingCompleted = (req, res) => {
+    // const { validEmail, wrongPassword, isUserAuthenticated } = req.session
+    res.render("admin/tableBookingCompleted", (err, html) => {
+        if (err) {
+            console.log(err);
+        }
+        res.send(html)
+    })
+}
+
+exports.tableBookingAccepted = (req, res) => {
+    // const { validEmail, wrongPassword, isUserAuthenticated } = req.session
+    res.render("admin/tableAcceptedList", (err, html) => {
+        if (err) {
+            console.log(err);
+        }
+        res.send(html)
+    })
+}
 // exports.userManagement = (req, res) => {
 //     // const { validEmail, wrongPassword, isUserAuthenticated } = req.session
 //     res.render("admin/userManagement", (err, html) => {

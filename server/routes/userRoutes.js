@@ -17,6 +17,7 @@ const cartController = require('../controller/userSide/cartController');
 const addressController = require('../controller/userSide/addressController');
 const orderController = require('../controller/userSide/orderController');
 const webhookController = require('../controller/userSide/webhookController');
+const tableBookingController = require('../controller/userSide/tableBookingController');
 
 route.get('/signin',isUserNotAuthenticated,services.signin)
 route.get('/signup',isUserNotAuthenticated,services.signUp)
@@ -36,7 +37,6 @@ route.get('/profile',isUserAuthenticated,services.profile)
 route.get('/manage-address',isUserAuthenticated,services.manageAddress)
 route.get('/orders-list',isUserAuthenticated,services.ordersList)
 route.get('/change-password',isUserAuthenticated,services.changePassword)
-
 
 // APIs
 
@@ -76,10 +76,6 @@ route.post('/api/changeProfile',controller.changeProfile)
 
 route.post('/api/getLocationDetails',controller.getLocationDetails);
 
-
-
-
-
 route.get('/api/orderslist', orderController.orderslist);
 
 route.get('/api/getUserDetails',controller.getUserDetails)
@@ -88,9 +84,11 @@ route.post('/api/getGoogleMaplocation',controller.getGoogleMaplocation)
 
 
 
-
-
-
 route.post('/webhook',express.raw({ type: 'application/json' }),webhookController.webhook);
+
+
+
+route.post('/api/book-table',tableBookingController.bookTable)
+
 
 module.exports = route;

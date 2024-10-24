@@ -7,13 +7,14 @@
     <link rel="icon" type="image/png" href="images/fav.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>Pepper Castle Admin - Order Details</title>
-    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
-        name='viewport' />
-    <!-- Fonts and icons -->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
     <!-- CSS Files -->
     <link href="/admin/css/bootstrap.min.css" rel="stylesheet" />
     <link href="/admin/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
+    <!-- <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" /> -->
+    <link href="/admin/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link href="/admin/demo/demo.css" rel="stylesheet" />
     <style>
         body {
             background-color: #f4f7fa;
@@ -170,6 +171,12 @@
                             <p>Item Management</p>
                         </a>
                     </li>
+                    <li>
+                        <a href="/table-management">
+                            <i class="nc-icon nc-email-85"></i>
+                            <p>Table Management</p>
+                        </a>
+                    </li>
 
                     <li class="active-pro">
                         <a href="/admin/logout">
@@ -216,7 +223,7 @@
                     </div>
 
                     <div class="total-amount">
-                        <strong>Total Amount:</strong> $<%= order.totalAmount.toFixed(2) %>
+                        <strong>Total Amount:</strong> S$<%= order.totalAmount.toFixed(2) %>
                             <!-- Display total amount -->
                     </div>
 

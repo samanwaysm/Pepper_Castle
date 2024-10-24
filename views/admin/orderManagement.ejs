@@ -203,64 +203,54 @@
     <link rel="icon" type="image/png" href="images/fav.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>Pepper Castle Admin - Order Management</title>
-    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <!-- CSS Files -->
     <link href="/admin/css/bootstrap.min.css" rel="stylesheet" />
     <link href="/admin/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
+    <!-- <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" /> -->
+    <link href="/admin/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="/admin/demo/demo.css" rel="stylesheet" />
     <style>
         .order-status-container {
             display: flex;
             align-items: center;
             gap: 10px;
-            /* Adds space between dropdown and button */
         }
 
         .status-select {
             border-radius: 5px;
-            /* Rounded corners */
             padding: 0.375rem 0.75rem;
-            /* Padding for the select */
             max-width: 120px;
         }
 
         .update-button {
             border-radius: 5px;
-            /* Rounded corners */
             padding: 0.375rem 0.75rem;
-            /* Adds padding */
         }
 
         .order-management-container {
             margin-top: 20px;
-            /* Top margin for the container */
         }
 
         .table th,
         .table td {
             vertical-align: middle;
-            /* Centers the content vertically */
         }
 
         h4 {
             margin-bottom: 20px;
-            /* Space below the title */
         }
 
-        /* Style for the table headers */
         th {
             background-color: #f8f9fa;
-            /* Light background for header */
             font-weight: bold;
-            /* Bold text for header */
         }
 
-        /* .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1;
-        } */
+        .nav{
+            margin-top: 1rem;
+            margin-bottom: 1rem
+        }
 
     </style>
 </head>
@@ -306,6 +296,12 @@
                         <a href="/itemManagement">
                             <i class="nc-icon nc-tile-56"></i>
                             <p>Item Management</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/table-management">
+                            <i class="nc-icon nc-email-85"></i>
+                            <p>Table Management</p>
                         </a>
                     </li>
 
@@ -365,7 +361,7 @@
                                 <th>---</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="order-table-body">
                             <% orders.reverse().forEach(order=> { %>
                                 <tr>
                                     <td>
@@ -403,7 +399,7 @@
                                                         <% } %>
                                         </div>
                                     </td>
-                                    <td>$<%= order.totalAmount.toFixed(2) %>
+                                    <td>S$<%= order.totalAmount.toFixed(2) %>
                                     </td>
                                     <td>
                                         <a href="/orderDetail?orderId=<%= order.orderId %>"
@@ -417,10 +413,57 @@
                 </div>
             </div>
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                $(document).ready(function () {
+                    // Search functionality
+                    $('#search-input').on('keyup', function () {
+                        const searchValue = $(this).val().trim();
+            
+                        $.ajax({
+                            url: '/admin/searchOrders',  // New endpoint to handle search
+                            method: 'GET',
+                            data: { search: searchValue },
+                            success: function (response) {
+                                const orders = response.orders;
+                                console.log(response.orders);
+                                
+                                const tbody = $('#order-table-body');
+                                tbody.empty(); // Clear the table
+            
+                                if (orders.length > 0) {
+                                    orders.forEach(order => {
+                                        let itemsHTML = '<ul>';
+                                        order.items.forEach(item => {
+                                            itemsHTML += `<li>${item.itemName} x ${item.quantity}</li>`;
+                                        });
+                                        itemsHTML += '</ul>';
+            
+                                        tbody.append(`
+                                            <tr>
+                                                <td>${order.orderId}</td>
+                                                <td>${itemsHTML}</td>
+                                                <td>${order.status}</td>
+                                                <td>S$${order.totalAmount.toFixed(2)}</td>
+                                                <td><a href="/orderDetail?orderId=${order.orderId}" class="btn btn-info btn-sm">Order Details</a></td>
+                                                <td>---</td>
+                                            </tr>
+                                        `);
+                                    });
+                                } else {
+                                    tbody.append('<tr><td colspan="6">No orders found</td></tr>');
+                                }
+                            },
+                            error: function (err) {
+                                console.error('Error fetching search results', err);
+                            }
+                        });
+                    });
+                });
+            </script>
 
             
     </div>
-    <script>
+    <!-- <script>
         $(document).on('click', '.update-button', function () {
             const row = $(this).closest('tr');
             const orderId = row.find('td:first').text().trim(); // Get order ID from the first column
@@ -440,7 +483,7 @@
                 }
             });
         });
-    </script>
+    </script> -->
     <script src="/admin/js/core/jquery.min.js"></script>
     <script src="/admin/js/core/popper.min.js"></script>
     <script src="/admin/js/core/bootstrap.min.js"></script>

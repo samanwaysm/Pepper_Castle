@@ -343,6 +343,9 @@
             <i class="fa fa-chevron-up"></i>
         </a>
     </div>
+
+    <div id="toastContainer" class="toast-container"></div>
+
     <!-- JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -473,6 +476,7 @@
                         // Update subtotal and total accordingly
                         updateCartSummary();
                         updateCartCount();
+                        showToast(data.message, 'success');
 
                         if ($('.product-item').length === 0) {
                             $('#empty-cart-message').show(); // Show "No items added in cart" message
@@ -547,6 +551,36 @@
             counter.textContent = cartItemCount;  // Use the count returned from the server
             // Append the counter to the cart icon
             cartIcon.appendChild(counter);
+        }
+
+
+        function showToast(message, type) {
+            const toastContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+
+            toast.style.position = 'relative';
+            toast.style.minWidth = '200px';
+            toast.style.marginBottom = '10px';
+            toast.style.marginTop = '10px';
+            toast.style.padding = '10px';
+            toast.style.borderRadius = '5px';
+            toast.style.color = '#000';
+            toast.style.fontSize = '14px';
+            toast.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+            if (type === 'success') {
+                toast.style.backgroundColor = 'rgba(40, 167, 69, 0.3)';
+            } else {
+                toast.style.backgroundColor = 'rgba(220, 53, 69, 0.3)';
+            }
+            toast.textContent = message;
+
+            // Append the toast to the container
+            toastContainer.appendChild(toast);
+
+            // Automatically remove the toast after 3 seconds
+            setTimeout(function () {
+                toast.remove();
+            }, 3000);
         }
 
     </script>

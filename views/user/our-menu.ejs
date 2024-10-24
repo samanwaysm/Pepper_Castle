@@ -632,23 +632,24 @@
             method: 'GET',
             success: function (response) {
                // alert(response.message);
-               // showToast(response.message, 'success');
+               showToast(response.message, 'success');
                // Swal.fire({
                //    title: 'Success!',
                //    text: response.message,
                //    icon: 'success',
                //    confirmButtonText: 'OK'
                // });
-               Swal.fire({
-                  position: "top-center",
-                  title: response.message,
-                  showConfirmButton: false,
-                  timer: 500,
-                  customClass: {
-                     popup: 'small-swal'
-                  },
-                  background: 'rgba(255, 165, 0, 0.5)'
-               });
+
+               // Swal.fire({
+               //    position: "top-center",
+               //    title: response.message,
+               //    showConfirmButton: false,
+               //    timer: 500,
+               //    customClass: {
+               //       popup: 'small-swal'
+               //    },
+               //    background: 'rgba(255, 165, 0, 0.5)'
+               // });
                updateCartCount();  // Update the cart count after adding an item
             },
             error: function (jqXHR) {
@@ -725,9 +726,9 @@
          toast.style.fontSize = '14px';
          toast.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
          if (type === 'success') {
-            toast.style.backgroundColor = 'rgba(40, 167, 69, 0.7)';
+            toast.style.backgroundColor = 'rgba(40, 167, 69, 0.3)';
          } else {
-            toast.style.backgroundColor = 'rgba(220, 53, 69, 0.7)';
+            toast.style.backgroundColor = 'rgba(220, 53, 69, 0.3)';
          }
          toast.textContent = message;
 
@@ -739,25 +740,6 @@
             toast.remove();
          }, 3000);
       }
-
-
-      (function ($) {
-         "use strict";
-
-         // Spinner
-         var spinner = function () {
-            setTimeout(function () {
-               if ($('#spinner').length > 0) {
-                  $('#spinner').removeClass('show');
-               }
-            }, 1);
-         };
-         spinner();
-
-
-         // Initiate the wowjs
-         new WOW().init();
-      })(jQuery);
    </script>
 </body>
 

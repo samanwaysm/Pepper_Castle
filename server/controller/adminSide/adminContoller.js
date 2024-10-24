@@ -4,6 +4,7 @@ var userDb = require("../../model/userSchema");
 var Category = require("../../model/categorySchema");
 var Item = require("../../model/itemSchema");
 const Order = require("../../model/orderSchema");
+const tableBooking = require("../../model/tableBookingSchema");
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
@@ -172,6 +173,30 @@ exports.CategoryManagementShow = async (req, res) => {
   res.send(categoryList);
 };
 
+exports.searchCategories = async (req, res) => {
+  try {
+    const searchQuery = req.query.search || '';
+    const categories = await Category.find({
+      $and: [
+        { status: true },
+        { category: { $regex: searchQuery, $options: 'i' } } // Case-insensitive search
+      ]
+    });
+
+    console.log(categories);
+    
+    res.status(200).json({
+      success: true,
+      categories: categories.map(category => ({
+        _id: category._id,
+        category: category.category,
+      }))
+    });
+  } catch (error) {
+    console.error('Error searching categories:', error);
+    res.status(500).json({ success: false, message: 'Failed to search categories' });
+  }
+};
 
 
 exports.UnlistCategoryShow = async (req, res) => {
@@ -583,6 +608,33 @@ exports.itemManagementShow = async (req, res) => {
   res.send(itemList);
 };
 
+exports.itemSearch = async (req, res) => {
+  try {
+    const searchQuery = req.query.search || '';
+    const items = await Item.find({
+      $and: [
+        { listed: true }, 
+        { isCategory: true },
+        { item: { $regex: searchQuery, $options: 'i' } } // Case-insensitive search
+      ]
+    });
+
+    res.status(200).json({
+      success: true,
+      items: items.map(item => ({
+        _id: item._id,
+        item: item.item,
+        price: item.price,
+        image: item.image,
+      }))
+    });
+  } catch (error) {
+    console.error('Error searching items:', error);
+    res.status(500).json({ success: false, message: 'Failed to search items' });
+  }
+};
+
+
 exports.unlistItemShow = async (req, res) => {
   const itemList = await Item.find({
     $and: [{ listed: false }, { isCategory: true }],
@@ -691,6 +743,67 @@ exports.getAllOrders = async (req, res) => {
     });
   }
 };
+
+exports.searchOrders = async (req, res) => {
+  const search = req.query.search || '';
+
+  try {
+    const orders = await Order.aggregate([
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'user',
+          foreignField: '_id',
+          as: 'userDetails'
+        }
+      },
+      {
+        $unwind: '$userDetails'
+      },
+      {
+        $match: {
+          $or: [
+            { orderId: { $regex: search, $options: 'i' } },  // Search by order ID
+            { 'items.item': { $regex: search, $options: 'i' } }  // Search by item names
+          ]
+        }
+      },
+      {
+        $project: {
+          orderId: 1,
+          username: '$userDetails.username',
+          items: 1,
+          totalAmount: 1,
+          status: 1
+        }
+      }
+    ]);
+
+    // console.log(orders);
+    
+
+    res.status(200).json({
+      success: true,
+      orders: orders.map(order => ({
+        orderId: order.orderId,
+        username: order.username,
+        items: order.items.map(item => ({
+          itemName: item.item,
+          quantity: item.quantity
+        })),
+        totalAmount: order.totalAmount,
+        status: order.status
+      }))
+    });
+  } catch (error) {
+    console.error("Error fetching search results:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch search results"
+    });
+  }
+};
+
 
 exports.getOrderDetails = async (req, res) => {
   const { orderId } = req.query;
@@ -856,3 +969,54 @@ const refundPayment = async (paymentIntentId) => {
   //   } else {
   //     return res.status(404).json({ message: 'No results found' });
   //   }
+
+
+  exports.tableBookingData = async (req, res) => {
+    const CurrentStatus = req.query.status
+    // console.log(req.query.status);
+    
+    try {
+      // Find all bookings with status 'booked'
+      const bookings = await tableBooking.find({ status:CurrentStatus});
+
+      // Check if there are any booked bookings
+      if (bookings.length === 0) {
+          return res.status(404).json({ message: 'No booked bookings found' });
+      }
+
+      // Return the list of booked bookings
+      res.status(200).json(bookings);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching bookings', error });
+    }
+  }
+
+
+
+  exports.updateTableBooking = async (req, res) => {
+    const bookingId = req.query.id;
+    const status = req.body.status;
+    console.log(req);
+    
+    try {
+        // Find the booking by ID
+        const booking = await tableBooking.findById(bookingId);
+
+        // Check if the booking exists
+        if (!booking) {
+            return res.status(404).json({ message: 'Booking not found' });
+        }
+
+        // // Check if the status is 'booked'
+        // if (booking.status !== 'booked') {
+        //     return res.status(400).json({ message: 'Booking is not in the "booked" status' });
+        // }
+
+        booking.status = status;
+        await booking.save();
+
+        res.status(200).json({ message: `Booking ${status} successfully` });
+    } catch (error) {
+        res.status(500).json({ message: 'Error accepting the booking', error });
+    }
+  }

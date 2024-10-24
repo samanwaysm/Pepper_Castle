@@ -103,6 +103,12 @@
                             <p>Item Management</p>
                         </a>
                     </li>
+                    <li>
+                        <a href="/table-management">
+                            <i class="nc-icon nc-email-85"></i>
+                            <p>Table Management</p>
+                        </a>
+                    </li>
 
                     <li class="active-pro">
                         <a href="/admin/logout">
@@ -114,7 +120,8 @@
             </div>
         </div>
         <div class="main-panel">
-            <nav class="navbar navbar-expand-lg navbar-absolute fixed-top" style="position: fixed;background-color: #fff;color:black">
+            <nav class="navbar navbar-expand-lg navbar-absolute fixed-top"
+                style="position: fixed;background-color: #fff;color:black">
                 <div class="container-fluid">
                     <div class="navbar-wrapper">
                         <div class="navbar-toggle">
@@ -135,7 +142,8 @@
                     <div class="collapse navbar-collapse justify-content-end" id="navigation">
                         <form>
                             <div class="input-group no-border">
-                                <input type="text" value="" class="form-control" placeholder="Search...">
+                                <input type="text" value="" class="form-control" placeholder="Search..."
+                                    id="search-input">
                                 <div class="input-group-append">
                                     <div class="input-group-text">
                                         <i class="nc-icon nc-zoom-split"></i>
@@ -157,7 +165,7 @@
                     <a href="/unlistCategory"><button class="btn btn-primary">Unlist Category</button></a>
                 </div>
 
-                <div class="row">
+                <div class="row" id="category-list">
                     <% categories.forEach(category=> { %>
                         <div class="col-md-12">
                             <div class="category-card">
@@ -171,9 +179,6 @@
                                             class="button_len btn btn-warning btn-sm">
                                             <i class="nc-icon nc-ruler-pencil"></i> Edit
                                         </button></a>
-                                    <!-- <a href="/admin/unlistCategory?id=<%#= category._id %>"><button class="button_len btn btn-danger btn-sm">
-                                        <i class="nc-icon nc-simple-remove"></i> Unlist
-                                    </button></a> -->
                                     <a href="javascript:void(0);" onclick="confirmUnlist('<%= category._id %>')">
                                         <button class="button_len btn btn-danger btn-sm">
                                             <i class="nc-icon nc-simple-remove"></i> Unlist
@@ -185,6 +190,55 @@
                         <% }); %>
                 </div>
             </div>
+
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+            <script>
+                // AJAX search for categories
+                $('#search-input').on('keyup', function () {
+                    const searchQuery = $(this).val();
+
+                    $.ajax({
+                        url: '/admin/searchCategories',
+                        method: 'GET',
+                        data: { search: searchQuery },
+                        success: function (response) {
+                            // Update the category list dynamically
+                            console.log(response);
+                            
+                            let categoryListHTML = '';
+                            response.categories.forEach(category => {
+                                categoryListHTML += `
+                                    <div class="col-md-12">
+                                        <div class="category-card">
+                                            <div class="category-details">
+                                                <div class="category-name">${category.category}</div>
+                                            </div>
+                                            <div class="category-actions">
+                                                <a href="/editCategory?id=${category._id}">
+                                                    <button class="button_len btn btn-warning btn-sm">
+                                                        <i class="nc-icon nc-ruler-pencil"></i> Edit
+                                                    </button>
+                                                </a>
+                                                <a href="javascript:void(0);" onclick="confirmUnlist('${category._id}')">
+                                                    <button class="button_len btn btn-danger btn-sm">
+                                                        <i class="nc-icon nc-simple-remove"></i> Unlist
+                                                    </button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                            $('#category-list').html(categoryListHTML);
+                        },
+                        error: function (err) {
+                            console.error('Error fetching categories:', err);
+                        }
+                    });
+                });
+            </script>
+
             <script src="/admin/js/core/jquery.min.js"></script>
             <script src="/admin/js/core/popper.min.js"></script>
             <script src="/admin/js/core/bootstrap.min.js"></script>
