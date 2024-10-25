@@ -169,7 +169,9 @@
             <div class="address-section section">
                 <h2>Address</h2>
                 <div class="address-box" id="currentAddress">
+                    
                     <% if(address.username && address.structuredAddress){ %>
+                        <input type="hidden" id="addressId" value="<%= address.addressId %>" hidden>
                     <strong>
                         <%= address.username %>
                     </strong><br>
@@ -832,8 +834,12 @@
             const paymentMethod = paymentMethodElement ? paymentMethodElement.value : null;
             const orderItems = `<%- JSON.stringify(cartDetails) %>`;
             const userId = `<%= userId %>`;
-            // const structuredAddress = `<%= address.structuredAddress %>`;
-            const addressId = `<%= address.addressId %>`;
+            const addressId = document.getElementById('addressId').value;
+            console.log('------------------->',addressId);
+            
+            // const structuredAddress = `<%#= address.structuredAddress %>`;
+            // const addressId = `<%#= address.addressId %>`;
+
 
             if (!paymentMethod) {
                 showToast("Please select a payment method.", 'fail');
