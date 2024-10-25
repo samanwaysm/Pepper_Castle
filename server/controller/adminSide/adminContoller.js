@@ -22,20 +22,47 @@ exports.adminLogin = async (req, res) => {
     email: process.env.ADMIN_EMAIL,
     password: process.env.ADMIN_PASS,
   };
-  if (req.body.email === admin.email && req.body.password === admin.password) {
+  
+  const { email, password } = req.body;
+  const errors = {};
+
+  // Check for required fields
+  if (!email) {
+    errors.email = "Email is required.";
+  }
+  if (!password) {
+    errors.password = "Password is required.";
+  }
+
+  // If there are validation errors, redirect with errors
+  if (Object.keys(errors).length > 0) {
+    req.session.errors = errors;
+    return res.redirect("/adminlogin"); // Adjust the redirect path as necessary
+  }
+
+  // Validate email format (basic validation)
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailPattern.test(email)) {
+    req.session.errors = { email: "Invalid email format." };
+    return res.redirect("/adminlogin");
+  }
+
+    // Check admin credentials
+    if (email !== admin.email) {
+      req.session.errors = { email: "Incorrect email." }; // Specific error for email
+      return res.redirect("/adminlogin");
+    }
+    
+    if (password !== admin.password) {
+      req.session.errors = { password: "Incorrect password." }; // Specific error for password
+      return res.redirect("/adminlogin");
+    }
+  
+    // If both email and password are correct
     req.session.isAdminAuthenticated = true;
     res.redirect("/dashboard");
-  } else {
-    if (req.body.email !== admin.email) {
-      req.session.adminEmailErr = "Invalid Email";
-      return res.redirect("/adminlogin");
-    }
-    if (req.body.password !== admin.password) {
-      req.session.adminPassErr = "Invalid Password";
-      return res.redirect("/adminlogin");
-    }
-  }
 };
+
 
 exports.adminLogout = async (req, res) => {
   req.session.isAdminAuthenticated = false;

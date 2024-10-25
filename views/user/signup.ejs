@@ -125,105 +125,153 @@
             font-size: 18px;
             color: #ffffff;
         }
+
+        .error-p {
+            color: rgb(255, 238, 0);
+            font-size: 13px;
+        }
     </style>
 </head>
 
 <body>
     <div class="signup-container">
         <h2>Signup</h2>
-        <% if (errors && errors.signUpError) { %>
-            <div class="alert alert-danger" role="alert">
+        <%# if (errors && errors.signUpError) { %>
+            <!-- <div class="alert alert-danger" role="alert">
                 <p class="error-message">
-                    <%= errors.signUpError %>
+                    <%#= errors.signUpError %>
                 </p>
-            </div>
-        <% } %>
-        <form id="signupForm" method="POST" action="/api/signup">
-            <!-- User Information -->
-            <div class="form-row">
-                <div class="form-column">
-                    <div class="form-group">
-                        <label for="username">Username:</label>
-                        <input type="text" id="username" name="username" placeholder="Enter your username" required>
-                    </div>
-                </div>
-                <div class="form-column">
-                    <div class="form-group">
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
-                    </div>
-                </div>
-                <div class="form-column">
-                    <div class="form-group">
-                        <label for="phone">Phone Number:</label>
-                        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Address Information -->
-            <div class="form-row">
-                <div class="form-column">
-                    <div class="form-group">
-                        <label for="street">Street Address:</label>
-                        <input type="text" id="street" name="street" placeholder="Enter your street address" required>
-                    </div>
-                </div>
-                <div class="form-column">
-                    <div class="form-group">
-                        <label for="block">Block/Apartment/Tower:</label>
-                        <input type="text" id="block" name="block" placeholder="Enter your block or tower" required>
-                    </div>
-                </div>
-                <div class="form-column">
-                    <div class="form-group">
-                        <label for="floor">Floor/Unit Number:</label>
-                        <input type="text" id="floor" name="unitnum" placeholder="Enter your floor or unit number" required>
-                    </div>
-                </div>
-                <div class="form-column">
-                    <div class="form-group">
-                        <label for="postal">Postal Code:</label>
-                        <input type="text" id="postal" name="postal" placeholder="Enter your postal code" required>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Password Information -->
-            <div class="form-row">
-                <div class="form-column">
-                    <div class="form-group">
-                        <label for="password">Password:</label>
-                        <div style="position: relative;">
-                            <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                            <span class="toggle-password" id="togglePassword">
-                                <i class="fas fa-eye" id="eyeIcon"></i>
-                            </span>
+            </div> -->
+            <%# } %>
+                <form id="signupForm" method="POST" action="/api/signup" novalidate>
+                    <!-- User Information -->
+                    <div class="form-row">
+                        <div class="form-column">
+                            <div class="form-group">
+                                <label for="username">Username:</label>
+                                <input type="text" id="username" name="username" placeholder="Enter your username"
+                                    required>
+                                <% if (errors && errors.usernameError) { %>
+                                    <span class="error-p"><%= errors.usernameError %></span>
+                                <% } %>
+                                <p class="error-p" id="usernameError"></p>
+                            </div>
+                        </div>
+                        <div class="form-column">
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                                <% if (errors && errors.emailError) { %>
+                                    <span class="error-p"><%= errors.emailError %></span>
+                                <% } %>
+                                <p class="error-p" id="emailError"></p>
+                            </div>
+                        </div>
+                        <div class="form-column">
+                            <div class="form-group">
+                                <label for="phone">Phone Number:</label>
+                                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number"
+                                    required>
+                                <% if (errors && errors.phoneError) { %>
+                                    <span class="error-p"><%= errors.phoneError %></span>
+                                <% } %>
+                                <p class="error-p" id="phoneError"></p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-column">
-                    <div class="form-group">
-                        <label for="confirmPassword">Confirm Password:</label>
-                        <div style="position: relative;">
-                            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
-                            <span class="toggle-password span-outline-secondary" id="toggleConfirmPassword">
-                                <i class="fas fa-eye" id="confirmEyeIcon"></i>
-                            </span>
+
+                    <!-- Address Information -->
+                    <div class="form-row">
+                        <div class="form-column">
+                            <div class="form-group">
+                                <label for="street">Street Address:</label>
+                                <input type="text" id="street" name="street" placeholder="Enter your street address"
+                                    required>
+                                <% if (errors && errors.streetError) { %>
+                                    <span class="error-p"><%= errors.streetError %></span>
+                                <% } %>
+                                <p class="error-p" id="streetError"></p>
+                            </div>
+                        </div>
+                        <div class="form-column">
+                            <div class="form-group">
+                                <label for="block">Block/Apartment/Tower:</label>
+                                <input type="text" id="block" name="block" placeholder="Enter your block or tower"
+                                    required>
+                                <% if (errors && errors.blockError) { %>
+                                    <span class="error-p"><%= errors.blockError %></span>
+                                <% } %>
+                                <p class="error-p" id="blockError"></p>
+                            </div>
+                        </div>
+                        <div class="form-column">
+                            <div class="form-group">
+                                <label for="floor">Floor/Unit Number:</label>
+                                <input type="text" id="floor" name="unitnum"
+                                    placeholder="Enter your floor or unit number" required>
+                                    <% if (errors && errors.unitNumError) { %>
+                                        <span class="error-p"><%= errors.unitNumError %></span>
+                                    <% } %>
+                                <p class="error-p" id="floorError"></p>
+                            </div>
+                        </div>
+                        <div class="form-column">
+                            <div class="form-group">
+                                <label for="postal">Postal Code:</label>
+                                <input type="text" id="postal" name="postal" placeholder="Enter your postal code"
+                                    required>
+                                <% if (errors && errors.postalError) { %>
+                                    <span class="error-p"><%= errors.postalError %></span>
+                                <% } %>
+                                <p class="error-p" id="postalError"></p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <button type="submit" class="signup-btn">Signup</button>
-            <div class="already-have-account">
-                <a href="/signin">Already have an account? SignIn</a>
-            </div>
-        </form>
+                    <!-- Password Information -->
+                    <div class="form-row">
+                        <div class="form-column">
+                            <div class="form-group">
+                                <label for="password">Password:</label>
+                                <div style="position: relative;">
+                                    <input type="password" id="password" name="password"
+                                        placeholder="Enter your password" required>
+                                    <span class="toggle-password" id="togglePassword">
+                                        <i class="fas fa-eye" id="eyeIcon"></i>
+                                    </span>
+                                </div>
+                                <% if (errors && errors.passwordError) { %>
+                                    <span class="error-p"><%= errors.passwordError %></span>
+                                <% } %>
+                                <p class="error-p" id="passwordError"></p>
+                            </div>
+                        </div>
+                        <div class="form-column">
+                            <div class="form-group">
+                                <label for="confirmPassword">Confirm Password:</label>
+                                <div style="position: relative;">
+                                    <input type="password" id="confirmPassword" name="confirmPassword"
+                                        placeholder="Confirm your password" required>
+                                    <span class="toggle-password" id="toggleConfirmPassword">
+                                        <i class="fas fa-eye" id="confirmEyeIcon"></i>
+                                    </span>
+                                </div>
+                                <% if (errors && errors.confirmPasswordError) { %>
+                                    <span class="error-p"><%= errors.confirmPasswordError %></span>
+                                <% } %>
+                                <p class="error-p" id="confirmPasswordError"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="signup-btn">Signup</button>
+                    <div class="already-have-account">
+                        <a href="/signin">Already have an account? SignIn</a>
+                    </div>
+                </form>
     </div>
 
     <script>
-        // Toggle password visibility
         const togglePassword = document.getElementById('togglePassword');
         const passwordInput = document.getElementById('password');
         const confirmPasswordInput = document.getElementById('confirmPassword');
@@ -245,26 +293,141 @@
         document.getElementById('signupForm').addEventListener('submit', function (event) {
             event.preventDefault();
 
-            const username = document.getElementById('username').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const street = document.getElementById('street').value;
-            const block = document.getElementById('block').value;
-            const floor = document.getElementById('floor').value;
-            const postal = document.getElementById('postal').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const street = document.getElementById('street').value.trim();
+            const block = document.getElementById('block').value.trim();
+            const floor = document.getElementById('floor').value.trim();
+            const postal = document.getElementById('postal').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const confirmPassword = document.getElementById('confirmPassword').value.trim();
 
-            const errorMessage = document.getElementById('errorMessage');
+            let formIsValid = true;
 
-            if (password !== confirmPassword) {
-                errorMessage.innerText = "Passwords do not match.";
-                errorMessage.style.display = "block";
+            // Clear previous error messages
+            document.querySelectorAll('.error-p').forEach(el => el.textContent = "");
+
+            // Required field validation
+            if (!username) {
+                document.getElementById('usernameError').innerText = "Username is required.";
+                formIsValid = false;
+            }
+
+            if (!email) {
+                document.getElementById('emailError').innerText = "Email is required.";
+                formIsValid = false;
+            }
+
+            if (!phone) {
+                document.getElementById('phoneError').innerText = "Phone number is required.";
+                formIsValid = false;
+            }
+
+            if (!street) {
+                document.getElementById('streetError').innerText = "Street is required.";
+                formIsValid = false;
+            }
+
+            if (!block) {
+                document.getElementById('blockError').innerText = "Block is required.";
+                formIsValid = false;
+            }
+
+            if (!floor) {
+                document.getElementById('floorError').innerText = "Floor is required.";
+                formIsValid = false;
+            }
+
+            if (!postal) {
+                document.getElementById('postalError').innerText = "Postal code is required.";
+                formIsValid = false;
+            }
+
+            if (!password) {
+                document.getElementById('passwordError').innerText = "Password is required.";
+                formIsValid = false;
+            }
+
+            if (!confirmPassword) {
+                document.getElementById('confirmPasswordError').innerText = "Please confirm your password.";
+                formIsValid = false;
+            }
+
+            // // Username validation
+            // if (username.length < 3) {
+            //     document.getElementById('usernameError').innerText = "Username must be at least 3 characters.";
+            //     formIsValid = false;
+            // }
+
+            // if (username !== document.getElementById('username').value.trim()) {
+            //     document.getElementById('usernameError').innerText = 'Inputs cannot start or end with spaces.';
+            //     return;
+            // }
+
+            // Username validation
+            if (username && username.length < 3) {
+                document.getElementById('usernameError').innerText = "Username must be at least 3 characters.";
+                formIsValid = false;
+            }
+            if (username && username !== document.getElementById('username').value) {
+                document.getElementById('usernameError').innerText = 'Inputs cannot start or end with spaces.';
                 return;
             }
 
-            // Submit the form
-            this.submit();
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email && !emailRegex.test(email)) {
+                document.getElementById('emailError').innerText = "Invalid email format.";
+                formIsValid = false;
+            }
+
+            // Phone validation (10-15 digits)
+            // const phoneRegex = /^[0-9]{10,15}$/;
+            // if (!phoneRegex.test(phone)) {
+            //     document.getElementById('phoneError').innerText = "Invalid phone number.";
+            //     formIsValid = false;
+            // }
+            const singaporePhoneRegex = /^[689]\d{7}$/;
+
+            if (phone && !singaporePhoneRegex.test(phone)) {
+                document.getElementById('phoneError').innerText = "Invalid phone number";
+                // document.getElementById('phoneError').innerText = "Invalid Singapore phone number. It should be 8 digits and start with 6, 8, or 9.";
+                formIsValid = false;
+            }
+
+
+            const postalCodeRegex = /^\d{6}$/;
+
+            if (postal && !postalCodeRegex.test(postal)) {
+                document.getElementById('postalError').innerText = "Invalid postal code.";
+                formIsValid = false;
+            }
+
+            const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+
+            if (password && password.length < 8) {
+                document.getElementById('passwordError').innerText = "Password must be at least 8 characters long.";
+                formIsValid = false;
+            } else if (password && !passwordPattern.test(password)) {
+                document.getElementById('passwordError').innerText = "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.";
+                formIsValid = false;
+            }
+
+            // // Password validation
+            // if (password.length < 6) {
+            //     document.getElementById('passwordError').innerText = "Password must be at least 6 characters.";
+            //     formIsValid = false;
+            // }
+
+            if (password !== confirmPassword) {
+                document.getElementById('confirmPasswordError').innerText = "Passwords do not match.";
+                formIsValid = false;
+            }
+
+            if (formIsValid) {
+                this.submit();
+            }
         });
     </script>
 </body>

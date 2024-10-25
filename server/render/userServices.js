@@ -149,11 +149,12 @@ exports.checkout = (req, res, next) => {
         .then(axios.spread((data1, data2) => {
             res.render("user/checkout", { 
                 cartDetails: data1.data, 
-                address: data2.data, 
+                address: data2.data || [], 
                 isUserAuthenticated,
                 isUserAuth, 
                 userId
              }, (err, html) => {
+                
                 if (err) {
                     console.log(err);
                 }
@@ -189,7 +190,9 @@ exports.orderFailed = (req, res) => {
 }
 
 exports.forgotPassword = (req, res, next) => {
-    res.render("user/forgot-password", (err, html) => {
+    const { error } = req.session
+    delete req.session.error
+    res.render("user/forgot-password",{error}, (err, html) => {
         if (err) {
             console.log(err);
         }
@@ -198,8 +201,9 @@ exports.forgotPassword = (req, res, next) => {
 }
 
 exports.otpVerification = (req, res, next) => {
-    const { rTime } = req.session
-    res.render("user/otp-verification",{rTime}, (err, html) => {
+    const { rTime,err } = req.session
+    delete req.session.err
+    res.render("user/otp-verification",{rTime, err}, (err, html) => {
         if (err) {
             console.log(err);
         }
@@ -208,7 +212,9 @@ exports.otpVerification = (req, res, next) => {
 }
 
 exports.resetPassword = (req, res, next) => {
-    res.render("user/reset-password", (err, html) => {
+    const { errors } = req.session
+    delete req.session.errors 
+    res.render("user/reset-password",{errors}, (err, html) => {
         if (err) {
             console.log(err);
         }

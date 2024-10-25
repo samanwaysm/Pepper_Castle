@@ -40,54 +40,62 @@ route.get('/change-password',isUserAuthenticated,services.changePassword)
 
 // APIs
 
-route.post('/api/signup',controller.signUp)
+// AUTH User
+route.post('/api/signup',controller.signUp)   // Signup 
 route.post('/api/signin',controller.signIn)   // Login 
+
 route.get('/api/logout',controller.signOut)   // Logout
+
 route.post('/api/generateotp',controller.forgotOtp)
 route.post('/api/otpverification',controller.forgototpverification)
-route.post('/api/generateotp',controller.forgotOtp)
 route.post('/api/updatepassword',controller.updatepassword)
+
 route.get('/api/forgotOtpResend',controller.forgotOtpResend)
 
-route.post('/api/create-order',orderController.createOrder)
-// route.get('/api/success',orderController.handlePaymentSuccess)
-
-route.get('/api/homeCategoryShow',categoryAndItemContoller.homeCategoryShow)
-route.get('/api/ourMenuList',categoryAndItemContoller.ourMenuList)
-
-
-route.get('/api/itemCount',cartController.getCartItemCount)
-route.get('/api/addToCart',cartController.addToCart)
-route.get('/api/showCart',cartController.showCart)
-route.post('/api/update-cart',cartController.updateCart)
-route.delete('/api/remove-from-cart',cartController.removeCart)
-
-route.post('/api/addAddress', addressController.addAddress);
-route.get('/api/showDefaultAddress',addressController.showDefaultAddress)
-route.get('/api/showAddress',addressController.showAddress)
-route.post('/api/updateDefaultAddress', addressController.updateDefaultAddress);
-route.delete('/api/deleteAddress',addressController.deleteAddress)
-route.get('/api/getAddress',addressController.getAddress)
-route.post('/api/updateAddress',addressController.updateAddress)
-
-route.get('/api/showAddressManagement',addressController.showAddressManagement)
 route.post('/api/changePassword',controller.changePassword)
 route.post('/api/changeProfile',controller.changeProfile)
 
 route.post('/api/getLocationDetails',controller.getLocationDetails);
 
+// Our Manu 
+route.get('/api/homeCategoryShow',categoryAndItemContoller.homeCategoryShow)
+route.get('/api/ourMenuList',categoryAndItemContoller.ourMenuList)
+route.get('/api/itemCount',cartController.getCartItemCount)
+
+// Cart
+route.post('/api/update-cart',cartController.updateCart)
+
+route.get('/api/addToCart',cartController.addToCart)
+route.get('/api/showCart',cartController.showCart)
+
+route.delete('/api/remove-from-cart',cartController.removeCart)
+
+
+// Address
+route.post('/api/addAddress', addressController.addAddress);
+route.post('/api/updateAddress',addressController.updateAddress)
+route.get('/api/showDefaultAddress',addressController.showDefaultAddress)
+route.get('/api/showAddress',addressController.showAddress)
+route.post('/api/updateDefaultAddress', addressController.updateDefaultAddress);
+route.get('/api/getAddress',addressController.getAddress)
+route.get('/api/showAddressManagement',addressController.showAddressManagement)
+route.delete('/api/deleteAddress',addressController.deleteAddress)
+
+// Order Section
+route.post('/api/create-order',orderController.createOrder)
 route.get('/api/orderslist', orderController.orderslist);
-
 route.get('/api/getUserDetails',controller.getUserDetails)
+// route.get('/api/success',orderController.handlePaymentSuccess)
 
+// Location Checking
 route.post('/api/getGoogleMaplocation',controller.getGoogleMaplocation)
 
 
 
+// Webhook <- Order Section
 route.post('/webhook',express.raw({ type: 'application/json' }),webhookController.webhook);
 
-
-
+// Table Booking 
 route.post('/api/book-table',tableBookingController.bookTable)
 
 

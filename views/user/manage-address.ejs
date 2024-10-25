@@ -211,9 +211,20 @@
             transition: background-color 0.3s ease;
         }
 
+        .default-btn{
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
         .action-btn:hover {
             background-color: #e65c00;
         }
+
+
 
         .delete-btn {
             background-color: #ff3333;
@@ -281,6 +292,10 @@
                 /* Smaller buttons for mobile */
                 padding: 6px 10px;
             }
+            .default-btn{
+                font-size: 12px;
+                padding: 6px 10px;
+            }
         }
 
         /* Mobile view - All items 1/1 */
@@ -299,6 +314,11 @@
 
             .action-btn,
             .delete-btn {
+                font-size: 11px;
+                padding: 5px 8px;
+            }
+
+            .default-btn{
                 font-size: 11px;
                 padding: 5px 8px;
             }
@@ -552,6 +572,16 @@
             margin-top: 15px;
             margin-bottom: none;
         }
+
+        .checkbox-cls {
+            margin-top: 5%;
+            width: 16px;
+            height: 16px;
+        }
+
+        .add-def-lbl {
+            width: 100%;
+        }
     </style>
 
 </head>
@@ -743,50 +773,52 @@
         </div>
     </div> -->
 
-<!-- Add Address Modal -->
-<div id="addAddressModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('addAddressModal')">&times;</span>
-        <h4>Add Address</h4>
-        <form id="addAddressForm" class="modal-form">
-            <div class="form-row">
-                <label for="addUsername">Username</label>
-                <input type="text" id="username" name="username" required>
-                <span class="error-message" id="usernameError"></span>
-            </div>
-            <div class="form-row">
-                <label for="addPhone">Phone</label>
-                <input type="text" id="phone" name="phone" required>
-                <span class="error-message" id="phoneError"></span>
-            </div>
-            <div class="form-row">
-                <label for="addStreet">Street</label>
-                <input type="text" id="street" name="street" required>
-                <span class="error-message" id="streetError"></span>
-            </div>
-            <div class="form-row">
-                <label for="addApartment">Block</label>
-                <input type="text" id="block" name="block">
-            </div>
-            <div class="form-row">
-                <label for="addUnit">Unit</label>
-                <input type="text" id="unitnum" name="unitnum">
-            </div>
-            <div class="form-row">
-                <label for="addPostalCode">Postal Code</label>
-                <input type="text" id="postal" name="postal" required>
-                <span class="error-message" id="postalError"></span>
-            </div>
-            <!-- <div class="form-row">
-                <label class="add-def-lbl" for="addIsDefault">Set as Default</label>
-                <input type="checkbox" id="addIsDefault" name="addIsDefault">
-            </div> -->
-            <button type="submit">Add Address</button>
-        </form>
-    </div>
-</div>
+    <!-- Add Address Modal -->
+    <div id="addAddressModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('addAddressModal')">&times;</span>
+            <h4>Add Address</h4>
+            <form id="addAddressForm" class="modal-form">
+                <div class="form-row">
+                    <label for="addUsername">Username</label>
+                    <input type="text" id="username" name="username" required>
+                    <span class="error-message" id="usernameError"></span>
+                </div>
+                <div class="form-row">
+                    <label for="addPhone">Phone</label>
+                    <input type="text" id="phone" name="phone" required>
+                    <span class="error-message" id="phoneError"></span>
+                </div>
+                <div class="form-row">
+                    <label for="addStreet">Street</label>
+                    <input type="text" id="street" name="street" required>
+                    <span class="error-message" id="streetError"></span>
+                </div>
+                <div class="form-row">
+                    <label for="addApartment">Block</label>
+                    <input type="text" id="block" name="block">
+                </div>
+                <div class="form-row">
+                    <label for="addUnit">Unit</label>
+                    <input type="text" id="unitnum" name="unitnum">
+                </div>
+                <div class="form-row">
+                    <label for="addPostalCode">Postal Code</label>
+                    <input type="text" id="postal" name="postal" required>
+                    <span class="error-message" id="postalError"></span>
+                </div>
 
-    
+                <!-- <div class="d-flex align-items-center ">
+                    <label class="add-def-lbl" for="addIsDefault">Set as Default</label>
+                    <input type="checkbox" id="addIsDefault" name="addIsDefault" class="checkbox-cls">
+                </div> -->
+
+                <button type="submit">Add Address</button>
+            </form>
+        </div>
+    </div>
+
+
     <!-- Edit Address Modal -->
     <div id="editAddressModal" class="modal">
         <div class="modal-content">
@@ -818,6 +850,10 @@
                     <label for="editPostalCode">Postal Code</label>
                     <input type="text" id="editPostal" required>
                 </div>
+                <!-- <div class="d-flex align-items-center ">
+                    <label class="add-def-lbl" for="addIsDefault">Set as Default</label>
+                    <input type="checkbox" id="addIsDefault" name="addIsDefault" class="checkbox-cls">
+                </div> -->
                 <!-- <div class="form-row">
                     <label for="editIsDefault">Set as Default</label>
                     <input type="checkbox" id="editIsDefault">
@@ -956,70 +992,70 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         // Add an event listener to the form submission
-document.getElementById('addAddressForm').addEventListener('submit', function (event) {
-    // Prevent form submission to allow validation
-    event.preventDefault();
-    validateForm();
-});
+        document.getElementById('addAddressForm').addEventListener('submit', function (event) {
+            // Prevent form submission to allow validation
+            event.preventDefault();
+            validateForm();
+        });
 
-function validateForm() {
-    // Get form field values
-    const username = document.getElementById('username').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-    const street = document.getElementById('street').value.trim();
-    const postal = document.getElementById('postal').value.trim();
+        function validateForm() {
+            // Get form field values
+            const username = document.getElementById('username').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const street = document.getElementById('street').value.trim();
+            const postal = document.getElementById('postal').value.trim();
 
-    // Error message elements
-    const usernameError = document.getElementById('usernameError');
-    const phoneError = document.getElementById('phoneError');
-    const streetError = document.getElementById('streetError');
-    const postalError = document.getElementById('postalError');
+            // Error message elements
+            const usernameError = document.getElementById('usernameError');
+            const phoneError = document.getElementById('phoneError');
+            const streetError = document.getElementById('streetError');
+            const postalError = document.getElementById('postalError');
 
-    // Clear previous error messages
-    usernameError.textContent = '';
-    phoneError.textContent = '';
-    streetError.textContent = '';
-    postalError.textContent = '';
+            // Clear previous error messages
+            usernameError.textContent = '';
+            phoneError.textContent = '';
+            streetError.textContent = '';
+            postalError.textContent = '';
 
-    let isValid = true;
+            let isValid = true;
 
-    // Username validation (required)
-    if (!username) {
-        usernameError.textContent = 'Username is required.';
-        isValid = false;
-    }
+            // Username validation (required)
+            if (!username) {
+                usernameError.textContent = 'Username is required.';
+                isValid = false;
+            }
 
-    // Phone number validation (required and should be digits only, min length 10)
-    const phonePattern = /^[0-9]{10}$/;
-    if (!phone) {
-        phoneError.textContent = 'Phone number is required.';
-        isValid = false;
-    } else if (!phonePattern.test(phone)) {
-        phoneError.textContent = 'Please enter a valid 10-digit phone number.';
-        isValid = false;
-    }
+            // Phone number validation (required and should be digits only, min length 10)
+            const phonePattern = /^[0-9]{10}$/;
+            if (!phone) {
+                phoneError.textContent = 'Phone number is required.';
+                isValid = false;
+            } else if (!phonePattern.test(phone)) {
+                phoneError.textContent = 'Please enter a valid 10-digit phone number.';
+                isValid = false;
+            }
 
-    // Street validation (required)
-    if (!street) {
-        streetError.textContent = 'Street is required.';
-        isValid = false;
-    }
+            // Street validation (required)
+            if (!street) {
+                streetError.textContent = 'Street is required.';
+                isValid = false;
+            }
 
-    // Postal code validation (required, digits only, min length 5)
-    const postalPattern = /^[0-9]{5}$/;
-    if (!postal) {
-        postalError.textContent = 'Postal code is required.';
-        isValid = false;
-    } else if (!postalPattern.test(postal)) {
-        postalError.textContent = 'Please enter a valid 5-digit postal code.';
-        isValid = false;
-    }
+            // Postal code validation (required, digits only, min length 5)
+            const postalPattern = /^[0-9]{5}$/;
+            if (!postal) {
+                postalError.textContent = 'Postal code is required.';
+                isValid = false;
+            } else if (!postalPattern.test(postal)) {
+                postalError.textContent = 'Please enter a valid 5-digit postal code.';
+                isValid = false;
+            }
 
-    // If the form is valid, submit it
-    if (isValid) {
-        document.getElementById('addAddressForm').submit();
-    }
-}
+            // If the form is valid, submit it
+            if (isValid) {
+                document.getElementById('addAddressForm').submit();
+            }
+        }
 
     </script>
     <script>
@@ -1058,9 +1094,9 @@ function validateForm() {
                 cartIcon.removeChild(existingCounter);
             }
 
-              const counter = document.createElement('span');
-         counter.classList.add('cart-counter'); // Apply the CSS class for styling
-         counter.textContent = cartItemCount;  // Use the count returned from the server  // Use the count returned from the server
+            const counter = document.createElement('span');
+            counter.classList.add('cart-counter'); // Apply the CSS class for styling
+            counter.textContent = cartItemCount;  // Use the count returned from the server  // Use the count returned from the server
 
             // Append the counter to the cart icon
             cartIcon.appendChild(counter);
@@ -1085,6 +1121,10 @@ function validateForm() {
                     } else {
                         data.forEach((address, index) => {
                             const isDefault = address.isDefault ? 'default-address' : '';
+                            const defaultButton = address.isDefault
+                                ? `<button class="default-btn default-btn btn-success" disabled>Default</button>`
+                                : `<button class="default-btn btn-secondary" onclick="setDefaultAddress('${address._id}')">Set as Default</button>`;
+
                             addressList.innerHTML += `
                         <div class="info-card ${isDefault}" data-index="${index}">
                             <div class="info-header">
@@ -1100,6 +1140,7 @@ function validateForm() {
                             <div class="info-action">
                                 <button class="action-btn" onclick="editAddress(${index}, '${address._id}', '${address.username}', '${address.phone}', '${address.street}', '${address.block}', '${address.unitnum}', '${address.postal}')"><i class="fas fa-pen"></i> Edit</button>
                                 <button class="delete-btn" onclick="deleteAddress(${index}, '${address._id}')"><i class="fas fa-trash"></i>Delete</button>
+                                ${defaultButton}
                             </div>
                         </div>
                     `;
@@ -1108,6 +1149,22 @@ function validateForm() {
                 },
                 error: function (error) {
                     console.error('Error fetching addresses:', error);
+                }
+            });
+        }
+        function setDefaultAddress(addressId) {
+            $.ajax({
+                url: '/api/updateDefaultAddress', // Ensure your server endpoint for setting the default address
+                type: 'POST',
+                data: {
+                    userId: userId,
+                    addressId: addressId
+                },
+                success: function () {
+                    fetchAddresses(); // Refresh the list to show the updated default address
+                },
+                error: function (error) {
+                    console.error('Error setting default address:', error);
                 }
             });
         }
@@ -1163,15 +1220,15 @@ function validateForm() {
                 };
 
                 const addressId = updatedData.addressId
-
                 $.ajax({
                     url: `/api/updateAddress?userId=${userId}`,
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify({ addressId, updatedData }),
                     success: function (result) {
-                        alert(result.message || 'Address updated successfully');
-                        modal.style.display = 'none';
+                        // alert(result.message || 'Address updated successfully');
+                        // modal.style.display = 'none';
+                        // setDefaultAddress(result)
                         fetchAddresses();  // Refresh the address list after the update
                     },
                     error: function (error) {
@@ -1382,7 +1439,7 @@ function validateForm() {
     <script src='js/init.js'></script>
     <!-- CONTACT FORM JS -->
     <script src='js/jquery.form.min.js'></script>
-    <script src='js/contactform-home.js'></script>
+    <!-- <script src='js/contactform-home.js'></script> -->
 
 </body>
 

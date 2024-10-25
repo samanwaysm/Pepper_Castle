@@ -129,28 +129,167 @@ const OtpDb = require("../../model/otpSchema")
 //   }
 // };
 
+// exports.signUp = async (req, res) => {
+//   const { username, email, password, confirmPassword, phone, street, block, unitnum, postal } = req.body;
+
+//   const errors = {};
+
+//   try {
+//     const existingUser = await User.findOne({ email });
+//     if (existingUser) {
+//       errors.signUpError = "User already exists with this email.";
+//     }
+
+//     if (password !== confirmPassword) {
+//       errors.signUpError = "Passwords do not match.";
+//     }
+
+//     if (Object.keys(errors).length > 0) {
+//       req.session.errors= errors;
+//       return res.redirect('/signup');
+//     }
+
+//     const hashedPassword = await bcrypt.hash(password, 10);
+
+//     const newUser = new User({
+//       username,
+//       email,
+//       password: hashedPassword,
+//       phone,
+//     });
+
+//     await newUser.save();
+
+//     const structuredAddress = `${username}, ${phone}, ${street}, ${block}, ${unitnum}, ${postal}`;
+
+//     const newAddress = new AddressDb({
+//       userId: newUser._id,
+//       address: [{
+//         _id: new mongoose.Types.ObjectId(),
+//         username,
+//         phone,
+//         street,
+//         block,
+//         unitnum,
+//         postal,
+//         structuredAddress
+//       }],
+//       defaultAddress: null
+//     });
+
+//     const savedAddress = await newAddress.save();
+
+//     const addressId = savedAddress.address[0]._id;
+//     await AddressDb.findByIdAndUpdate(
+//       savedAddress._id,
+//       { defaultAddress: addressId },
+//       { new: true }
+//     );
+
+//     req.session.username = newUser.username;
+//     req.session.email = newUser.email;
+//     req.session.userId = newUser._id;
+//     req.session.isUserAuthenticated = true;
+//     req.session.isUserAuth = true;
+
+//     res.redirect('/');
+//   } catch (err) {
+//     console.error(err);
+//     req.session.errors= { signUpError: "An error occurred during signup." };
+//     res.redirect('/signup');
+//   }
+// };
+
+
 exports.signUp = async (req, res) => {
   const { username, email, password, confirmPassword, phone, street, block, unitnum, postal } = req.body;
-
   const errors = {};
 
+  // Required field validation
+  if (!username || username.trim().length < 3) {
+    errors.usernameError = "Username must be at least 3 characters.";
+  }
+
+  if (!email) {
+    errors.emailError = "Email is required.";
+  } else {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      errors.emailError = "Invalid email format.";
+    }
+  }
+
+  if (!phone) {
+    errors.phoneError = "Phone number is required.";
+  } else {
+    // Validate Singapore phone number (must start with 6, 8, or 9 and be 8 digits)
+    const singaporePhoneRegex = /^[689]\d{7}$/;
+    if (!singaporePhoneRegex.test(phone)) {
+      errors.phoneError = "Invalid Singapore phone number. It should be 8 digits and start with 6, 8, or 9.";
+    }
+
+    // const phonePattern = /^(?:\+65)?[689]\d{7}$/; // Matches numbers starting with 6, 8, or 9 and followed by 7 digits
+    // if (phone && !phonePattern.test(phone)) {
+    //   errors.phone = "Phone number must be a valid number.";
+    // }
+  }
+
+  if (!postal) {
+    errors.postalError = "Postal code is required.";
+  } else {
+    // Validate postal code (must be 6 digits)
+    const postalCodeRegex = /^\d{6}$/;
+    if (!postalCodeRegex.test(postal)) {
+      errors.postalError = "Invalid postal code. It must be 6 digits.";
+    }
+  }
+
+  if (!street) {
+    errors.streetError = "Street address is required.";
+  }
+
+  if (!block) {
+    errors.blockError = "Block number is required.";
+  }
+
+  if (!unitnum) {
+    errors.unitNumError = "Unit number is required.";
+  }
+
+  if (!password) {
+    errors.passwordError = "Password is required.";
+  } else if (password.length < 8) {
+    errors.passwordError = "Password must be at least 8 characters long.";
+  } else {
+    // Validate password complexity
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+    if (!passwordPattern.test(password)) {
+      errors.passwordError = "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.";
+    }
+  }
+
+  // Check if passwords match
+  if (password !== confirmPassword) {
+    errors.confirmPasswordError = "Passwords do not match.";
+  }
+
+  // Check if there are existing users with the same email
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      errors.signUpError = "User already exists with this email.";
+      errors.emailError = "User already exists with this email.";
     }
 
-    if (password !== confirmPassword) {
-      errors.signUpError = "Passwords do not match.";
-    }
-
+    // If any errors are found, return them
     if (Object.keys(errors).length > 0) {
-      req.session.errors= errors;
+      req.session.errors = errors;
       return res.redirect('/signup');
     }
 
+    // Hash password before saving
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Create new user
     const newUser = new User({
       username,
       email,
@@ -160,6 +299,7 @@ exports.signUp = async (req, res) => {
 
     await newUser.save();
 
+    // Construct the structured address and save to address database
     const structuredAddress = `${username}, ${phone}, ${street}, ${block}, ${unitnum}, ${postal}`;
 
     const newAddress = new AddressDb({
@@ -186,19 +326,23 @@ exports.signUp = async (req, res) => {
       { new: true }
     );
 
+    // Set session details
     req.session.username = newUser.username;
     req.session.email = newUser.email;
     req.session.userId = newUser._id;
     req.session.isUserAuthenticated = true;
     req.session.isUserAuth = true;
 
+    // Redirect to the homepage after successful signup
     res.redirect('/');
   } catch (err) {
     console.error(err);
-    req.session.errors= { signUpError: "An error occurred during signup." };
+    req.session.errors = { signUpError: "An error occurred during signup." };
     res.redirect('/signup');
   }
 };
+
+
 
 exports.signIn = async (req, res) => {
   const { emailOrPhone, password } = req.body;
@@ -470,12 +614,12 @@ exports.forgotOtp = async (req, res) => {
   req.session.user = req.body.email;
 
   if (req.body.email == "") {
-    req.session.message = "email is required"
+    req.session.error = "email is required"
     return res.redirect("/forgot-password");
   }
   const foundUser = await User.findOne({ email: req.body.email });
   if (!foundUser) {
-    req.session.message = "user not exist";
+    req.session.error = "user not exist";
     return res.redirect("/forgot-password");
   }
   req.session.username = foundUser.username
@@ -526,14 +670,55 @@ exports.forgotOtpResend = async (req, res) => {
 
 
 exports.updatepassword = async (req, res) => {
+  const { password, confirmPassword } = req.body;
+  const errors = {};
 
-  const hashedpassword = await bcrypt.hash(req.body.password, 10);
+  // Check for required fields
+  if (!password) {
+    errors.password = "Password is required.";
+  }
+  if (!confirmPassword) {
+    errors.confirmPassword = "Confirm password is required.";
+  }
 
-  const updateuser = await User.updateOne(
-    { email: req.session.forgotuser },
-    { $set: { password: hashedpassword } }
-  );
-  res.redirect("/signin");
+  // Validate password length and complexity
+  const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/; // At least 8 characters, one uppercase, one lowercase, one digit, and one special character
+  if (password && password.length < 8) {
+    errors.password = "Password must be at least 8 characters long.";
+  }
+  if (password && !passwordPattern.test(password)) {
+    errors.password = "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.";
+  }
+
+  // Check if passwords match
+  if (password && confirmPassword && password !== confirmPassword) {
+    errors.confirmPassword = "Passwords do not match.";
+  }
+
+  // If there are validation errors, redirect with errors
+  if (Object.keys(errors).length > 0) {
+    req.session.errors = errors;
+    return res.redirect("/reset-password"); // Adjust the redirect path as necessary
+  }
+
+  try {
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Update the user password in the database
+    const updateUser = await User.updateOne(
+      { email: req.session.forgotuser },
+      { $set: { password: hashedPassword } }
+    );
+
+    // Redirect to sign-in after successful update
+    req.session.success = "Password updated successfully.";
+    res.redirect("/signin");
+  } catch (err) {
+    console.error(err);
+    req.session.errors = { general: "An error occurred. Please try again." };
+    res.redirect("/reset-password"); // Adjust the redirect path as necessary
+  }
 };
 
 
@@ -638,22 +823,87 @@ exports.getUserDetails = async (req, res) => {
 //   }
 // }
 
+// exports.changePassword = async (req, res) => {
+//   const userId = req.session.userId;
+//   const { oldpassword, newpassword, confirmpassword } = req.body;
+
+//   const errors = {};
+
+//   if (!oldpassword || !newpassword || !confirmpassword) {
+//     if (!oldpassword) errors.oldpassword = "Old password is required.";
+//     if (!newpassword) errors.newpassword = "New password is required.";
+//     if (!confirmpassword) errors.confirmpassword = "Confirm password is required.";
+//   }
+
+//   if (newpassword !== confirmpassword) {
+//     errors.confirmpassword = "New password and confirm password do not match.";
+//   }
+
+//   if (Object.keys(errors).length > 0) {
+//     req.session.errors = errors;
+//     return res.redirect("/change-password");
+//   }
+
+//   try {
+//     const foundUser = await User.findOne({ _id: userId });
+//     if (!foundUser) {
+//       req.session.errors = { oldpassword: "User not found." };
+//       return res.redirect("/change-password");
+//     }
+
+//     const isPasswordMatch = await bcrypt.compare(oldpassword, foundUser.password);
+//     if (!isPasswordMatch) {
+//       req.session.errors = { oldpassword: "Old password is incorrect." };
+//       return res.redirect("/change-password");
+//     }
+
+//     const hashedPassword = await bcrypt.hash(newpassword, 10);
+//     await User.updateOne({ _id: userId }, { $set: { password: hashedPassword } });
+
+//     req.session.isUserAuth = false;
+//     req.session.isUserAuthenticated = false;
+//     delete req.session.email;
+//     delete req.session.phone;
+//     delete req.session.userId;
+//     res.redirect("/signin");
+//   } catch (err) {
+//     console.error(err);
+//     req.session.errors = { general: "An error occurred. Please try again." };
+//     res.redirect("/change-password");
+//   }
+// };
+
 exports.changePassword = async (req, res) => {
   const userId = req.session.userId;
   const { oldpassword, newpassword, confirmpassword } = req.body;
 
   const errors = {};
 
+  // Check for required fields
   if (!oldpassword || !newpassword || !confirmpassword) {
     if (!oldpassword) errors.oldpassword = "Old password is required.";
     if (!newpassword) errors.newpassword = "New password is required.";
     if (!confirmpassword) errors.confirmpassword = "Confirm password is required.";
   }
 
-  if (newpassword !== confirmpassword) {
+  // Check if new password and confirm password match
+  if (confirmpassword && newpassword !== confirmpassword) {
     errors.confirmpassword = "New password and confirm password do not match.";
   }
 
+  // New password validation
+  if (newpassword) {
+    if (newpassword.length < 8) {
+      errors.newpassword = "New password must be at least 8 characters long.";
+    }
+    // Validate password complexity
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+    if (!passwordPattern.test(newpassword)) {
+      errors.newpassword = "New password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.";
+    }
+  }
+
+  // If there are errors, redirect with errors
   if (Object.keys(errors).length > 0) {
     req.session.errors = errors;
     return res.redirect("/change-password");
@@ -666,15 +916,18 @@ exports.changePassword = async (req, res) => {
       return res.redirect("/change-password");
     }
 
+    // Check if the old password matches
     const isPasswordMatch = await bcrypt.compare(oldpassword, foundUser.password);
     if (!isPasswordMatch) {
       req.session.errors = { oldpassword: "Old password is incorrect." };
       return res.redirect("/change-password");
     }
 
+    // Hash the new password and update the user
     const hashedPassword = await bcrypt.hash(newpassword, 10);
     await User.updateOne({ _id: userId }, { $set: { password: hashedPassword } });
 
+    // Clear session and redirect to sign-in
     req.session.isUserAuth = false;
     req.session.isUserAuthenticated = false;
     delete req.session.email;
@@ -699,6 +952,15 @@ exports.changeProfile = async (req, res) => {
     if (!phone) errors.phone = "Phone number is required.";
     if (!password) errors.password = "Password is required.";
   }
+
+  const phonePattern = /^[689]\d{7}$/; // Matches numbers starting with 6, 8, or 9 and followed by 7 digits
+  if (phone && !phonePattern.test(phone)) {
+    errors.phone = "Phone number must be a valid number.";
+  }
+  // const phonePattern = /^(?:\+65)?[689]\d{7}$/; // Matches numbers starting with 6, 8, or 9 and followed by 7 digits
+  // if (phone && !phonePattern.test(phone)) {
+  //   errors.phone = "Phone number must be a valid number.";
+  // }
 
   if (Object.keys(errors).length > 0) {
     req.session.errors = errors;

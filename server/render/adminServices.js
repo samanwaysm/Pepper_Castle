@@ -12,8 +12,9 @@ const axios = require('axios')
 // }
 
 exports.adminLogin = (req, res) => {
-    // const { validEmail, wrongPassword, isUserAuthenticated } = req.session
-    res.render("admin/adminlogin", (err, html) => {
+    const { errors } = req.session
+    delete req.session.errors
+    res.render("admin/adminlogin",{errors} ,(err, html) => {
         if (err) {
             console.log(err);
         }
