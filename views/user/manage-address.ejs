@@ -216,8 +216,11 @@
             padding: 8px 12px;
             border-radius: 4px;
             cursor: pointer;
+            display: block;
             font-size: 14px;
             transition: background-color 0.3s ease;
+            width: 25%;
+            margin-top: 10%;
         }
 
         .action-btn:hover {
@@ -1121,14 +1124,11 @@
                     } else {
                         data.forEach((address, index) => {
                             const isDefault = address.isDefault ? 'default-address' : '';
-                            const defaultButton = address.isDefault
-                                ? `<button class="default-btn default-btn btn-success" disabled>Default</button>`
-                                : `<button class="default-btn btn-secondary" onclick="setDefaultAddress('${address._id}')">Set as Default</button>`;
-
                             addressList.innerHTML += `
-                        <div class="info-card ${isDefault}" data-index="${index}">
+                        <div class="info-card ${isDefault}" data-index="${index}" onclick="setDefaultAddress('${address._id}')">
                             <div class="info-header">
                                 <h6>${address.username}</h6>
+
                             </div>
                             <div class="info-body">
                                 <p><strong>Phone:</strong> ${address.phone}</p>
@@ -1140,7 +1140,7 @@
                             <div class="info-action">
                                 <button class="action-btn" onclick="editAddress(${index}, '${address._id}', '${address.username}', '${address.phone}', '${address.street}', '${address.block}', '${address.unitnum}', '${address.postal}')"><i class="fas fa-pen"></i> Edit</button>
                                 <button class="delete-btn" onclick="deleteAddress(${index}, '${address._id}')"><i class="fas fa-trash"></i>Delete</button>
-                                ${defaultButton}
+                                
                             </div>
                         </div>
                     `;
