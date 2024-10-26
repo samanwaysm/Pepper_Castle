@@ -752,10 +752,13 @@
                 .then(response => response.json())
                 .then(address => {
                     document.getElementById('currentAddress').innerHTML = `
+                        <input type="hidden" id="addressId" value="${address.addressId }" hidden>
                         <strong>${address.username}</strong><br>
                         ${address.structuredAddress}
                     `;
                 });
+                showToast("Address updated successfully.", 'success');
+                
         }
 
         function fetchAddressData(addressId) {
@@ -837,7 +840,9 @@
             const paymentMethod = paymentMethodElement ? paymentMethodElement.value : null;
             const orderItems = `<%- JSON.stringify(cartDetails) %>`;
             const userId = `<%= userId %>`;
-            const addressId = document.getElementById('addressId').value;
+            // const addressId = document.getElementById('addressId').value;
+            const addressIdElement = document.getElementById('addressId');
+            const addressId = addressIdElement ? addressIdElement.value : null;
             console.log('------------------->',addressId);
             
             // const structuredAddress = `<%#= address.structuredAddress %>`;
