@@ -405,9 +405,31 @@
         /* Responsive CSS */
         @media (max-width: 768px) {
             .order-tracking {
-                width: 100%;
-                /* Full width tracking on smaller screens */
-                margin-bottom: 20px;
+                text-align: center;
+                width: 25%;
+                position: relative;
+                display: block;
+                font-size: 12px;
+            }
+
+            .is-complete {
+                display: block;
+                position: relative;
+                border-radius: 50%;
+                height: 20px;
+                width: 20px;
+                background-color: #f7be16;
+                margin: 0 auto;
+                transition: background 0.25s linear;
+                z-index: 2;
+            }
+
+            .order-tracking.completed .is-complete {
+                background-color: #27aa80;
+            }
+
+            .order-tracking.processing .is-complete {
+                background-color: orange;
             }
 
             .order-summary {
@@ -514,106 +536,6 @@
             }
         }
 
-
-
-        /* .hh-grayBox {
-            background-color: #F8F8F8;
-            margin-bottom: 20px;
-            padding: 35px;
-            margin-top: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .pt45 {
-            padding-top: 45px;
-        }
-
-        .order-tracking {
-            text-align: center;
-            width: 33.33%;
-            position: relative;
-            display: block;
-        }
-
-        .order-tracking .is-complete {
-            display: block;
-            position: relative;
-            border-radius: 50%;
-            height: 30px;
-            width: 30px;
-            border: 0px solid #AFAFAF;
-            background-color: #f7be16;
-            margin: 0 auto;
-            transition: background 0.25s linear;
-            z-index: 2;
-        }
-
-        .order-tracking .is-complete:after {
-            display: block;
-            position: absolute;
-            content: '';
-            height: 14px;
-            width: 7px;
-            top: -2px;
-            bottom: 0;
-            left: 5px;
-            margin: auto 0;
-            border: 0px solid #AFAFAF;
-            border-width: 0px 2px 2px 0;
-            transform: rotate(45deg);
-            opacity: 0;
-        }
-
-        .order-tracking.completed .is-complete {
-            border-color: #27aa80;
-            background-color: #27aa80;
-        }
-
-        .order-tracking.completed .is-complete:after {
-            border-color: #fff;
-            border-width: 0px 3px 3px 0;
-            width: 7px;
-            left: 11px;
-            opacity: 1;
-        }
-
-        .order-tracking p {
-            color: #A4A4A4;
-            font-size: 16px;
-            margin-top: 8px;
-            margin-bottom: 0;
-            line-height: 20px;
-        }
-
-        .order-tracking p span {
-            font-size: 14px;
-        }
-
-        .order-tracking.completed p {
-            color: #000;
-        }
-
-        .order-tracking::before {
-            content: '';
-            display: block;
-            height: 3px;
-            width: calc(100% - 40px);
-            background-color: #f7be16;
-            top: 13px;
-            position: absolute;
-            left: calc(-50% + 20px);
-            z-index: 0;
-        }
-
-        .order-tracking:first-child:before {
-            display: none;
-        }
-
-        .order-tracking.completed:before {
-            background-color: #27aa80;
-        }
-
         /* Order List Styles */
         .order-item {
             background: #fff;
@@ -679,7 +601,7 @@
         }
 
         /* Responsive Styles */
-        @media (max-width: 768px) {
+        /* @media (max-width: 768px) {
             .order-tracking {
                 width: 100%;
                 margin-bottom: 20px;
@@ -695,134 +617,6 @@
 
             .view-details-btn {
                 width: 100%;
-            }
-        }
-
-        */
-        /* 
-        .hh-grayBox {
-    background-color: #F8F8F8;
-    margin-bottom: 20px;
-    padding: 35px;
-    margin-top: 20px;
-    border-radius: 8px;
-}
-
-.order-item {
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-.order-summary {
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
-.order-details {
-    display: none;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-top: 10px;
-}
-
-.item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.item-image {
-    width: 50px;
-    height: 50px;
-    margin-right: 10px;
-}
-
-.order-tracking {
-    text-align: center;
-    width: 33.33%;
-    position: relative;
-}
-
-.order-tracking .is-complete {
-    display: block;
-    position: relative;
-    border-radius: 50%;
-    height: 30px;
-    width: 30px;
-    border: 0 solid #AFAFAF;
-    background-color: #f7be16;
-    margin: 0 auto;
-    transition: background 0.25s linear;
-    z-index: 2;
-}
-
-.order-tracking.completed .is-complete {
-    border-color: #27aa80;
-    background-color: #27aa80;
-}
-
-.order-tracking p {
-    color: #A4A4A4;
-    font-size: 16px;
-    margin-top: 8px;
-    margin-bottom: 0;
-    line-height: 20px;
-}
-
-.order-tracking.completed p {
-    color: #000;
-}
-
-@media (max-width: 768px) {
-    .order-summary {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .order-tracking {
-        width: 100%;
-    }
-} */
-
-
-
-
-
-        /* .order-item {
-            border: 1px solid #ccc;
-            padding: 16px;
-            margin-bottom: 16px;
-            border-radius: 8px;
-        }
-
-        .items-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-
-        .item {
-            flex: 1 1 100%;
-            display: flex;
-            align-items: center;
-        }
-
-        .item-image {
-            width: 100%;
-            max-width: 80px;
-            height: auto;
-            margin-right: 16px;
-        }
-
-        @media (min-width: 768px) {
-            .item {
-                flex: 1 1 calc(33.333% - 16px);
             }
         } */
     </style>
@@ -841,30 +635,30 @@
             <!-- MOBILE MENU -->
             <ul class="menu-mobile">
                 <li class="menu-item ">
-                   <a href="/">Home</a>
+                    <a href="/">Home</a>
                 </li>
                 <li class="menu-item ">
-                   <a href="/about">About</a>
+                    <a href="/about">About</a>
                 </li>
                 <li class="menu-item ">
-                   <a href="/testimonials">Testimonials</a>
+                    <a href="/testimonials">Testimonials</a>
                 </li>
                 <li class="menu-item ">
-                   <a href="/our-menu">Our Menu</a>
+                    <a href="/our-menu">Our Menu</a>
                 </li>
                 <li class="menu-item ">
-                   <a href="/contact">Contact</a>
+                    <a href="/contact">Contact</a>
                 </li>
                 <li class="menu-item ">
-                   <a href="/signup">Sign Up</a>
+                    <a href="/signup">Sign Up</a>
                 </li>
                 <li class="menu-item ">
-                   <a href="/signin">Sign In</a>
+                    <a href="/signin">Sign In</a>
                 </li>
                 <li class="menu-item ">
-                   <a href="/cart"><i class="fas fa-cart-plus"></i></a>
+                    <a href="/cart"><i class="fas fa-cart-plus"></i></a>
                 </li>
-             </ul>
+            </ul>
             <!-- /MOBILE MENU -->
         </div>
         <!-- modal-menu-container -->
