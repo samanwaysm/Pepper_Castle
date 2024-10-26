@@ -453,6 +453,66 @@
             }
         }
 
+        /* Hamburger Button */
+        .hamburger-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #ff6600;
+            margin: 10px;
+        }
+
+        /* Sidebar default (hidden in mobile) */
+        .profile-sidebar {
+            transition: transform 0.3s ease;
+        }
+
+        /* Show sidebar in desktop */
+        @media (min-width: 768px) {
+            .hamburger-btn {
+                display: none;
+            }
+        }
+
+        /* Hamburger button visible and sidebar hidden in mobile */
+        @media (max-width: 767px) {
+            .hamburger-btn {
+                display: block;
+            }
+
+            .profile-sidebar {
+                position: fixed;
+                left: -100%;
+                top: 0;
+                width: 250px;
+                height: 100%;
+                background-color: #fff;
+                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+                z-index: 10;
+                padding-top: 60px;
+            }
+
+            /* Sidebar shown when active */
+            .profile-sidebar.active {
+                left: 0;
+            }
+
+            .profile-container {
+                flex-direction: column;
+                margin-top: 40px;
+                /* adjust for the hamburger button */
+            }
+        }
+
+        /* Adjust profile details for when sidebar is open */
+        @media (max-width: 767px) {
+            .profile-details {
+                margin-top: 20px;
+            }
+        }
+
 
 
         /* .hh-grayBox {
@@ -893,15 +953,18 @@
     </div>
 
     <div class="profile-container">
-        <div class="profile-sidebar">
-            <!-- <img src="path_to_profile_image" alt="Profile" class="profile-image" /> -->
+        <!-- Hamburger Button -->
+        <button class="hamburger-btn" onclick="toggleSidebar()">&#9776;</button>
+
+        <!-- Profile Sidebar -->
+        <div class="profile-sidebar" id="profileSidebar">
             <h2 class="profile-name">
                 <%= username %>
             </h2>
             <ul class="profile-menu">
                 <li><a href="/profile">My Account</a></li>
                 <li><a href="/manage-address">Manage Address</a></li>
-                <li><a href="/order-history" class="active">Your Orders</a></li>
+                <li><a href="/orders-list" class="active">Your Orders</a></li>
                 <li><a href="/change-password">Change Password</a></li>
                 <li><a href="/api/logout">Logout</a></li>
             </ul>
@@ -1028,6 +1091,9 @@
     <!-- JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        function toggleSidebar() {
+            document.getElementById("profileSidebar").classList.toggle("active");
+        }
         const userId = `<%= userId %>`;
         $(document).ready(function () {
             updateCartCount();
@@ -1063,9 +1129,9 @@
                 cartIcon.removeChild(existingCounter);
             }
 
-              const counter = document.createElement('span');
-         counter.classList.add('cart-counter'); // Apply the CSS class for styling
-         counter.textContent = cartItemCount;  // Use the count returned from the server  // Use the count returned from the server
+            const counter = document.createElement('span');
+            counter.classList.add('cart-counter'); // Apply the CSS class for styling
+            counter.textContent = cartItemCount;  // Use the count returned from the server  // Use the count returned from the server
 
             // Append the counter to the cart icon
             cartIcon.appendChild(counter);
@@ -1130,7 +1196,7 @@
 
 
         // document.addEventListener('DOMContentLoaded', function () {
-        //     const userId = '<%= userId %>';  // Assuming userId is passed to the front-end
+        //     const userId = '<%#= userId %>';  // Assuming userId is passed to the front-end
         //     fetchOrders(userId);
         // });
 
@@ -1266,7 +1332,7 @@
 
 
         //         document.addEventListener('DOMContentLoaded', function () {
-        //     const userId = '<%= userId %>';  // Assuming userId is passed to the front-end
+        //     const userId = '<%#= userId %>';  // Assuming userId is passed to the front-end
         //     fetchOrders(userId);
         // });
 
@@ -1427,7 +1493,7 @@
 
 
         // document.addEventListener('DOMContentLoaded', function () {
-        //     const userId = '<%= userId %>';  // Assuming userId is passed to the front-end
+        //     const userId = '<%#= userId %>';  // Assuming userId is passed to the front-end
         //     fetchOrders(userId);
         // });
 
@@ -1512,7 +1578,7 @@
 
 
         //     document.addEventListener('DOMContentLoaded', function () {
-        //     const userId = '<%= userId %>';  // Assuming userId is passed to the front-end
+        //     const userId = '<%#= userId %>';  // Assuming userId is passed to the front-end
         //     fetchOrders(userId);
         // });
 
