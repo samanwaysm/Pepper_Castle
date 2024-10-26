@@ -184,7 +184,6 @@
             margin-left: 47%;
             margin-right: 47%;
         }
-
         .brand-name {
             font-size: 24px;
             color: #fff;
@@ -199,100 +198,140 @@
     <div class="signup-container">
         <img src="/images/fav.png" alt="Pepper Castle Logo" class="logo">
         <div class="brand-name">Pepper Castle</div>
-        <form id="signupForm" method="POST" action="/api/signup" novalidate>
-            <!-- User Information -->
-            <div class="form-row">
-                <div class="form-column">
-                    <div class="form-group">
-                        <label for="username">Username:</label>
-                        <input type="text" id="username" name="username" placeholder="Enter your username" required>
-                        <p class="error-p" id="usernameError"></p>
-                    </div>
-                </div>
-                <div class="form-column">
-                    <div class="form-group">
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
-                        <p class="error-p" id="emailError"></p>
-                    </div>
-                </div>
-                <div class="form-column">
-                    <div class="form-group">
-                        <label for="phone">Phone Number:</label>
-                        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
-                        <p class="error-p" id="phoneError"></p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Address Information -->
-            <div class="form-row">
-                <div class="form-column">
-                    <div class="form-group">
-                        <label for="street">Street Address:</label>
-                        <input type="text" id="street" name="street" placeholder="Enter your street address" required>
-                        <p class="error-p" id="streetError"></p>
-                    </div>
-                </div>
-                <div class="form-column">
-                    <div class="form-group">
-                        <label for="block">Block/Apartment/Tower:</label>
-                        <input type="text" id="block" name="block" placeholder="Enter your block or tower" required>
-                        <p class="error-p" id="blockError"></p>
-                    </div>
-                </div>
-                <div class="form-column">
-                    <div class="form-group">
-                        <label for="floor">Floor/Unit Number:</label>
-                        <input type="text" id="floor" name="unitnum" placeholder="Enter your floor or unit number"
-                            required>
-                        <p class="error-p" id="floorError"></p>
-                    </div>
-                </div>
-                <div class="form-column">
-                    <div class="form-group">
-                        <label for="postal">Postal Code:</label>
-                        <input type="text" id="postal" name="postal" placeholder="Enter your postal code" required>
-                        <p class="error-p" id="postalError"></p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Password Information -->
-            <div class="form-row">
-                <div class="form-column">
-                    <div class="form-group">
-                        <label for="password">Password:</label>
-                        <div style="position: relative;">
-                            <input type="password" id="password" name="password" placeholder="Enter your password"
-                                required>
-                            <span class="toggle-password" id="togglePassword">
-                                <i class="fas fa-eye" id="eyeIcon"></i>
-                            </span>
+        <h2>Signup</h2>
+        <%# if (errors && errors.signUpError) { %>
+            <!-- <div class="alert alert-danger" role="alert">
+                <p class="error-message">
+                    <%#= errors.signUpError %>
+                </p>
+            </div> -->
+            <%# } %>
+                <form id="signupForm" method="POST" action="/api/signup" novalidate>
+                    <!-- User Information -->
+                    <div class="form-row">
+                        <div class="form-column">
+                            <div class="form-group">
+                                <label for="username">Username:</label>
+                                <input type="text" id="username" name="username" placeholder="Enter your username"
+                                    required>
+                                <% if (errors && errors.usernameError) { %>
+                                    <span class="error-p"><%= errors.usernameError %></span>
+                                <% } %>
+                                <p class="error-p" id="usernameError"></p>
+                            </div>
                         </div>
-                        <p class="error-p" id="passwordError"></p>
-                    </div>
-                </div>
-                <div class="form-column">
-                    <div class="form-group">
-                        <label for="confirmPassword">Confirm Password:</label>
-                        <div style="position: relative;">
-                            <input type="password" id="confirmPassword" name="confirmPassword"
-                                placeholder="Confirm your password" required>
-                            <span class="toggle-password" id="toggleConfirmPassword">
-                                <i class="fas fa-eye" id="confirmEyeIcon"></i>
-                            </span>
+                        <div class="form-column">
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                                <% if (errors && errors.emailError) { %>
+                                    <span class="error-p"><%= errors.emailError %></span>
+                                <% } %>
+                                <p class="error-p" id="emailError"></p>
+                            </div>
                         </div>
-                        <p class="error-p" id="confirmPasswordError"></p>
+                        <div class="form-column">
+                            <div class="form-group">
+                                <label for="phone">Phone Number:</label>
+                                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number"
+                                    required>
+                                <% if (errors && errors.phoneError) { %>
+                                    <span class="error-p"><%= errors.phoneError %></span>
+                                <% } %>
+                                <p class="error-p" id="phoneError"></p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-            <button type="submit" class="signup-btn">Signup</button>
-            <div class="already-have-account">
-                <a href="/signin">Already have an account? SignIn</a>
-            </div>
-        </form>
+                    <!-- Address Information -->
+                    <div class="form-row">
+                        <div class="form-column">
+                            <div class="form-group">
+                                <label for="street">Street Address:</label>
+                                <input type="text" id="street" name="street" placeholder="Enter your street address"
+                                    required>
+                                <% if (errors && errors.streetError) { %>
+                                    <span class="error-p"><%= errors.streetError %></span>
+                                <% } %>
+                                <p class="error-p" id="streetError"></p>
+                            </div>
+                        </div>
+                        <div class="form-column">
+                            <div class="form-group">
+                                <label for="block">Block/Apartment/Tower:</label>
+                                <input type="text" id="block" name="block" placeholder="Enter your block or tower"
+                                    required>
+                                <% if (errors && errors.blockError) { %>
+                                    <span class="error-p"><%= errors.blockError %></span>
+                                <% } %>
+                                <p class="error-p" id="blockError"></p>
+                            </div>
+                        </div>
+                        <div class="form-column">
+                            <div class="form-group">
+                                <label for="floor">Floor/Unit Number:</label>
+                                <input type="text" id="floor" name="unitnum"
+                                    placeholder="Enter your floor or unit number" required>
+                                    <% if (errors && errors.unitNumError) { %>
+                                        <span class="error-p"><%= errors.unitNumError %></span>
+                                    <% } %>
+                                <p class="error-p" id="floorError"></p>
+                            </div>
+                        </div>
+                        <div class="form-column">
+                            <div class="form-group">
+                                <label for="postal">Postal Code:</label>
+                                <input type="text" id="postal" name="postal" placeholder="Enter your postal code"
+                                    required>
+                                <% if (errors && errors.postalError) { %>
+                                    <span class="error-p"><%= errors.postalError %></span>
+                                <% } %>
+                                <p class="error-p" id="postalError"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Password Information -->
+                    <div class="form-row">
+                        <div class="form-column">
+                            <div class="form-group">
+                                <label for="password">Password:</label>
+                                <div style="position: relative;">
+                                    <input type="password" id="password" name="password"
+                                        placeholder="Enter your password" required>
+                                    <span class="toggle-password" id="togglePassword">
+                                        <i class="fas fa-eye" id="eyeIcon"></i>
+                                    </span>
+                                </div>
+                                <% if (errors && errors.passwordError) { %>
+                                    <span class="error-p"><%= errors.passwordError %></span>
+                                <% } %>
+                                <p class="error-p" id="passwordError"></p>
+                            </div>
+                        </div>
+                        <div class="form-column">
+                            <div class="form-group">
+                                <label for="confirmPassword">Confirm Password:</label>
+                                <div style="position: relative;">
+                                    <input type="password" id="confirmPassword" name="confirmPassword"
+                                        placeholder="Confirm your password" required>
+                                    <span class="toggle-password" id="toggleConfirmPassword">
+                                        <i class="fas fa-eye" id="confirmEyeIcon"></i>
+                                    </span>
+                                </div>
+                                <% if (errors && errors.confirmPasswordError) { %>
+                                    <span class="error-p"><%= errors.confirmPasswordError %></span>
+                                <% } %>
+                                <p class="error-p" id="confirmPasswordError"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="signup-btn">Signup</button>
+                    <div class="already-have-account">
+                        <a href="/signin">Already have an account? SignIn</a>
+                    </div>
+                </form>
     </div>
 
     <script>
