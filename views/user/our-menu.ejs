@@ -67,8 +67,6 @@
          text-align: center;
       }
       } */
-
-      
    </style>
 </head>
 
@@ -627,9 +625,17 @@
          const itemId = $(this).data('item-id');
          console.log("Item ID:", itemId);
 
+         // Check if userId exists
+         if (!userId) {
+            // Redirect to /signin if userId is not present
+            window.location.href = '/signin';
+            return;
+         }
+
          $.ajax({
             url: `/api/addToCart?id=${itemId}`,
             method: 'GET',
+            data: { userId: userId },
             success: function (response) {
                // alert(response.message);
                showToast(response.message, 'success');

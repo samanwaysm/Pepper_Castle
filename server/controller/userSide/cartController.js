@@ -8,7 +8,9 @@ const cartDb = require("../../model/cartSchema");
 
 exports.addToCart = async (req, res) => {
     const itemId = req.query.id;
-    const userId = req.session.userId;
+    const userId = req.query.userId;
+    console.log(userId);
+    
 
 
     if (typeof userId === "undefined") {
