@@ -910,7 +910,8 @@ exports.getOrderDetails = async (req, res) => {
 
 exports.updateOrderStatus = async (req, res) => {
   const { orderId, status } = req.body;
-
+  console.log('---------------->',orderId, status);
+  
   try {
       const order = await Order.findOneAndUpdate(
           { orderId: orderId },

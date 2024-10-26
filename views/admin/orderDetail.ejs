@@ -304,7 +304,7 @@
                     const status = container.find('select').val(); // Get the selected status from the dropdown
         
                     $.ajax({
-                        url: '/api/updateStatus',  // Make sure your route is set up for POST requests
+                        url: '/admin/updateStatus',  // Make sure your route is set up for POST requests
                         method: 'POST',
                         contentType: 'application/json',
                         data: JSON.stringify({ orderId: orderId, status: status }),

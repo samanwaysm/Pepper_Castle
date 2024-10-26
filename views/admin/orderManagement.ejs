@@ -483,7 +483,8 @@
                     const row = $(this).closest('tr');
                     const orderId = row.find('td:first').text().trim(); // Get order ID from the first column
                     const status = row.find('.status-select').val(); // Get the selected status
-
+                    console.log('----------------------',status);
+                    
                     $.ajax({
                         url: '/admin/updateStatus',
                         method: 'POST',
