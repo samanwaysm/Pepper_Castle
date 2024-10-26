@@ -184,6 +184,7 @@
             margin-left: 47%;
             margin-right: 47%;
         }
+
         .brand-name {
             font-size: 24px;
             color: #fff;
@@ -198,7 +199,6 @@
     <div class="signup-container">
         <img src="/images/fav.png" alt="Pepper Castle Logo" class="logo">
         <div class="brand-name">Pepper Castle</div>
-        <h2>Signup</h2>
         <form id="signupForm" method="POST" action="/api/signup" novalidate>
             <!-- User Information -->
             <div class="form-row">
@@ -244,7 +244,8 @@
                 <div class="form-column">
                     <div class="form-group">
                         <label for="floor">Floor/Unit Number:</label>
-                        <input type="text" id="floor" name="unitnum" placeholder="Enter your floor or unit number" required>
+                        <input type="text" id="floor" name="unitnum" placeholder="Enter your floor or unit number"
+                            required>
                         <p class="error-p" id="floorError"></p>
                     </div>
                 </div>
@@ -263,7 +264,8 @@
                     <div class="form-group">
                         <label for="password">Password:</label>
                         <div style="position: relative;">
-                            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                            <input type="password" id="password" name="password" placeholder="Enter your password"
+                                required>
                             <span class="toggle-password" id="togglePassword">
                                 <i class="fas fa-eye" id="eyeIcon"></i>
                             </span>
@@ -275,7 +277,8 @@
                     <div class="form-group">
                         <label for="confirmPassword">Confirm Password:</label>
                         <div style="position: relative;">
-                            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+                            <input type="password" id="confirmPassword" name="confirmPassword"
+                                placeholder="Confirm your password" required>
                             <span class="toggle-password" id="toggleConfirmPassword">
                                 <i class="fas fa-eye" id="confirmEyeIcon"></i>
                             </span>
