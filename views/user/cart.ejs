@@ -354,56 +354,56 @@
     <script>
 
 
-        window.onload = getLocation;
+        // window.onload = getLocation;
 
-        // Function to get user's location
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(success, error);
-            } else {
-                navigator.geolocation.getCurrentPosition(success, error);
-            }
-        }
+        // // Function to get user's location
+        // function getLocation() {
+        //     if (navigator.geolocation) {
+        //         navigator.geolocation.getCurrentPosition(success, error);
+        //     } else {
+        //         navigator.geolocation.getCurrentPosition(success, error);
+        //     }
+        // }
 
-        // Success callback
-        function success(position) {
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-            console.log(latitude, longitude);
+        // // Success callback
+        // function success(position) {
+        //     const latitude = position.coords.latitude;
+        //     const longitude = position.coords.longitude;
+        //     console.log(latitude, longitude);
 
-            $.ajax({
-                url: '/api/getLocationDetails',
-                method: 'POST',
-                data: { latitude, longitude },
-                success: function (response) {
-                    console.log("", response);
-                },
-                error: function () {
-                    console.error("");
-                }
-            });
+        //     $.ajax({
+        //         url: '/api/getLocationDetails',
+        //         method: 'POST',
+        //         data: { latitude, longitude },
+        //         success: function (response) {
+        //             console.log("", response);
+        //         },
+        //         error: function () {
+        //             console.error("");
+        //         }
+        //     });
 
-            // Optionally, you could fetch additional details (like pincode) using the Google Maps API here
-            // Example: fetch('/api/get-pincode', { method: 'POST', body: JSON.stringify({ latitude, longitude }), headers: { 'Content-Type': 'application/json' }});
-        }
+        //     // Optionally, you could fetch additional details (like pincode) using the Google Maps API here
+        //     // Example: fetch('/api/get-pincode', { method: 'POST', body: JSON.stringify({ latitude, longitude }), headers: { 'Content-Type': 'application/json' }});
+        // }
 
-        // Error callback
-        function error(err) {
-            switch (err.code) {
-                case err.PERMISSION_DENIED:
-                    document.getElementById('locationDisplay').textContent = "User denied the request for Geolocation.";
-                    break;
-                case err.POSITION_UNAVAILABLE:
-                    document.getElementById('locationDisplay').textContent = "Location information is unavailable.";
-                    break;
-                case err.TIMEOUT:
-                    document.getElementById('locationDisplay').textContent = "The request to get user location timed out.";
-                    break;
-                case err.UNKNOWN_ERROR:
-                    document.getElementById('locationDisplay').textContent = "An unknown error occurred.";
-                    break;
-            }
-        }
+        // // Error callback
+        // function error(err) {
+        //     switch (err.code) {
+        //         case err.PERMISSION_DENIED:
+        //             document.getElementById('locationDisplay').textContent = "User denied the request for Geolocation.";
+        //             break;
+        //         case err.POSITION_UNAVAILABLE:
+        //             document.getElementById('locationDisplay').textContent = "Location information is unavailable.";
+        //             break;
+        //         case err.TIMEOUT:
+        //             document.getElementById('locationDisplay').textContent = "The request to get user location timed out.";
+        //             break;
+        //         case err.UNKNOWN_ERROR:
+        //             document.getElementById('locationDisplay').textContent = "An unknown error occurred.";
+        //             break;
+        //     }
+        // }
 
 
         const userId = '<%= userId %>';
