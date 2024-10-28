@@ -16,8 +16,13 @@ exports.createOrder = async (req, res, next) => {
         
         const addressData = await getAddress(userId, addressId)
         const address = addressData[0].address
-        const {latitude, longitude, distanceInKilometers} = req.session
+        // const {latitude, longitude, distanceInKilometers} = req.session
         
+        const latitude = 11;
+        const longitude = 15;
+        const distanceInKilometers = 4;
+
+
         const cartItems = await getCartItems(userId)
 
         let totalAmount = 0;
