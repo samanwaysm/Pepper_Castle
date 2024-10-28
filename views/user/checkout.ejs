@@ -216,7 +216,9 @@
                 <h2>Payment</h2>
                 <label><input type="radio" name="paymentMethod" value="online"> Online Payment</label>
                 <label><input type="radio" name="paymentMethod" value="cod"> Cash on Delivery</label>
-                <button type="submit" class="place-order-btn" onclick="checkDeliveryArea()">Place Your Order</button>
+                <!-- <button type="submit" class="place-order-btn" onclick="checkDeliveryArea()">Place Your Order</button> -->
+                <button type="submit" class="place-order-btn" onclick="submitOrder()">Place Your Order</button>
+                
             </div>
         </div>
     </div>
@@ -451,36 +453,36 @@
         }
 
         // Function to check delivery area before submitting order
-        function checkDeliveryArea() {
-            const latitude = sessionStorage.getItem('latitude');
-            const longitude = sessionStorage.getItem('longitude');
+        // function checkDeliveryArea() {
+        //     const latitude = sessionStorage.getItem('latitude');
+        //     const longitude = sessionStorage.getItem('longitude');
 
-            if (latitude && longitude) {
-                $.ajax({
-                    url: '/api/getLocationDetails',
-                    method: 'POST',
-                    data: { latitude, longitude },
-                    success: function (response) {
-                        console.log(response);
+        //     if (latitude && longitude) {
+        //         $.ajax({
+        //             url: '/api/getLocationDetails',
+        //             method: 'POST',
+        //             data: { latitude, longitude },
+        //             success: function (response) {
+        //                 console.log(response);
                         
-                        if (response) {
-                            console.log(response);
+        //                 if (response) {
+        //                     console.log(response);
                             
-                            submitOrder(); // Call submitOrder only if delivery is available
-                        } else {
-                            console.log(response);
-                            // alert('Delivery is not available in your area.');
-                            submitOrder();
-                        }
-                    },
-                    error: function () {
-                        console.error("Error while checking delivery area");
-                    }
-                });
-            } else {
-                alert('Unable to retrieve your location. Please enable location services.');
-            }
-        }
+        //                     submitOrder(); // Call submitOrder only if delivery is available
+        //                 } else {
+        //                     console.log(response);
+        //                     // alert('Delivery is not available in your area.');
+        //                     submitOrder();
+        //                 }
+        //             },
+        //             error: function () {
+        //                 console.error("Error while checking delivery area");
+        //             }
+        //         });
+        //     } else {
+        //         alert('Unable to retrieve your location. Please enable location services.');
+        //     }
+        // }
 
         $(document).ready(function () {
             updateCartCount();

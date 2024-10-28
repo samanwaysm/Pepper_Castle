@@ -27,6 +27,23 @@
 		new WOW().init();
 	})(jQuery);
 
+	(function ($) {
+		"use strict";
+		
+		var loader = function () {
+			setTimeout(function () {
+				if ($('.ninzio-page-loading').length > 0) {
+					$('.ninzio-page-loading').fadeOut('slow');
+				}
+			}, 500); // Adjust delay as needed
+		};
+		loader();
+	
+		// Initiate wow.js if needed
+		new WOW().init();
+	})(jQuery);
+	
+
 function showResponseContact(responseText, statusText)  { 
 	if (statusText == 'success') {
 		jQuery('#contact-holder-home').html('<h5>Message sent</h5>'); 
