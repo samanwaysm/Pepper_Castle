@@ -38,7 +38,6 @@ exports.showDefaultAddress = async (req, res, next) => {
         //     return res.status(404).json({ message: 'Default address not found.' });
         // }
         const data = result[0] || null;
-        console.log(data);
         
         
         res.status(200).json(data);
@@ -183,7 +182,6 @@ exports.deleteAddress = async (req, res, next) => {
 
 exports.getAddress = async (req, res) => {
     const { userId, addressId } = req.query;
-    console.log(req.query);
 
     try {
         const user = await addressDb.findOne({ userId });
@@ -198,7 +196,6 @@ exports.getAddress = async (req, res) => {
         if (!address) {
             return res.status(404).json({ message: 'Address not found' });
         }
-        console.log(address);
         res.status(200).json(address);
     } catch (error) {
         console.error('Error fetching address:', error);
@@ -227,7 +224,6 @@ exports.updateAddress = async (req, res) => {
                 }
             }
         );
-        console.log('-------->--------------55555555555555555555555555555555555555555---');
         const userAddresses = await addressDb.findOne({ userId });
         userAddresses.defaultAddress = addressId;
         await userAddresses.save();
@@ -244,13 +240,10 @@ exports.updateAddress = async (req, res) => {
 };
 
 exports.showAddressManagement = async (req, res) => {
-    console.log('wqqqqqq-------->wqqqqqqqqqqqqqq-----------------');
     const userId = req.query.userId;
-    // console.log(userId);
     
     try {
         const userAddresses = await addressDb.findOne({ "userId": userId }).populate('defaultAddress');
-        // console.log(userAddresses);
         
         if (userAddresses && userAddresses.address) {
             const addressList = userAddresses.address.map(address => ({
@@ -264,7 +257,6 @@ exports.showAddressManagement = async (req, res) => {
                 structuredAddress: address.structuredAddress,
                 isDefault: String(userAddresses.defaultAddress._id) === String(address._id)
             }));
-            // console.log(addressList);
             
             res.status(200).json(addressList);
         } else {

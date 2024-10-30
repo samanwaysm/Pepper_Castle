@@ -7,7 +7,7 @@ exports.homeCategoryShow = async (req, res) => {
     // console.log(categoryList);
     // res.send(categoryList);
     const categoryNames = categoryList.map(item => item.category.toLowerCase());
-    console.log(categoryNames);
+    // console.log(categoryNames);
     res.send(categoryNames);
 };
 
@@ -105,7 +105,7 @@ exports.homeCategoryShow = async (req, res) => {
 exports.ourMenuList = async (req, res) => {
     try {
         // Convert the category from query string to lowercase for case-insensitive comparison
-        console.log('Fetching menu for category:', req.query.category); // Debugging - Log category
+        // console.log('Fetching menu for category:', req.query.category); // Debugging - Log category
         const selectedCategory = req.query.category || 'Starters' // Default to 'starters'
 
         // Fetch categories where status is true

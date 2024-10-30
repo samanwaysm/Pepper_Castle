@@ -16,7 +16,6 @@ exports.webhook = async (req, res) => {
     // Stripe recommends disabling the body parser for this route and getting the raw body
     try {
         const payload =  JSON.stringify(req.body, null, 2);
-        console.log('--------------------->',payload);
         
         const sig = req.headers['stripe-signature'];
         const header = stripe.webhooks.generateTestHeaderString({
@@ -100,7 +99,7 @@ const handleOrderUpdate = async (orderId, userId, status, payment_intent = null)
             { userId: userId }, 
             { $set: { cartItems: [] } }
         );
-        console.log(`Cart cleared for User ID: ${userId}`);
+        // console.log(`Cart cleared for User ID: ${userId}`);
     }
 };
 

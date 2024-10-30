@@ -431,7 +431,7 @@ const signupOtpSendMail = async (req, res) => {
 const signupUserOtpVerify = async (req, res) => {
   try {
     const data = await OtpDb.findOne({ _id: req.session.signupOtpId });
-    console.log(data, req.body.otp);
+    // console.log(data, req.body.otp);
     
 
     if (!data) {
@@ -823,7 +823,6 @@ const forgotuserOtpVerify = async (req, res) => {
 };
 
 exports.forgotOtp = async (req, res) => {
-  console.log('body:', req.body);
   req.session.user = req.body.email;
 
   if (req.body.email == "") {
@@ -947,7 +946,7 @@ exports.signOut = async (req, res) => {
 
 exports.getLocationDetails = async (req, res) => {
   const { latitude, longitude } = req.body
-  console.log(latitude, longitude);
+  // console.log(latitude, longitude);
   req.session.latitude = latitude;
   req.session.longitude = longitude;
   const deliveryLocation = { latitude: 11.873567564458085, longitude: 75.38882081116785 };
@@ -960,10 +959,10 @@ exports.getLocationDetails = async (req, res) => {
   const distanceInKilometers = distanceInMeters / 1000;
 
   const deliveryRadius = 10;
-  console.log(distanceInKilometers);
+  // console.log(distanceInKilometers);
 
   const isInDeliveryRange = distanceInKilometers <= deliveryRadius;
-  console.log(isInDeliveryRange);
+  // console.log(isInDeliveryRange);
   req.session.distanceInKilometers = distanceInKilometers,
     // Send response with delivery range status and user's latitude and longitude
     res.send(isInDeliveryRange);
@@ -1214,7 +1213,7 @@ exports.changeProfile = async (req, res) => {
 
 exports.getGoogleMaplocation = async (req, res) => {
   const { pincode } = req.body;
-  console.log(pincode);
+  // console.log(pincode);
   
   if (!pincode) {
     return res.status(400).json({ message: 'Pincode is required' });
@@ -1228,7 +1227,7 @@ exports.getGoogleMaplocation = async (req, res) => {
     
     const response = await axios.get(geocodeUrl);
     const { data } = response;
-    console.log(response.data);
+    // console.log(response.data);
     
 
     if (data.status !== 'OK' || !data.results.length) {

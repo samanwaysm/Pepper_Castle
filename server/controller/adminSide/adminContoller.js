@@ -209,8 +209,6 @@ exports.searchCategories = async (req, res) => {
         { category: { $regex: searchQuery, $options: 'i' } } // Case-insensitive search
       ]
     });
-
-    console.log(categories);
     
     res.status(200).json({
       success: true,
@@ -910,7 +908,6 @@ exports.getOrderDetails = async (req, res) => {
 
 exports.updateOrderStatus = async (req, res) => {
   const { orderId, status } = req.body;
-  console.log('---------------->',orderId, status);
   
   try {
       const order = await Order.findOneAndUpdate(
@@ -1024,7 +1021,6 @@ const refundPayment = async (paymentIntentId) => {
   exports.updateTableBooking = async (req, res) => {
     const bookingId = req.query.id;
     const status = req.body.status;
-    console.log(req);
     
     try {
         // Find the booking by ID

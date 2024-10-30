@@ -64,7 +64,7 @@ exports.createOrder = async (req, res, next) => {
         });
         
         const savedOrder = await newOrder.save();
-        console.log(req.headers.origin);
+        // console.log(req.headers.origin);
         
 
         const orderIdStr = savedOrder._id ? savedOrder._id.toString() : null;

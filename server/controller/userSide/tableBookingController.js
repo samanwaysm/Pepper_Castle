@@ -2,7 +2,7 @@ const tableDb = require("../../model/tableBookingSchema");
 
 exports.bookTable = async (req, res) => {
     const { name, email, phone, message } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
     const errors = {};
 
     // Server-side validation
