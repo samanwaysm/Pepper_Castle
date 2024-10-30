@@ -200,6 +200,18 @@ exports.forgotPassword = (req, res, next) => {
     })
 }
 
+exports.signupOtpVerification = (req, res, next) => {
+    const { rTime,err } = req.session
+    delete req.session.err
+    res.render("user/signup-otp-verification",{rTime, err}, (err, html) => {
+        if (err) {
+            console.log(err);
+        }
+        res.send(html)
+    })
+}
+
+
 exports.otpVerification = (req, res, next) => {
     const { rTime,err } = req.session
     delete req.session.err
@@ -210,6 +222,7 @@ exports.otpVerification = (req, res, next) => {
         res.send(html)
     })
 }
+
 
 exports.resetPassword = (req, res, next) => {
     const { errors } = req.session

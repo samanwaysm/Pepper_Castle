@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/images/fav.png" sizes="32x32" />
-    <title>Login Page</title>
+    <title>SignUp Page</title>
     <style>
         * {
             box-sizing: border-box;
@@ -111,7 +111,7 @@
 <body>
     <div class="login-container">
         <h2>Verify User</h2>
-        <form id="loginForm" method="POST" action="/api/otpverification">
+        <form id="loginForm" method="POST" action="/api/signupOtpVerification">
             <div class="form-group">
                 <label for="otp">OTP:</label>
                 <input type="number" id="otp" name="otp" placeholder="Enter OTP" required>
@@ -121,10 +121,10 @@
                 <label class="timeStamp d-block"><span class="seconds">
                     <%= rTime?rTime:'60' %>
                 </span> seconds remaining</label><br>
-                <a class="text-decoration-none" href="/api/forgotOtpResend"><button class="btn resendbtn" type="button" hidden>Resend OTP</button></a>
+                <a class="text-decoration-none" href="/api/signupOtpResend"><button class="btn resendbtn" type="button" hidden>Resend OTP</button></a>
             </div>
 
-            <button type="submit" class="login-btn">Continue</button>
+            <button type="submit" class="login-btn">Verify</button>
             <!-- <div class="forgot-password">
                 <a href="#">Forgot Password?</a>
             </div> -->

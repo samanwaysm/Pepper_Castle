@@ -287,54 +287,69 @@ exports.signUp = async (req, res) => {
     }
 
     // Hash password before saving
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create new user
-    const newUser = new User({
+    // const newUser = new User({
+    //   username,
+    //   email,
+    //   password: hashedPassword,
+    //   phone,
+    // });
+
+    // await newUser.save();
+
+    // // Construct the structured address and save to address database
+    // const structuredAddress = `${username}, ${phone}, ${street}, ${block}, ${unitnum}, ${postal}`;
+
+    // const newAddress = new AddressDb({
+    //   userId: newUser._id,
+    //   address: [{
+    //     _id: new mongoose.Types.ObjectId(),
+    //     username,
+    //     phone,
+    //     street,
+    //     block,
+    //     unitnum,
+    //     postal,
+    //     structuredAddress
+    //   }],
+    //   defaultAddress: null
+    // });
+
+    // const savedAddress = await newAddress.save();
+
+    // const addressId = savedAddress.address[0]._id;
+    // await AddressDb.findByIdAndUpdate(
+    //   savedAddress._id,
+    //   { defaultAddress: addressId },
+    //   { new: true }
+    // );
+
+    // Set session details
+    // req.session.username = newUser.username;
+    // req.session.email = newUser.email;
+    // req.session.userId = newUser._id;
+    // req.session.isUserAuthenticated = true;
+    // req.session.isUserAuth = true;
+
+    // Redirect to the homepage after successful signup
+    // res.redirect('/');
+
+    req.session.userData = {
       username,
       email,
-      password: hashedPassword,
+      password,  // Consider hashing the password here or during verification to enhance security
       phone,
-    });
-
-    await newUser.save();
-
-    // Construct the structured address and save to address database
-    const structuredAddress = `${username}, ${phone}, ${street}, ${block}, ${unitnum}, ${postal}`;
-
-    const newAddress = new AddressDb({
-      userId: newUser._id,
-      address: [{
-        _id: new mongoose.Types.ObjectId(),
-        username,
-        phone,
+      address: {
         street,
         block,
         unitnum,
-        postal,
-        structuredAddress
-      }],
-      defaultAddress: null
-    });
+        postal
+      }
+    };
 
-    const savedAddress = await newAddress.save();
-
-    const addressId = savedAddress.address[0]._id;
-    await AddressDb.findByIdAndUpdate(
-      savedAddress._id,
-      { defaultAddress: addressId },
-      { new: true }
-    );
-
-    // Set session details
-    req.session.username = newUser.username;
-    req.session.email = newUser.email;
-    req.session.userId = newUser._id;
-    req.session.isUserAuthenticated = true;
-    req.session.isUserAuth = true;
-
-    // Redirect to the homepage after successful signup
-    res.redirect('/');
+    res.redirect('/api/signupgenerateotp');
   } catch (err) {
     console.error(err);
     req.session.errors = { signUpError: "An error occurred during signup." };
@@ -342,6 +357,204 @@ exports.signUp = async (req, res) => {
   }
 };
 
+
+exports.verifySignupUserOTP = async (req, res) => {
+
+  req.session.username = req.session.userData.username
+  req.session.email = req.session.userData.email;
+  signupOtpSendMail(req, res);
+};
+
+
+const signupOtpSendMail = async (req, res) => {
+  const otp = otpGenrator();  // Generate new OTP
+  const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+          user: process.env.AUTH_EMAIL,
+          pass: process.env.AUTH_PASS,
+      },
+  });
+
+  const MailGenerator = new Mailgen({
+      theme: "default",  
+      product: {
+          name: "Pepper Castle",
+          link: "https://peppercastle.com/",
+      },
+  });
+
+  const response = {
+      body: {
+          name: req.session.username,
+          intro: `Your OTP for Pepper Castle verification is:`,
+          table: {
+              data: [
+                  { OTP: `<strong style="font-size: 24px;color:#000">${otp}</strong>` },
+              ],
+          },
+          outro: "If you did not request this OTP, please ignore this email.",
+          signature: "Thank you for choosing Pepper Castle!",
+      },
+  };
+
+  const mail = MailGenerator.generate(response);
+  const message = {
+      from: process.env.AUTH_EMAIL,
+      to: req.session.email,
+      subject: "Pepper Castle OTP Verification",
+      html: mail,
+  };
+
+  try {
+      // Save new OTP and expiration time in the database
+      const newOtp = new OtpDb({
+          email: req.session.email,
+          otp: otp,
+          createdAt: Date.now(),
+          expiresAt: Date.now() + 60000,  // OTP expires in 60 seconds
+      });
+      const data = await newOtp.save();
+      
+      req.session.signupOtpId = data._id;
+      req.session.rTime = 60;  // Reset countdown time to 60 seconds
+      res.status(200).redirect("/signup-otp-verification");
+      
+      await transporter.sendMail(message);
+  } catch (error) {
+      console.log(error);
+  }
+};
+
+
+
+const signupUserOtpVerify = async (req, res) => {
+  try {
+    const data = await OtpDb.findOne({ _id: req.session.signupOtpId });
+    console.log(data, req.body.otp);
+    
+
+    if (!data) {
+      req.session.err = "OTP Expired";
+      req.session.rTime = "0";
+      return res.status(401).redirect("/signup-otp-verification");
+    }
+
+    if (data.expiresAt < Date.now()) {
+      req.session.err = "OTP Expired";
+      req.session.rTime = "0";
+      deleteOtpFromdb(req.session.signupOtpId);
+      return res.status(401).redirect("/signup-otp-verification");
+    }
+
+    if (data.otp != req.body.otp) {
+      req.session.err = "Wrong OTP";
+      req.session.rTime = req.body.rTime;
+      return res.status(401).redirect("/signup-otp-verification");
+    }
+
+    return true;
+  } catch (err) {
+    console.log("Function error", err);
+    res.status(500).send("Error while quering data err:");
+  }
+};
+
+
+exports.signupOtpVerification = async (req, res) => {
+  try {
+      // Check if OTP field is provided
+    if (!req.body.otp) {
+      req.session.err = "This field is required";
+      return res.status(200).redirect("/signup-otp-verification");
+    }
+
+    // Verify the OTP
+    const response = await signupUserOtpVerify(req, res);
+
+    if (response) {
+      // Delete OTP from database after successful verification
+      deleteOtpFromdb(req.session.signupOtpResend);
+
+      // Retrieve user data from the session
+      const userData = req.session.userData;
+
+      // Hash the password
+      const hashedPassword = await bcrypt.hash(userData.password, 10);
+
+      // Save the new user to the database
+      const newUser = new User({
+        username: userData.username,
+        email: userData.email,
+        password: hashedPassword,
+        phone: userData.phone
+      });
+
+      await newUser.save();
+
+      // Save address details to the AddressDb
+      const structuredAddress = `${userData.username}, ${userData.phone}, ${userData.address.street}, ${userData.address.block}, ${userData.address.unitnum}, ${userData.address.postal}`;
+
+      const newAddress = new AddressDb({
+        userId: newUser._id,
+        address: [{
+          _id: new mongoose.Types.ObjectId(),
+          username: userData.username,
+          phone: userData.phone,
+          street: userData.address.street,
+          block: userData.address.block,
+          unitnum: userData.address.unitnum,
+          postal: userData.address.postal,
+          structuredAddress
+        }],
+        defaultAddress: null
+      });
+
+      const savedAddress = await newAddress.save();
+
+      // Set the saved address as the default address
+      const addressId = savedAddress.address[0]._id;
+      await AddressDb.findByIdAndUpdate(
+        savedAddress._id,
+        { defaultAddress: addressId },
+        { new: true }
+      );
+
+      // Set session details for logged-in user
+      req.session.username = newUser.username;
+      req.session.email = newUser.email;
+      req.session.userId = newUser._id;
+      req.session.isUserAuthenticated = true;
+      req.session.isUserAuth = true;
+
+      // Clear user data from the session
+      delete req.session.userData;
+
+      // Redirect to the homepage after successful signup
+      res.redirect('/');
+    }
+  } catch (err) {
+      console.log("Internal error", err);
+      res.status(500).send("Error while querying data");
+  }
+};
+
+
+exports.signupOtpResend = async (req, res) => {
+  try {
+      // Delete previous OTP from database
+      deleteOtpFromdb(req.session.signupOtpId);
+      
+      // Resend a new OTP and restart countdown
+      signupOtpSendMail(req, res);
+
+      // Clear session errors and reset countdown time
+      delete req.session.err;
+      req.session.rTime = 60;  // Reset countdown to 60 seconds
+  } catch (err) {
+      console.log("Resend Mail error:", err);
+  }
+};
 
 
 exports.signIn = async (req, res) => {
@@ -639,7 +852,7 @@ exports.forgototpverification = async (req, res) => {
       const response = await forgotuserOtpVerify(req, res);
 
       if (response) {
-          deleteOtpFromdb(req.session.forgotOtpResend);  // Delete used OTP from database
+          deleteOtpFromdb(req.session.forgototpId);  // Delete used OTP from database
           req.session.verifyChangePassPage = true;
           res.status(200).redirect("/reset-password");
       }
@@ -653,7 +866,7 @@ exports.forgototpverification = async (req, res) => {
 exports.forgotOtpResend = async (req, res) => {
   try {
       // Delete previous OTP from database
-      deleteOtpFromdb(req.session.forgotOtpResend);
+      deleteOtpFromdb(req.session.forgototpId);
       
       // Resend a new OTP and restart countdown
       forgotOtpSendOtpMail(req, res);

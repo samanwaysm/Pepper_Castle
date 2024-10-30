@@ -21,6 +21,7 @@ const tableBookingController = require('../controller/userSide/tableBookingContr
 
 route.get('/signin',isUserNotAuthenticated,services.signin)
 route.get('/signup',isUserNotAuthenticated,services.signUp)
+route.get('/signup-otp-verification',isUserNotAuthenticated,services.signupOtpVerification)
 route.get('/forgot-password',isUserNotAuthenticated,services.forgotPassword)
 route.get('/otp-verification',isUserNotAuthenticated,services.otpVerification)
 route.get('/reset-password',isUserNotAuthenticated,services.resetPassword)
@@ -45,6 +46,12 @@ route.post('/api/signup',controller.signUp)   // Signup
 route.post('/api/signin',controller.signIn)   // Login 
 
 route.get('/api/logout',controller.signOut)   // Logout
+
+route.post('/api/signupOtpVerification',controller.signupOtpVerification)
+
+route.get('/api/signupgenerateotp',controller.verifySignupUserOTP)
+route.get('/api/signupOtpResend',controller.signupOtpResend)
+
 
 route.post('/api/generateotp',controller.forgotOtp)
 route.post('/api/otpverification',controller.forgototpverification)
