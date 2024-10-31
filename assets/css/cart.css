@@ -299,7 +299,7 @@
         justify-content: space-between; /* Space between elements */
         margin-top: 10px; /* Space above total price */
         font-weight: bold; /* Bold for emphasis */
-        color: #fc5000; /* Highlight price color */
+        /* color: #fc5000; */
     }
 
     .delete-icon {
