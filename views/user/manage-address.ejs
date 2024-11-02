@@ -670,6 +670,12 @@
                 margin-top: 20px;
             }
         }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 1px;
+        }
     </style>
 
 </head>
@@ -686,30 +692,30 @@
             <!-- MOBILE MENU -->
             <ul class="menu-mobile">
                 <li class="menu-item ">
-                   <a href="/">Home</a>
+                    <a href="/">Home</a>
                 </li>
                 <li class="menu-item ">
-                   <a href="/about">About</a>
+                    <a href="/about">About</a>
                 </li>
                 <li class="menu-item ">
-                   <a href="/testimonials">Testimonials</a>
+                    <a href="/testimonials">Testimonials</a>
                 </li>
                 <li class="menu-item ">
-                   <a href="/our-menu">Our Menu</a>
+                    <a href="/our-menu">Our Menu</a>
                 </li>
                 <li class="menu-item ">
-                   <a href="/contact">Contact</a>
+                    <a href="/contact">Contact</a>
                 </li>
                 <li class="menu-item ">
-                   <a href="/signup">Sign Up</a>
+                    <a href="/signup">Sign Up</a>
                 </li>
                 <li class="menu-item ">
-                   <a href="/signin">Sign In</a>
+                    <a href="/signin">Sign In</a>
                 </li>
                 <li class="menu-item ">
-                   <a href="/cart"><i class="fas fa-cart-plus"></i></a>
+                    <a href="/cart"><i class="fas fa-cart-plus"></i></a>
                 </li>
-             </ul>
+            </ul>
             <!-- /MOBILE MENU -->
         </div>
         <!-- modal-menu-container -->
@@ -891,10 +897,12 @@
                 <div class="form-row">
                     <label for="addApartment">Block</label>
                     <input type="text" id="block" name="block">
+                    <span class="error-message" id="blockError"></span>
                 </div>
                 <div class="form-row">
                     <label for="addUnit">Unit</label>
                     <input type="text" id="unitnum" name="unitnum">
+                    <span class="error-message" id="unitError"></span>
                 </div>
                 <div class="form-row">
                     <label for="addPostalCode">Postal Code</label>
@@ -914,7 +922,49 @@
 
 
     <!-- Edit Address Modal -->
+
     <div id="editAddressModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('editAddressModal')">&times;</span>
+            <h4>Edit Address</h4>
+            <form id="editAddressForm" class="modal-form">
+                <input type="hidden" id="editAddressId">
+                <div class="form-row">
+                    <label for="editUsername">Username</label>
+                    <input type="text" id="editUsername" required>
+                    <span id="editusernameError" class="error-message"></span>
+                </div>
+                <div class="form-row">
+                    <label for="editPhone">Phone</label>
+                    <input type="text" id="editPhone" required>
+                    <span id="editphoneError" class="error-message"></span>
+                </div>
+                <div class="form-row">
+                    <label for="editStreet">Street</label>
+                    <input type="text" id="editStreet" required>
+                    <span id="editstreetError" class="error-message"></span>
+                </div>
+                <div class="form-row">
+                    <label for="editBlock">Block</label>
+                    <input type="text" id="editBlock">
+                    <span id="editblockError" class="error-message"></span>
+                </div>
+                <div class="form-row">
+                    <label for="editUnit">Unit</label>
+                    <input type="text" id="editUnitNum">
+                    <span id="editunitError" class="error-message"></span>
+                </div>
+                <div class="form-row">
+                    <label for="editPostalCode">Postal Code</label>
+                    <input type="text" id="editPostal" required>
+                    <span id="editpostalError" class="error-message"></span>
+                </div>
+                <button type="submit">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- <div id="editAddressModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('editAddressModal')">&times;</span>
             <h4>Edit Address</h4>
@@ -944,19 +994,10 @@
                     <label for="editPostalCode">Postal Code</label>
                     <input type="text" id="editPostal" required>
                 </div>
-                <!-- <div class="d-flex align-items-center ">
-                    <label class="add-def-lbl" for="addIsDefault">Set as Default</label>
-                    <input type="checkbox" id="addIsDefault" name="addIsDefault" class="checkbox-cls">
-                </div> -->
-                <!-- <div class="form-row">
-                    <label for="editIsDefault">Set as Default</label>
-                    <input type="checkbox" id="editIsDefault">
-                </div> -->
-
                 <button type="submit">Save Changes</button>
             </form>
         </div>
-    </div>
+    </div> -->
 
 
     <!-- <div class="info-container">
@@ -1091,70 +1132,87 @@
         }
 
         // Add an event listener to the form submission
-        document.getElementById('addAddressForm').addEventListener('submit', function (event) {
-            // Prevent form submission to allow validation
-            event.preventDefault();
-            validateForm();
-        });
+        // document.getElementById('addAddressForm').addEventListener('submit', function (event) {
+        //     // Prevent form submission to allow validation
+        //     event.preventDefault();
+        //     validateForm();
+        // });
 
-        function validateForm() {
-            // Get form field values
-            const username = document.getElementById('username').value.trim();
-            const phone = document.getElementById('phone').value.trim();
-            const street = document.getElementById('street').value.trim();
-            const postal = document.getElementById('postal').value.trim();
+        // function validateForm() {
+        //     // Get form field values
+        //     const username = document.getElementById('username').value.trim();
+        //     const phone = document.getElementById('phone').value.trim();
+        //     const block = document.getElementById('block').value.trim();
+        //     const unit = document.getElementById('unitnum').value.trim();
+        //     const street = document.getElementById('street').value.trim();
+        //     const postal = document.getElementById('postal').value.trim();
 
-            // Error message elements
-            const usernameError = document.getElementById('usernameError');
-            const phoneError = document.getElementById('phoneError');
-            const streetError = document.getElementById('streetError');
-            const postalError = document.getElementById('postalError');
+        //     // Error message elements
+        //     const usernameError = document.getElementById('usernameError');
+        //     const phoneError = document.getElementById('phoneError');
+        //     const blockError = document.getElementById('blockError');
+        //     const unitError = document.getElementById('unitError');
+        //     const streetError = document.getElementById('streetError');
+        //     const postalError = document.getElementById('postalError');
 
-            // Clear previous error messages
-            usernameError.textContent = '';
-            phoneError.textContent = '';
-            streetError.textContent = '';
-            postalError.textContent = '';
+        //     // Clear previous error messages
+        //     usernameError.textContent = '';
+        //     phoneError.textContent = '';
+        //     blockError.textContent = '';
+        //     unitError.textContent = '';
+        //     streetError.textContent = '';
+        //     postalError.textContent = '';
 
-            let isValid = true;
+        //     let isValid = true;
 
-            // Username validation (required)
-            if (!username) {
-                usernameError.textContent = 'Username is required.';
-                isValid = false;
-            }
+        //     // Username validation (required)
+        //     if (!username) {
+        //         usernameError.textContent = 'Username is required.';
+        //         isValid = false;
+        //     }
 
-            // Phone number validation (required and should be digits only, min length 10)
-            const phonePattern = /^[0-9]{10}$/;
-            if (!phone) {
-                phoneError.textContent = 'Phone number is required.';
-                isValid = false;
-            } else if (!phonePattern.test(phone)) {
-                phoneError.textContent = 'Please enter a valid 10-digit phone number.';
-                isValid = false;
-            }
+        //     // Phone number validation (required and should be digits only, min length 10)
+        //     const phonePattern = /^[0-9]{10}$/;
+        //     if (!phone) {
+        //         phoneError.textContent = 'Phone number is required.';
+        //         isValid = false;
+        //     } else if (!phonePattern.test(phone)) {
+        //         phoneError.textContent = 'Please enter a valid 10-digit phone number.';
+        //         isValid = false;
+        //     }
 
-            // Street validation (required)
-            if (!street) {
-                streetError.textContent = 'Street is required.';
-                isValid = false;
-            }
+        //     if (!block) {
+        //         blockError.textContent = 'Block is required.';
+        //         isValid = false;
+        //     }
 
-            // Postal code validation (required, digits only, min length 5)
-            const postalPattern = /^[0-9]{5}$/;
-            if (!postal) {
-                postalError.textContent = 'Postal code is required.';
-                isValid = false;
-            } else if (!postalPattern.test(postal)) {
-                postalError.textContent = 'Please enter a valid 5-digit postal code.';
-                isValid = false;
-            }
+        //     if (!unit) {
+        //         unitError.textContent = 'Unit num is required.';
+        //         isValid = false;
+        //     }
 
-            // If the form is valid, submit it
-            if (isValid) {
-                document.getElementById('addAddressForm').submit();
-            }
-        }
+        //     // Street validation (required)
+        //     if (!street) {
+        //         streetError.textContent = 'Street is required.';
+        //         isValid = false;
+        //     }
+
+        //     // Postal code validation (required, digits only, min length 5)
+        //     const postalPattern = /^[0-9]{6}$/;
+        //     if (!postal) {
+        //         postalError.textContent = 'Postal code is required.';
+        //         isValid = false;
+        //     } else if (!postalPattern.test(postal)) {
+        //         postalError.textContent = 'Please enter a valid 6-digit postal code.';
+        //         isValid = false;
+        //     }
+
+        //     // If the form is valid, submit it
+        //     if (isValid) {
+        //         document.getElementById('addAddressForm').removeEventListener('submit', validateForm); // Remove event listener to prevent recursive calls
+        //         document.getElementById('addAddressForm').submit(); // Submit to backend
+        //     }
+        // }
 
     </script>
     <script>
@@ -1252,50 +1310,127 @@
             });
         }
 
-        // function fetchAddresses() {
-        //     const userId = `<%#= userId %>`;
-        //     const addressList = document.getElementById("addressList");
-        //     addressList.innerHTML = 'Loading...';
+        function editAddress(index, id, username, phone, street, block, unitnum, postal) {
+            const modal = document.getElementById('editAddressModal');
+            modal.style.display = 'block';
 
-        //     $.ajax({
-        //         url: `/api/showAddressManagement`,
-        //         type: 'GET',
-        //         data: { userId },
-        //         success: function (data) {
-        //             addressList.innerHTML = '';
-        //             if (data.length === 0) {
-        //                 addressList.innerHTML = 'No addresses found.';
-        //             } else {
-        //                 data.forEach((address, index) => {
-        //                     const isDefault = address.isDefault ? 'default-address' : '';
-        //                     addressList.innerHTML += `
-        //                 <div class="info-card ${isDefault}" data-index="${index}" onclick="setDefaultAddress('${address._id}')">
-        //                     <div class="info-header">
-        //                         <h6>${address.username}</h6>
+            // Fill in the modal form with existing address data
+            document.getElementById('editAddressId').value = id;
+            document.getElementById('editUsername').value = username || '';
+            document.getElementById('editPhone').value = phone || '';
+            document.getElementById('editStreet').value = street || '';
+            document.getElementById('editBlock').value = block || '';
+            document.getElementById('editUnitNum').value = unitnum || '';
+            document.getElementById('editPostal').value = postal || '';
 
-        //                     </div>
-        //                     <div class="info-body">
-        //                         <p><strong>Phone:</strong> ${address.phone}</p>
-        //                         <p><strong>Street:</strong> ${address.street}</p>
-        //                         <p><strong>Block/Apartment:</strong> ${address.block}</p>
-        //                         <p><strong>Floor / Unit:</strong> ${address.unitnum}</p>
-        //                         <p><strong>Postal Code:</strong> ${address.postal}</p>
-        //                     </div>
-        //                     <div class="info-action">
-        //                         <button class="action-btn" onclick="editAddress(${index}, '${address._id}', '${address.username}', '${address.phone}', '${address.street}', '${address.block}', '${address.unitnum}', '${address.postal}')"><i class="fas fa-pen"></i> Edit</button>
-        //                         <button class="delete-btn" onclick="deleteAddress(${index}, '${address._id}')"><i class="fas fa-trash"></i>Delete</button>
+            // Close modal
+            document.querySelector('.close').onclick = () => {
+                modal.style.display = 'none';
+            };
 
-        //                     </div>
-        //                 </div>
-        //             `;
-        //                 });
-        //             }
-        //         },
-        //         error: function (error) {
-        //             console.error('Error fetching addresses:', error);
-        //         }
-        //     });
-        // }
+            // Form submission with validation
+            document.getElementById('editAddressForm').onsubmit = function (event) {
+                event.preventDefault();
+                validateEditForm();
+            };
+        }
+
+        function validateEditForm() {
+            const username = document.getElementById('editUsername').value.trim();
+            const phone = document.getElementById('editPhone').value.trim();
+            const street = document.getElementById('editStreet').value.trim();
+            const block = document.getElementById('editBlock').value.trim();
+            const unit = document.getElementById('editUnitNum').value.trim();
+            const postal = document.getElementById('editPostal').value.trim();
+
+            // Error message elements
+            const usernameError = document.getElementById('editusernameError');
+            const phoneError = document.getElementById('editphoneError');
+            const streetError = document.getElementById('editstreetError');
+            const blockError = document.getElementById('editblockError');
+            const unitError = document.getElementById('editunitError');
+            const postalError = document.getElementById('editpostalError');
+
+            usernameError.textContent = '';
+            phoneError.textContent = '';
+            streetError.textContent = '';
+            blockError.textContent = '';
+            unitError.textContent = '';
+            postalError.textContent = '';
+
+            let isValid = true;
+
+            if (!username) {
+                usernameError.textContent = 'Username is required.';
+                isValid = false;
+            }
+
+            const phonePattern = /^[689]\d{7}$/;
+            if (!phone) {
+                phoneError.textContent = 'Phone number is required.';
+                isValid = false;
+            } else if (!phonePattern.test(phone)) {
+                phoneError.textContent = "Invalid phone number";
+                isValid = false;
+            }
+
+            if (!street) {
+                streetError.textContent = 'Street is required.';
+                isValid = false;
+            }
+
+            if (!block) {
+                blockError.textContent = 'Block is required.';
+                isValid = false;
+            }
+
+            if (!unit) {
+                unitError.textContent = 'Unitnum is required.';
+                isValid = false;
+            }
+
+            const postalPattern = /^[0-9]{6}$/;
+            if (!postal) {
+                postalError.textContent = 'Postal code is required.';
+                isValid = false;
+            } else if (!postalPattern.test(postal)) {
+                postalError.textContent = 'Please enter a valid 6-digit postal code.';
+                isValid = false;
+            }
+
+            if (isValid) {
+                submitEditAddressForm();
+            }
+        }
+
+        function submitEditAddressForm() {
+            const updatedData = {
+                addressId: document.getElementById('editAddressId').value,
+                username: document.getElementById('editUsername').value.trim(),
+                phone: document.getElementById('editPhone').value.trim(),
+                street: document.getElementById('editStreet').value.trim(),
+                block: document.getElementById('editBlock').value.trim(),
+                unitnum: document.getElementById('editUnitNum').value.trim(),
+                postal: document.getElementById('editPostal').value.trim(),
+            };
+
+            const addressId = updatedData.addressId
+            $.ajax({
+                url: `/api/updateAddress?userId=${userId}`,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ addressId, updatedData }),
+                success: function (result) {
+                    // alert(result.message || 'Address updated successfully');
+                    document.getElementById('editAddressModal').style.display = 'none';
+                    fetchAddresses();
+                },
+                error: function (error) {
+                    console.error('Error updating address:', error);
+                }
+            });
+        }
+
         function setDefaultAddress(addressId) {
             $.ajax({
                 url: '/api/updateDefaultAddress', // Ensure your server endpoint for setting the default address
@@ -1321,7 +1456,7 @@
                     type: 'DELETE',
                     data: { addressId: id },
                     success: function (result) {
-                        alert(result.message || 'Address deleted successfully');
+                        // alert(result.message || 'Address deleted successfully');
                         document.querySelector(`[data-index="${index}"]`).remove();
                     },
                     error: function (error) {
@@ -1331,71 +1466,124 @@
             }
         }
 
-        function editAddress(index, id, username, phone, street, block, unitnum, postal) {
-            const modal = document.getElementById('editAddressModal');
-            modal.style.display = 'block';
 
-            // Fill in the modal form with existing address data
-            document.getElementById('editAddressId').value = id;
-            document.getElementById('editUsername').value = username || '';
-            document.getElementById('editPhone').value = phone || '';
-            document.getElementById('editStreet').value = street || '';
-            document.getElementById('editBlock').value = block || '';
-            document.getElementById('editUnitNum').value = unitnum || '';
-            document.getElementById('editPostal').value = postal || '';
 
-            // Close modal
-            document.querySelector('.close').onclick = () => {
-                modal.style.display = 'none';
-            };
+        // function showAddAddressModal() {
 
-            // Handle form submission for editing address
-            document.getElementById('editAddressForm').onsubmit = function (event) {
-                // event.preventDefault();
+        //     const modal = document.getElementById('addAddressModal');
+        //     modal.style.display = 'block';
 
-                const updatedData = {
-                    addressId: document.getElementById('editAddressId').value,
-                    username: document.getElementById('editUsername').value,
-                    phone: document.getElementById('editPhone').value,
-                    street: document.getElementById('editStreet').value,
-                    block: document.getElementById('editBlock').value,
-                    unitnum: document.getElementById('editUnitNum').value,
-                    postal: document.getElementById('editPostal').value,
-                };
+        //     // Close modal
+        //     document.querySelector('.close').onclick = () => {
+        //         modal.style.display = 'none';
+        //     };
 
-                const addressId = updatedData.addressId
-                $.ajax({
-                    url: `/api/updateAddress?userId=${userId}`,
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({ addressId, updatedData }),
-                    success: function (result) {
-                        // alert(result.message || 'Address updated successfully');
-                        // modal.style.display = 'none';
-                        // setDefaultAddress(result)
-                        fetchAddresses();  // Refresh the address list after the update
-                    },
-                    error: function (error) {
-                        console.error('Error updating address:', error);
-                    }
-                });
-            };
-        }
+        //     // Handle form submission for adding new address
+        //     document.getElementById('addAddressForm').onsubmit = function (event) {
+        //         event.preventDefault();
+
+        //         const newAddressData = {
+        //             username: document.getElementById('username').value,
+        //             phone: document.getElementById('phone').value,
+        //             street: document.getElementById('street').value,
+        //             block: document.getElementById('block').value,
+        //             unitnum: document.getElementById('unitnum').value,
+        //             postal: document.getElementById('postal').value,
+        //             // isDefault: document.getElementById('addIsDefault').checked
+        //         };
+
+        //         console.log(newAddressData);
+
+        //         $.ajax({
+        //             url: `/api/addAddress?userId=${userId}`,
+        //             type: 'POST',
+        //             contentType: 'application/json',
+        //             data: JSON.stringify(newAddressData),
+        //             success: function (result) {
+        //                 alert(result.message || 'Address added successfully');
+        //                 modal.style.display = 'none';
+        //                 fetchAddresses();  // Refresh the address list after adding a new address
+        //             },
+        //             error: function (error) {
+        //                 console.error('Error adding address:', error);
+        //             }
+        //         });
+        //     };
+        // }
 
         function showAddAddressModal() {
-
             const modal = document.getElementById('addAddressModal');
             modal.style.display = 'block';
 
-            // Close modal
+            // Close modal functionality
             document.querySelector('.close').onclick = () => {
                 modal.style.display = 'none';
             };
+        }
 
-            // Handle form submission for adding new address
-            document.getElementById('addAddressForm').onsubmit = function (event) {
-                event.preventDefault();
+        // Form validation function
+        function validateForm() {
+            let isValid = true;
 
+            // Get input values
+            const username = document.getElementById('username').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const block = document.getElementById('block').value.trim();
+            const unit = document.getElementById('unitnum').value.trim();
+            const street = document.getElementById('street').value.trim();
+            const postal = document.getElementById('postal').value.trim();
+
+            // Clear previous error messages
+            document.getElementById('usernameError').textContent = '';
+            document.getElementById('phoneError').textContent = '';
+            document.getElementById('blockError').textContent = '';
+            document.getElementById('unitError').textContent = '';
+            document.getElementById('streetError').textContent = '';
+            document.getElementById('postalError').textContent = '';
+
+            // Validate fields
+            if (!username) {
+                document.getElementById('usernameError').textContent = 'Username is required.';
+                isValid = false;
+            }
+            const phonePattern = /^[689]\d{7}$/;
+            if (!phone) {
+                document.getElementById('phoneError').textContent = 'Phone number is required.';
+                isValid = false;
+            } else if (!phonePattern.test(phone)) {
+                document.getElementById('phoneError').textContent = "Invalid phone number";
+                isValid = false;
+            }
+            if (!block) {
+                document.getElementById('blockError').textContent = 'Block is required.';
+                isValid = false;
+            }
+            if (!unit) {
+                document.getElementById('unitError').textContent = 'Unit is required.';
+                isValid = false;
+            }
+            if (!street) {
+                document.getElementById('streetError').textContent = 'Street is required.';
+                isValid = false;
+            }
+            const postalPattern = /^[0-9]{6}$/;
+            if (!postal) {
+                document.getElementById('postalError').textContent = 'Postal code is required.';
+                isValid = false;
+            } else if (!postalPattern.test(postal)) {
+                document.getElementById('postalError').textContent = 'Please enter a valid 6-digit postal code.';
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        // Form submission event listener
+        document.getElementById('addAddressForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Run validation
+            if (validateForm()) {
                 const newAddressData = {
                     username: document.getElementById('username').value,
                     phone: document.getElementById('phone').value,
@@ -1403,27 +1591,28 @@
                     block: document.getElementById('block').value,
                     unitnum: document.getElementById('unitnum').value,
                     postal: document.getElementById('postal').value,
-                    // isDefault: document.getElementById('addIsDefault').checked
                 };
-
                 console.log(newAddressData);
 
+
+                // Send AJAX request
                 $.ajax({
                     url: `/api/addAddress?userId=${userId}`,
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(newAddressData),
                     success: function (result) {
-                        alert(result.message || 'Address added successfully');
-                        modal.style.display = 'none';
-                        fetchAddresses();  // Refresh the address list after adding a new address
+                        // alert(result.message || 'Address added successfully');
+                        document.getElementById('addAddressModal').style.display = 'none';
+                        fetchAddresses(); // Refresh address list
                     },
                     error: function (error) {
                         console.error('Error adding address:', error);
                     }
                 });
-            };
-        }
+            }
+        });
+
 
         function closeModal(modalId) {
             const modal = document.getElementById(modalId);

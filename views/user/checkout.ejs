@@ -44,30 +44,30 @@
             <!-- MOBILE MENU -->
             <ul class="menu-mobile">
                 <li class="menu-item ">
-                   <a href="/">Home</a>
+                    <a href="/">Home</a>
                 </li>
                 <li class="menu-item ">
-                   <a href="/about">About</a>
+                    <a href="/about">About</a>
                 </li>
                 <li class="menu-item ">
-                   <a href="/testimonials">Testimonials</a>
+                    <a href="/testimonials">Testimonials</a>
                 </li>
                 <li class="menu-item ">
-                   <a href="/our-menu">Our Menu</a>
+                    <a href="/our-menu">Our Menu</a>
                 </li>
                 <li class="menu-item ">
-                   <a href="/contact">Contact</a>
+                    <a href="/contact">Contact</a>
                 </li>
                 <li class="menu-item ">
-                   <a href="/signup">Sign Up</a>
+                    <a href="/signup">Sign Up</a>
                 </li>
                 <li class="menu-item ">
-                   <a href="/signin">Sign In</a>
+                    <a href="/signin">Sign In</a>
                 </li>
                 <li class="menu-item ">
-                   <a href="/cart"><i class="fas fa-cart-plus"></i></a>
+                    <a href="/cart"><i class="fas fa-cart-plus"></i></a>
                 </li>
-             </ul>
+            </ul>
             <!-- /MOBILE MENU -->
         </div>
         <!-- modal-menu-container -->
@@ -172,22 +172,22 @@
             <div class="address-section section">
                 <h2>Address</h2>
                 <div class="address-box" id="currentAddress">
-                    
+
                     <% if(address.username && address.structuredAddress){ %>
                         <input type="hidden" id="addressId" value="<%= address.addressId %>" hidden>
-                    <strong>
-                        <%= address.username %>
-                    </strong><br>
-                    <%= address.structuredAddress %>
-                    <% }else {%>
-                        <span>No Address Found</span>
-                    <% } %>
+                        <strong>
+                            <%= address.username %>
+                        </strong><br>
+                        <%= address.structuredAddress %>
+                            <% }else {%>
+                                <span>No Address Found</span>
+                                <% } %>
                 </div>
                 <% if(address.username && address.structuredAddress){ %>
                     <button class="change-address" id="changeAddressBtn">Change Address</button>
-                <% }else {%>
-                    <button class="change-address" id="changeAddressBtn">Select Address</button>
-                <% } %>
+                    <% }else {%>
+                        <button class="change-address" id="changeAddressBtn">Select Address</button>
+                        <% } %>
             </div>
 
             <!-- Order Summary Section -->
@@ -218,7 +218,7 @@
                 <label><input type="radio" name="paymentMethod" value="cod"> Cash on Delivery</label>
                 <!-- <button type="submit" class="place-order-btn" onclick="checkDeliveryArea()">Place Your Order</button> -->
                 <button type="submit" class="place-order-btn" onclick="submitOrder()">Place Your Order</button>
-                
+
             </div>
         </div>
     </div>
@@ -239,7 +239,7 @@
     </div>
 
     <!-- Add Address Modal -->
-    <div id="addAddressModal" class="modal">
+    <!-- <div id="addAddressModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h4>Add New Address</h4>
@@ -265,10 +265,89 @@
             </div>
             <button id="saveAddressBtn" class="btn saveaddress-btn">Save Address</button>
         </div>
+    </div> -->
+
+
+    <div id="addAddressModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Add New Address</h4>
+                <span id="closeAddModal" class="close">&times;</span>
+            </div>
+            <div class="form-control">
+                <input type="text" id="username" placeholder="Username">
+                <span id="usernameError" class="error-message"></span>
+            </div>
+            <div class="form-control">
+                <input type="text" id="phone" placeholder="Phone">
+                <span id="phoneError" class="error-message"></span>
+            </div>
+            <div class="form-control">
+                <input type="text" id="street" placeholder="Street">
+                <span id="streetError" class="error-message"></span>
+            </div>
+            <div class="form-control">
+                <input type="text" id="block" placeholder="Block">
+                <span id="blockError" class="error-message"></span>
+            </div>
+            <div class="form-control">
+                <input type="text" id="unitnum" placeholder="Unit Number">
+                <span id="unitError" class="error-message"></span>
+            </div>
+            <div class="form-control">
+                <input type="text" id="postal" placeholder="Postal Code">
+                <span id="postalError" class="error-message"></span>
+            </div>
+            <button id="saveAddressBtn" class="btn saveaddress-btn">Save Address</button>
+        </div>
     </div>
 
     <!-- Modal Structure for Editing Address -->
     <div id="editAddressModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Edit Address</h4>
+                <span id="closeEditModal" class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="editAddressForm">
+                    <input type="hidden" id="editAddressId">
+                    <div class="form-control-edit">
+                        <label>Username:</label>
+                        <input type="text" id="editUsername" required>
+                        <span id="editUsernameError" class="error-message"></span>
+                    </div>
+                    <div class="form-control-edit">
+                        <label>Phone:</label>
+                        <input type="text" id="editPhone" required>
+                        <span id="editPhoneError" class="error-message"></span>
+                    </div>
+                    <div class="form-control-edit">
+                        <label>Street:</label>
+                        <input type="text" id="editStreet" required>
+                        <span id="editStreetError" class="error-message"></span>
+                    </div>
+                    <div class="form-control-edit">
+                        <label>Block:</label>
+                        <input type="text" id="editBlock" required>
+                        <span id="editBlockError" class="error-message"></span>
+                    </div>
+                    <div class="form-control-edit">
+                        <label>Unit Number:</label>
+                        <input type="text" id="editUnitNum" required>
+                        <span id="editUnitError" class="error-message"></span>
+                    </div>
+                    <div class="form-control-edit">
+                        <label>Postal Code:</label>
+                        <input type="text" id="editPostal" required>
+                        <span id="editPostalError" class="error-message"></span>
+                    </div>
+                    <button id="editAddressBtn" class="btn saveaddress-btn">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- <div id="editAddressModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h4>Edit Address</h4>
@@ -305,7 +384,7 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div> -->
 
 
     <!-- FOOTER -->
@@ -464,10 +543,10 @@
         //             data: { latitude, longitude },
         //             success: function (response) {
         //                 console.log(response);
-                        
+
         //                 if (response) {
         //                     console.log(response);
-                            
+
         //                     submitOrder(); // Call submitOrder only if delivery is available
         //                 } else {
         //                     console.log(response);
@@ -517,9 +596,9 @@
                 cartIcon.removeChild(existingCounter);
             }
 
-              const counter = document.createElement('span');
-         counter.classList.add('cart-counter'); // Apply the CSS class for styling
-         counter.textContent = cartItemCount;  // Use the count returned from the server  // Use the count returned from the server
+            const counter = document.createElement('span');
+            counter.classList.add('cart-counter'); // Apply the CSS class for styling
+            counter.textContent = cartItemCount;  // Use the count returned from the server  // Use the count returned from the server
 
             // Append the counter to the cart icon
             cartIcon.appendChild(counter);
@@ -646,35 +725,128 @@
             openModal('addAddressModal');
         }
 
+        function validateAddAddressForm() {
+            const username = document.getElementById("username").value.trim();
+            const phone = document.getElementById("phone").value.trim();
+            const street = document.getElementById("street").value.trim();
+            const block = document.getElementById("block").value.trim();
+            const unitnum = document.getElementById("unitnum").value.trim();
+            const postal = document.getElementById("postal").value.trim();
+
+            const usernameError = document.getElementById("usernameError");
+            const phoneError = document.getElementById("phoneError");
+            const streetError = document.getElementById("streetError");
+            const blockError = document.getElementById("blockError");
+            const unitError = document.getElementById("unitError");
+            const postalError = document.getElementById("postalError");
+
+            // Clear previous error messages
+            usernameError.textContent = '';
+            phoneError.textContent = '';
+            streetError.textContent = '';
+            blockError.textContent = '';
+            unitError.textContent = '';
+            postalError.textContent = '';
+
+            let isValid = true;
+
+            if (!username) {
+                usernameError.textContent = 'Username is required.';
+                isValid = false;
+            }
+
+            const phonePattern = /^[689]\d{7}$/;
+            if (!phone) {
+                phoneError.textContent = 'Phone number is required.';
+                isValid = false;
+            } else if (!phonePattern.test(phone)) {
+                phoneError.textContent = 'Invalid phone number';
+                isValid = false;
+            }
+
+            if (!street) {
+                streetError.textContent = 'Street is required.';
+                isValid = false;
+            }
+
+            if (!block) {
+                blockError.textContent = 'Block is required.';
+                isValid = false;
+            }
+
+            if (!unitnum) {
+                unitError.textContent = 'Unit Number is required.';
+                isValid = false;
+            }
+
+            const postalPattern = /^[0-9]{6}$/;
+            if (!postal) {
+                postalError.textContent = 'Postal code is required.';
+                isValid = false;
+            } else if (!postalPattern.test(postal)) {
+                postalError.textContent = 'Please enter a valid 6-digit postal code.';
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        document.getElementById("saveAddressBtn").onclick = function () {
+            if (validateAddAddressForm()) {
+                const username = document.getElementById("username").value.trim();
+                const phone = document.getElementById("phone").value.trim();
+                const street = document.getElementById("street").value.trim();
+                const block = document.getElementById("block").value.trim();
+                const unitnum = document.getElementById("unitnum").value.trim();
+                const postal = document.getElementById("postal").value.trim();
+
+                // Send the new address data via AJAX
+                const data = { userId, username, phone, street, block, unitnum, postal }; // Include userId
+
+                fetch(`/api/addAddress?userId=${userId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(response => response.json())
+                    .then(result => {
+                        closeModal('addAddressModal');
+                        fetchAddresses();  // Refresh address list
+                    })
+                    .catch(error => console.error('Error adding address:', error));
+            }
+        }
 
 
         // Save address using AJAX
-        document.getElementById("saveAddressBtn").onclick = function () {
-            const username = document.getElementById("username").value;
-            const phone = document.getElementById("phone").value;
-            const street = document.getElementById("street").value;
-            const block = document.getElementById("block").value;
-            const unitnum = document.getElementById("unitnum").value;
-            const postal = document.getElementById("postal").value;
+        // document.getElementById("saveAddressBtn").onclick = function () {
+        //     const username = document.getElementById("username").value;
+        //     const phone = document.getElementById("phone").value;
+        //     const street = document.getElementById("street").value;
+        //     const block = document.getElementById("block").value;
+        //     const unitnum = document.getElementById("unitnum").value;
+        //     const postal = document.getElementById("postal").value;
 
-            // Send the new address data via AJAX
-            const data = { userId, username, phone, street, block, unitnum, postal }; // Include userId
+        //     // Send the new address data via AJAX
+        //     const data = { userId, username, phone, street, block, unitnum, postal }; // Include userId
 
-            fetch(`/api/addAddress?userId=${userId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-                .then(response => response.json())
-                .then(result => {
-                    // alert('Address added successfully!');
-                    closeModal('addAddressModal');
-                    fetchAddresses();  // Refresh address list
-                })
-                .catch(error => console.error('Error adding address:', error));
-        }
+        //     fetch(`/api/addAddress?userId=${userId}`, {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         },
+        //         body: JSON.stringify(data)
+        //     })
+        //         .then(response => response.json())
+        //         .then(result => {
+        //             // alert('Address added successfully!');
+        //             closeModal('addAddressModal');
+        //             fetchAddresses();  // Refresh address list
+        //         })
+        //         .catch(error => console.error('Error adding address:', error));
+        // }
 
         // Edit address function
         function editAddress(index) {
@@ -754,13 +926,13 @@
                 .then(response => response.json())
                 .then(address => {
                     document.getElementById('currentAddress').innerHTML = `
-                        <input type="hidden" id="addressId" value="${address.addressId }" hidden>
+                        <input type="hidden" id="addressId" value="${address.addressId}" hidden>
                         <strong>${address.username}</strong><br>
                         ${address.structuredAddress}
                     `;
                 });
-                showToast("Address updated successfully.", 'success');
-                
+            showToast("Address updated successfully.", 'success');
+
         }
 
         function fetchAddressData(addressId) {
@@ -802,38 +974,107 @@
         document.getElementById("editAddressBtn").onclick = function (event) {
             event.preventDefault();
 
-            const addressId = document.getElementById("editAddressId").value;
-            const username = document.getElementById("editUsername").value;
-            const phone = document.getElementById("editPhone").value;
-            const street = document.getElementById("editStreet").value;
-            const block = document.getElementById("editBlock").value;
-            const unitnum = document.getElementById("editUnitNum").value;
-            const postal = document.getElementById("editPostal").value;
+            if (validateEditAddressForm()) {
+                const addressId = document.getElementById("editAddressId").value;
+                const username = document.getElementById("editUsername").value;
+                const phone = document.getElementById("editPhone").value;
+                const street = document.getElementById("editStreet").value;
+                const block = document.getElementById("editBlock").value;
+                const unitnum = document.getElementById("editUnitNum").value;
+                const postal = document.getElementById("editPostal").value;
 
-            // Prepare data to send
-            const updatedData = { username, phone, street, block, unitnum, postal };
-            console.log(updatedData);
+                // Prepare data to send
+                const updatedData = { username, phone, street, block, unitnum, postal };
+                console.log(updatedData);
 
-            // Send the new address data via AJAX
-            fetch(`/api/updateAddress?userId=${userId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ addressId, updatedData }) // Fix: Use JSON.stringify
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok: ' + response.statusText);
-                    }
-                    return response.json();
+                // Send the new address data via AJAX
+                fetch(`/api/updateAddress?userId=${userId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ addressId, updatedData }) // Fix: Use JSON.stringify
                 })
-                .then(result => {
-                    // alert('Address updated successfully!'); // Change message to be more accurate
-                    closeModal('editAddressModal');
-                    fetchAddresses();  // Refresh address list
-                })
-                .catch(error => console.error('Error updating address:', error));
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok: ' + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(result => {
+                        // alert('Address updated successfully!'); // Change message to be more accurate
+                        closeModal('editAddressModal');
+                        fetchAddresses();  // Refresh address list
+                    })
+                    .catch(error => console.error('Error updating address:', error));
+            }
+        }
+
+        // Validation function for editing address
+        function validateEditAddressForm() {
+            const username = document.getElementById("editUsername").value.trim();
+            const phone = document.getElementById("editPhone").value.trim();
+            const street = document.getElementById("editStreet").value.trim();
+            const block = document.getElementById("editBlock").value.trim();
+            const unitnum = document.getElementById("editUnitNum").value.trim();
+            const postal = document.getElementById("editPostal").value.trim();
+
+            const editUsernameError = document.getElementById("editUsernameError");
+            const editPhoneError = document.getElementById("editPhoneError");
+            const editStreetError = document.getElementById("editStreetError");
+            const editBlockError = document.getElementById("editBlockError");
+            const editUnitError = document.getElementById("editUnitError");
+            const editPostalError = document.getElementById("editPostalError");
+
+            // Clear previous error messages
+            editUsernameError.textContent = '';
+            editPhoneError.textContent = '';
+            editStreetError.textContent = '';
+            editBlockError.textContent = '';
+            editUnitError.textContent = '';
+            editPostalError.textContent = '';
+
+            let isValid = true;
+
+            if (!username) {
+                editUsernameError.textContent = 'Username is required.';
+                isValid = false;
+            }
+
+            const phonePattern = /^[689]\d{7}$/;
+            if (!phone) {
+                editPhoneError.textContent = 'Phone number is required.';
+                isValid = false;
+            } else if (!phonePattern.test(phone)) {
+                editPhoneError.textContent = "Invalid phone number";
+                isValid = false;
+            }
+
+            if (!street) {
+                editStreetError.textContent = 'Street is required.';
+                isValid = false;
+            }
+
+            if (!block) {
+                editBlockError.textContent = 'Block is required.';
+                isValid = false;
+            }
+
+            if (!unitnum) {
+                editUnitError.textContent = 'Unit Number is required.';
+                isValid = false;
+            }
+
+            const postalPattern = /^[0-9]{6}$/;
+            if (!postal) {
+                editPostalError.textContent = 'Postal code is required.';
+                isValid = false;
+            } else if (!postalPattern.test(postal)) {
+                editPostalError.textContent = 'Please enter a valid 6-digit postal code.';
+                isValid = false;
+            }
+
+            return isValid;
         }
 
         function submitOrder() {
@@ -845,8 +1086,8 @@
             // const addressId = document.getElementById('addressId').value;
             const addressIdElement = document.getElementById('addressId');
             const addressId = addressIdElement ? addressIdElement.value : null;
-            console.log('------------------->',addressId);
-            
+            console.log('------------------->', addressId);
+
             // const structuredAddress = `<%#= address.structuredAddress %>`;
             // const addressId = `<%#= address.addressId %>`;
 
@@ -919,18 +1160,18 @@
         }
 
     </script>
-        <script src='js/jquery-migrate.min.js'></script>
-        <script src='css/bootstrap/js/popper.min.js'></script>
-        <script src='css/bootstrap/js/bootstrap.min.js'></script>
-        <script src='js/jquery.easing.min.js'></script>
-        <script src='js/jquery.fitvids.js'></script>
-        <script src='js/owl-carousel/owl.carousel.min.js'></script>
-        <script src='js/jquery.magnific-popup.min.js'></script>
-        <!-- MAIN JS -->
-        <script src='js/init.js'></script>
-        <!-- CONTACT FORM JS -->
-        <script src='js/jquery.form.min.js'></script>
-        <script src='js/contactform-home.js'></script>
+    <script src='js/jquery-migrate.min.js'></script>
+    <script src='css/bootstrap/js/popper.min.js'></script>
+    <script src='css/bootstrap/js/bootstrap.min.js'></script>
+    <script src='js/jquery.easing.min.js'></script>
+    <script src='js/jquery.fitvids.js'></script>
+    <script src='js/owl-carousel/owl.carousel.min.js'></script>
+    <script src='js/jquery.magnific-popup.min.js'></script>
+    <!-- MAIN JS -->
+    <script src='js/init.js'></script>
+    <!-- CONTACT FORM JS -->
+    <script src='js/jquery.form.min.js'></script>
+    <script src='js/contactform-home.js'></script>
 
 </body>
 
