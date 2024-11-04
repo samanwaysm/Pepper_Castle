@@ -55,7 +55,7 @@ app.use('/',adminRouter );
 app.get("*",function(req,res){
     res.status(404).render("user/404Error")
 })
-// app.use(errorMiddleware)
+app.use(errorMiddleware)
 
 
 app.listen(PORT, () => {
