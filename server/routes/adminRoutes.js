@@ -39,6 +39,10 @@ route.get('/table-accepted-list',isAdminAuthenticated,services.tableBookingAccep
 route.post("/admin/adminlogin",controller.adminLogin);
 
 route.get("/admin/logout",controller.adminLogout);
+
+
+route.get("/admin/dashboardData",controller.dashboardData);
+
 route.get("/admin/categoryShow",controller.CategoryManagementShow);
 
 // Category Management

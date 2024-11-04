@@ -23,14 +23,32 @@ exports.adminLogin = (req, res) => {
 }
 
 
-exports.dashboard = (req, res) => {
-    // const { validEmail, wrongPassword, isUserAuthenticated } = req.session
-    res.render("admin/dashboard", (err, html) => {
-        if (err) {
-            console.log(err);
-        }
-        res.send(html)
+// exports.dashboard = (req, res) => {
+//     // const { validEmail, wrongPassword, isUserAuthenticated } = req.session
+//     res.render("admin/dashboard", (err, html) => {
+//         if (err) {
+//             console.log(err);
+//         }
+//         res.send(html)
+//     })
+// }
+
+
+exports.dashboard=(req,res)=>{
+    axios.get(`http://localhost:${process.env.PORT}/admin/dashboardData`)
+    .then(function (response){
+        console.log(response.data);
+        
+        res.render("admin/dashboard",{
+            users: response.data.totalUsers, 
+            items: response.data.totalItems, 
+            revenue: response.data.totalRevenue, 
+            orders: response.data.deliveredOrderCount
+        });
     })
+    .catch(err => {
+        res.send(err);
+    });
 }
 
 exports.tableManagement = (req, res) => {

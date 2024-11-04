@@ -22,7 +22,7 @@ exports.adminLogin = async (req, res) => {
     email: process.env.ADMIN_EMAIL,
     password: process.env.ADMIN_PASS,
   };
-  
+
   const { email, password } = req.body;
   const errors = {};
 
@@ -47,20 +47,20 @@ exports.adminLogin = async (req, res) => {
     return res.redirect("/adminlogin");
   }
 
-    // Check admin credentials
-    if (email !== admin.email) {
-      req.session.errors = { email: "Incorrect email." }; // Specific error for email
-      return res.redirect("/adminlogin");
-    }
-    
-    if (password !== admin.password) {
-      req.session.errors = { password: "Incorrect password." }; // Specific error for password
-      return res.redirect("/adminlogin");
-    }
-  
-    // If both email and password are correct
-    req.session.isAdminAuthenticated = true;
-    res.redirect("/dashboard");
+  // Check admin credentials
+  if (email !== admin.email) {
+    req.session.errors = { email: "Incorrect email." }; // Specific error for email
+    return res.redirect("/adminlogin");
+  }
+
+  if (password !== admin.password) {
+    req.session.errors = { password: "Incorrect password." }; // Specific error for password
+    return res.redirect("/adminlogin");
+  }
+
+  // If both email and password are correct
+  req.session.isAdminAuthenticated = true;
+  res.redirect("/dashboard");
 };
 
 
@@ -70,8 +70,40 @@ exports.adminLogout = async (req, res) => {
 };
 
 //Dashboard
-exports.Dashboard = async (req, res, next) => {
+exports.dashboardData = async (req, res, next) => {
+  try {
+    const totalUsers = await userDb.countDocuments();
 
+    const totalItems = await Item.countDocuments();
+
+    const deliveredOrders = await Order.aggregate([
+      {
+        $match: { status: 'Delivered' } 
+      },
+      {
+        $group: {
+          _id: null,
+          totalRevenue: { $sum: "$totalAmount" },
+          deliveredOrderCount: { $sum: 1 }
+        }
+      }
+    ]);
+
+    // Extract values from the deliveredOrders aggregation result
+    const totalRevenue = deliveredOrders[0]?.totalRevenue || 0;
+    const deliveredOrderCount = deliveredOrders[0]?.deliveredOrderCount || 0;
+
+    // Send the data as a response
+    res.status(200).json({
+      totalUsers,
+      totalItems,
+      totalRevenue,
+      deliveredOrderCount
+    });
+  } catch (error) {
+    console.error("Error fetching dashboard data:", error);
+    next(error);
+  }
 };
 
 exports.userManagement = async (req, res) => {
@@ -152,9 +184,9 @@ exports.userunBlock = async (req, res) => {
 
 exports.addCategory = async (req, res) => {
   // const categoryName = req.body.category ? req.body.category.trim() : "";
-  const categoryName = req.body.category 
-  ? capitalizeFirstLetterOfEachWord(req.body.category.trim()) 
-  : ""; 
+  const categoryName = req.body.category
+    ? capitalizeFirstLetterOfEachWord(req.body.category.trim())
+    : "";
 
   const errors = {};
 
@@ -209,7 +241,7 @@ exports.searchCategories = async (req, res) => {
         { category: { $regex: searchQuery, $options: 'i' } } // Case-insensitive search
       ]
     });
-    
+
     res.status(200).json({
       success: true,
       categories: categories.map(category => ({
@@ -267,9 +299,9 @@ exports.listCategory = async (req, res) => {
 
 exports.editCategory = async (req, res) => {
   // const categoryName = req.body.category ? req.body.category.trim() : ""; // Trim spaces
-  const categoryName = req.body.category 
-  ? capitalizeFirstLetterOfEachWord(req.body.category.trim()) 
-  : ""; 
+  const categoryName = req.body.category
+    ? capitalizeFirstLetterOfEachWord(req.body.category.trim())
+    : "";
   const editId = req.query.id;
   const errors = {};
 
@@ -284,7 +316,7 @@ exports.editCategory = async (req, res) => {
       _id: { $ne: editId },
       category: { $regex: new RegExp(`^${categoryName}$`, 'i') }, // Case-insensitive check
     });
-    
+
     if (existingCategory) {
       errors.category = "Category name is already in use.";
     }
@@ -307,7 +339,7 @@ exports.editCategory = async (req, res) => {
   } catch (err) {
     console.error(err);
     req.session.errors = { general: "An error occurred. Please try again." }; // General error message
-    const referrer = req.get("Referer"); 
+    const referrer = req.get("Referer");
     res.redirect(referrer);
   }
 };
@@ -445,30 +477,30 @@ exports.addItem = async (req, res) => {
 
   // Validate input fields
   if (!item || item.trim() === "") {
-      errors.item = "Item name is required.";
+    errors.item = "Item name is required.";
   }
   if (!category || category.trim() === "") {
-      errors.category = "Category is required.";
+    errors.category = "Category is required.";
   }
   if (!description || description.trim() === "") {
-      errors.description = "Description is required.";
+    errors.description = "Description is required.";
   }
   if (!price || isNaN(price) || Number(price) <= 0) {
-      errors.price = "Valid price is required.";
+    errors.price = "Valid price is required.";
   }
 
   // Check if images are provided
   if (images.length === 0) {
-      errors.image = "image is required.";
+    errors.image = "image is required.";
   }
 
   // Check for image format
   const allowedImageFormats = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
   if (file && file.length > 0) {
-      const invalidImages = file.filter(file => !allowedImageFormats.includes(file.mimetype));
-      if (invalidImages.length > 0) {
-          errors.images = "Only JPG, PNG, and GIF formats are allowed for images.";
-      }
+    const invalidImages = file.filter(file => !allowedImageFormats.includes(file.mimetype));
+    if (invalidImages.length > 0) {
+      errors.images = "Only JPG, PNG, and GIF formats are allowed for images.";
+    }
   }
 
   // Check if item already exists in the database
@@ -476,33 +508,33 @@ exports.addItem = async (req, res) => {
     item: { $regex: new RegExp(`^${item.trim()}$`, 'i') } // Case-insensitive check
   });
   if (existingItem) {
-      errors.item = "An item with this name already exists.";
+    errors.item = "An item with this name already exists.";
   }
 
   // If there are errors, redirect back with error messages
   if (Object.keys(errors).length > 0) {
-      req.session.errors = errors; // Store errors in session
-      return res.redirect('/addItem'); // You can redirect to a different route if needed
+    req.session.errors = errors; // Store errors in session
+    return res.redirect('/addItem'); // You can redirect to a different route if needed
   }
 
   try {
-      // Create new item
-      const newItem = new Item({
-          item: item.trim(), // Trim spaces
-          category: category.trim(),
-          description: description.trim(),
-          price: Number(price), // Ensure price is stored as a number
-          image: images,
-      });
+    // Create new item
+    const newItem = new Item({
+      item: item.trim(), // Trim spaces
+      category: category.trim(),
+      description: description.trim(),
+      price: Number(price), // Ensure price is stored as a number
+      image: images,
+    });
 
-      // Save the item to the database
-      await newItem.save();
-      req.session.success = "Item added successfully."; // Optional: Success message
-      res.redirect("/itemManagement");
+    // Save the item to the database
+    await newItem.save();
+    req.session.success = "Item added successfully."; // Optional: Success message
+    res.redirect("/itemManagement");
   } catch (err) {
-      console.error(err);
-      req.session.errors = { general: "An error occurred. Please try again." }; // General error
-      res.redirect('/itemManagement');
+    console.error(err);
+    req.session.errors = { general: "An error occurred. Please try again." }; // General error
+    res.redirect('/itemManagement');
   }
 };
 
@@ -515,25 +547,25 @@ exports.editItem = async (req, res) => {
 
   // Validate input fields
   if (!item || item.trim() === "") {
-      errors.item = "Item name is required.";
+    errors.item = "Item name is required.";
   }
   if (!category || category.trim() === "") {
-      errors.category = "Category is required.";
+    errors.category = "Category is required.";
   }
   if (!description || description.trim() === "") {
-      errors.description = "Description is required.";
+    errors.description = "Description is required.";
   }
   if (!price || isNaN(price) || Number(price) <= 0) {
-      errors.price = "Valid price is required.";
+    errors.price = "Valid price is required.";
   }
 
   // Check for image format
   const allowedImageFormats = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
   if (file && file.length > 0) {
-      const invalidImages = file.filter(file => !allowedImageFormats.includes(file.mimetype));
-      if (invalidImages.length > 0) {
-          errors.images = "Only JPG, PNG, and GIF formats are allowed for images.";
-      }
+    const invalidImages = file.filter(file => !allowedImageFormats.includes(file.mimetype));
+    if (invalidImages.length > 0) {
+      errors.images = "Only JPG, PNG, and GIF formats are allowed for images.";
+    }
   }
 
   // Check if item already exists in the database (excluding the current item)
@@ -542,40 +574,40 @@ exports.editItem = async (req, res) => {
     _id: { $ne: editId }, // Exclude the current item
   });
   if (existingItem) {
-      errors.item = "An item with this name already exists.";
+    errors.item = "An item with this name already exists.";
   }
 
   // If there are errors, redirect back with error messages
   if (Object.keys(errors).length > 0) {
-      req.session.errors = errors; // Store errors in session
-      return res.redirect(`/editItem?id=${editId}`);
+    req.session.errors = errors; // Store errors in session
+    return res.redirect(`/editItem?id=${editId}`);
   }
 
   try {
-      // Update item details
-      await Item.updateOne(
-          { _id: editId },
-          {
-              $set: {
-                  item: item.trim(), // Trim spaces
-                  category: category.trim(),
-                  description: description.trim(),
-                  price: Number(price) // Ensure price is stored as a number
-              }
-          }
-      );
-
-      // Update images if provided
-      if (images.length > 0) {
-          await Item.updateOne({ _id: editId }, { $set: { image: images } });
+    // Update item details
+    await Item.updateOne(
+      { _id: editId },
+      {
+        $set: {
+          item: item.trim(), // Trim spaces
+          category: category.trim(),
+          description: description.trim(),
+          price: Number(price) // Ensure price is stored as a number
+        }
       }
+    );
 
-      req.session.success = "Item updated successfully."; // Optional: Success message
-      res.redirect('/itemManagement');
+    // Update images if provided
+    if (images.length > 0) {
+      await Item.updateOne({ _id: editId }, { $set: { image: images } });
+    }
+
+    req.session.success = "Item updated successfully."; // Optional: Success message
+    res.redirect('/itemManagement');
   } catch (error) {
-      console.error(error);
-      req.session.errors = { general: "An error occurred. Please try again." }; // General error
-      res.redirect(`/itemManagement?id=${editId}`);
+    console.error(error);
+    req.session.errors = { general: "An error occurred. Please try again." }; // General error
+    res.redirect(`/itemManagement?id=${editId}`);
   }
 };
 
@@ -610,18 +642,18 @@ exports.editItemShow = async (req, res) => {
   const { id } = req.query; // Get the ID from the request parameters
 
   try {
-      // Find the item by ID
-      const item = await Item.findById(id);
+    // Find the item by ID
+    const item = await Item.findById(id);
 
-      if (!item) {
-          return res.status(404).json({ message: 'Item not found' });
-      }
-      
-      // Return the item data to the client
-      res.status(200).json(item);
+    if (!item) {
+      return res.status(404).json({ message: 'Item not found' });
+    }
+
+    // Return the item data to the client
+    res.status(200).json(item);
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Server error' });
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
   }
 
 };
@@ -638,7 +670,7 @@ exports.itemSearch = async (req, res) => {
     const searchQuery = req.query.search || '';
     const items = await Item.find({
       $and: [
-        { listed: true }, 
+        { listed: true },
         { isCategory: true },
         { item: { $regex: searchQuery, $options: 'i' } } // Case-insensitive search
       ]
@@ -745,7 +777,7 @@ exports.getAllOrders = async (req, res) => {
       }
     ]);
 
-    
+
     res.status(200).json({
       success: true,
       orders: orders.map(order => ({
@@ -805,7 +837,7 @@ exports.searchOrders = async (req, res) => {
     ]);
 
     // console.log(orders);
-    
+
 
     res.status(200).json({
       success: true,
@@ -908,62 +940,62 @@ exports.getOrderDetails = async (req, res) => {
 
 exports.updateOrderStatus = async (req, res) => {
   const { orderId, status } = req.body;
-  
+
   try {
-      const order = await Order.findOneAndUpdate(
-          { orderId: orderId },
-          { status: status },
-          { new: true }
-      );
-      if(order.status === 'Cancelled' && order.paymentMethod === 'online' && order.paymentStatus === 'success' && order.completed === true ){
-        refundPayment(order.payment_intent)
-      }
+    const order = await Order.findOneAndUpdate(
+      { orderId: orderId },
+      { status: status },
+      { new: true }
+    );
+    if (order.status === 'Cancelled' && order.paymentMethod === 'online' && order.paymentStatus === 'success' && order.completed === true) {
+      refundPayment(order.payment_intent)
+    }
 
-      if (!order) {
-          return res.status(404).json({ message: 'Order not found' });
-      }
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
 
-      return res.status(200).json({ message: 'Order status updated successfully', order });
+    return res.status(200).json({ message: 'Order status updated successfully', order });
   } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: 'Error updating order status' });
+    console.error(error);
+    return res.status(500).json({ message: 'Error updating order status' });
   }
 }
 const refundPayment = async (paymentIntentId) => {
-// exports.refundPayment = async (req, res) => {
+  // exports.refundPayment = async (req, res) => {
   // const { paymentIntentId } = req.body;  // Only pass the paymentIntentId
 
   try {
-      // Retrieve the PaymentIntent to validate and get the amount
-      const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+    // Retrieve the PaymentIntent to validate and get the amount
+    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
 
-      if (!paymentIntent) {
-          return res.status(404).json({ success: false, message: 'PaymentIntent not found' });
-      }
+    if (!paymentIntent) {
+      return res.status(404).json({ success: false, message: 'PaymentIntent not found' });
+    }
 
-      // Validate that the payment has been captured and was successful
-      if (paymentIntent.status !== 'succeeded') {
-          return res.status(400).json({ success: false, message: 'Payment has not been captured or succeeded yet.' });
-      }
+    // Validate that the payment has been captured and was successful
+    if (paymentIntent.status !== 'succeeded') {
+      return res.status(400).json({ success: false, message: 'Payment has not been captured or succeeded yet.' });
+    }
 
-      // Fetch the total amount received from the PaymentIntent
-      const amountToRefund = paymentIntent.amount_received;
+    // Fetch the total amount received from the PaymentIntent
+    const amountToRefund = paymentIntent.amount_received;
 
-      // Create a refund for the total captured amount
-      const refund = await stripe.refunds.create({
-          payment_intent: paymentIntentId,  // Use the PaymentIntent ID
-          amount: amountToRefund,  // Refund the full amount received
-      });
-      
+    // Create a refund for the total captured amount
+    const refund = await stripe.refunds.create({
+      payment_intent: paymentIntentId,  // Use the PaymentIntent ID
+      amount: amountToRefund,  // Refund the full amount received
+    });
 
-      // return res.status(200).json({
-      //     success: true,
-      //     message: 'Refund issued successfully',
-      //     refund,
-      // });
+
+    // return res.status(200).json({
+    //     success: true,
+    //     message: 'Refund issued successfully',
+    //     refund,
+    // });
   } catch (error) {
-      console.error('Error issuing refund:', error);
-      // return res.status(500).json({ success: false, message: 'Error issuing refund', error: error.message });
+    console.error('Error issuing refund:', error);
+    // return res.status(500).json({ success: false, message: 'Error issuing refund', error: error.message });
   }
 };
 
@@ -971,76 +1003,76 @@ const refundPayment = async (paymentIntentId) => {
 
 
 
-  // const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${11.805032337467159},${75.54574386975459}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
+// const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${11.805032337467159},${75.54574386975459}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
 
-  //   const response = await axios.get(url);
-  //   const results = response.data.results;
-  //   console.log('-->url-->',response);
-  //   return results
-    
-
-  //   if (results.length > 0) {
-  //     const addressComponents = results[0].address_components;
-  //     const postalCode = addressComponents.find(component => component.types.includes('postal_code'));
-
-  //     if (postalCode) {
-  //       return res.status(200).json({
-  //         message: 'Pincode found',
-  //         pincode: postalCode.long_name
-  //       });
-  //     } else {
-  //       return res.status(404).json({ message: 'Pincode not found' });
-  //     }
-  //   } else {
-  //     return res.status(404).json({ message: 'No results found' });
-  //   }
+//   const response = await axios.get(url);
+//   const results = response.data.results;
+//   console.log('-->url-->',response);
+//   return results
 
 
-  exports.tableBookingData = async (req, res) => {
-    const CurrentStatus = req.query.status
-    // console.log(req.query.status);
-    
-    try {
-      // Find all bookings with status 'booked'
-      const bookings = await tableBooking.find({ status:CurrentStatus});
+//   if (results.length > 0) {
+//     const addressComponents = results[0].address_components;
+//     const postalCode = addressComponents.find(component => component.types.includes('postal_code'));
 
-      // Check if there are any booked bookings
-      if (bookings.length === 0) {
-          return res.status(404).json({ message: 'No booked bookings found' });
-      }
+//     if (postalCode) {
+//       return res.status(200).json({
+//         message: 'Pincode found',
+//         pincode: postalCode.long_name
+//       });
+//     } else {
+//       return res.status(404).json({ message: 'Pincode not found' });
+//     }
+//   } else {
+//     return res.status(404).json({ message: 'No results found' });
+//   }
 
-      // Return the list of booked bookings
-      res.status(200).json(bookings);
-    } catch (error) {
-        res.status(500).json({ message: 'Error fetching bookings', error });
+
+exports.tableBookingData = async (req, res) => {
+  const CurrentStatus = req.query.status
+  // console.log(req.query.status);
+
+  try {
+    // Find all bookings with status 'booked'
+    const bookings = await tableBooking.find({ status: CurrentStatus });
+
+    // Check if there are any booked bookings
+    if (bookings.length === 0) {
+      return res.status(404).json({ message: 'No booked bookings found' });
     }
+
+    // Return the list of booked bookings
+    res.status(200).json(bookings);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching bookings', error });
   }
+}
 
 
 
-  exports.updateTableBooking = async (req, res) => {
-    const bookingId = req.query.id;
-    const status = req.body.status;
-    
-    try {
-        // Find the booking by ID
-        const booking = await tableBooking.findById(bookingId);
+exports.updateTableBooking = async (req, res) => {
+  const bookingId = req.query.id;
+  const status = req.body.status;
 
-        // Check if the booking exists
-        if (!booking) {
-            return res.status(404).json({ message: 'Booking not found' });
-        }
+  try {
+    // Find the booking by ID
+    const booking = await tableBooking.findById(bookingId);
 
-        // // Check if the status is 'booked'
-        // if (booking.status !== 'booked') {
-        //     return res.status(400).json({ message: 'Booking is not in the "booked" status' });
-        // }
-
-        booking.status = status;
-        await booking.save();
-
-        res.status(200).json({ message: `Booking ${status} successfully` });
-    } catch (error) {
-        res.status(500).json({ message: 'Error accepting the booking', error });
+    // Check if the booking exists
+    if (!booking) {
+      return res.status(404).json({ message: 'Booking not found' });
     }
+
+    // // Check if the status is 'booked'
+    // if (booking.status !== 'booked') {
+    //     return res.status(400).json({ message: 'Booking is not in the "booked" status' });
+    // }
+
+    booking.status = status;
+    await booking.save();
+
+    res.status(200).json({ message: `Booking ${status} successfully` });
+  } catch (error) {
+    res.status(500).json({ message: 'Error accepting the booking', error });
   }
+}
