@@ -315,8 +315,42 @@
             }
         }
 
+        @media (max-width: 767px) {
+            .hamburger-btn {
+                display: block;
+            }
+
+            .profile-sidebar {
+                position: fixed;
+                left: -100%;
+                top: 0;
+                width: 250px;
+                height: 100%;
+                background-color: #fff;
+                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+                z-index: 10;
+                padding-top: 60px;
+            }
+
+            /* Sidebar shown when active */
+            .profile-sidebar.active {
+                top: 5%;
+                left: 0;
+            }
+
+            .profile-container {
+                flex-direction: column;
+                margin-top: 40px;
+                /* adjust for the hamburger button */
+            }
+        }
+        @media (max-width: 1024px) and (min-width: 440px) {
+            .profile-sidebar h2{
+                margin-top: 40%;
+            }
+        }
         /* Hamburger button visible and sidebar hidden in mobile */
-        @media (max-width: 1024px) {
+        @media (max-width: 1024px) and (min-width: 768px) {
             .hamburger-btn {
                 margin-top:7%;
                 display: block;
