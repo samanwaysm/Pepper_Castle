@@ -721,8 +721,18 @@ exports.listItem = async (req, res) => {
   }
 };
 
+exports.deleteIncompleteOrders = async () => {
+  try {
+    const result = await Order.deleteMany({ completed: false }); // Delete orders with completed: false
+    console.log(`Deleted ${result.deletedCount} incomplete orders.`);
+  } catch (error) {
+    console.error("Error deleting incomplete orders:", error);
+  }
+};
+
 exports.getAllOrders = async (req, res) => {
   try {
+    await exports.deleteIncompleteOrders();
     // const orders = await Order.aggregate([
     //   {
     //     $lookup: {
