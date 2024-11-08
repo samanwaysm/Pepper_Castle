@@ -75,6 +75,7 @@ exports.dashboardData = async (req, res, next) => {
     const totalUsers = await userDb.countDocuments();
 
     const totalItems = await Item.countDocuments();
+    const totalCategories = await Category.countDocuments();
 
     const deliveredOrders = await Order.aggregate([
       {
@@ -96,6 +97,7 @@ exports.dashboardData = async (req, res, next) => {
     // Send the data as a response
     res.status(200).json({
       totalUsers,
+      totalCategories,
       totalItems,
       totalRevenue,
       deliveredOrderCount

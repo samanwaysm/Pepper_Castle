@@ -42,6 +42,7 @@ exports.dashboard=(req,res)=>{
         res.render("admin/dashboard",{
             users: response.data.totalUsers, 
             items: response.data.totalItems, 
+            categories: response.data.totalCategories,
             revenue: response.data.totalRevenue, 
             orders: response.data.deliveredOrderCount
         });

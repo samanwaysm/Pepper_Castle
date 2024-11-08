@@ -141,7 +141,6 @@ Coded by www.creative-tim.com
                           <div class="col-7 col-md-8">
                             <div class="numbers">
                               <p class="card-category">Users</p>
-                              <p class="card-title"> &nbsp;</p>
                               <p class="card-title"><%= users %><p>
                             </div>
                           </div>
@@ -162,14 +161,13 @@ Coded by www.creative-tim.com
                         <div class="row">
                           <div class="col-5 col-md-4">
                             <div class="icon-big text-center icon-warning">
-                              <i class="nc-icon nc-money-coins text-success"></i>
+                              <i class="nc-icon nc-bag-16 text-danger"></i>
                             </div>
                           </div>
                           <div class="col-7 col-md-8">
                             <div class="numbers">
-                              <p class="card-category">Revenue</p>
-                              <p class="card-title"> &nbsp;</p>
-                              <p class="card-title">S$<%= revenue.toFixed(2) %><p>
+                              <p class="card-category">Orders</p>
+                              <p class="card-title"><%= orders %><p>
                             </div>
                           </div>
                         </div>
@@ -178,7 +176,7 @@ Coded by www.creative-tim.com
                         <hr>
                         <div class="stats">
                           <i class="fa fa-money"></i>
-                          Profit
+                          Completed Orders
                         </div>
                       </div>
                     </div>
@@ -189,14 +187,13 @@ Coded by www.creative-tim.com
                         <div class="row">
                           <div class="col-5 col-md-4">
                             <div class="icon-big text-center icon-warning">
-                              <i class="nc-icon nc-bag-16 text-danger"></i>
+                              <i class="nc-icon nc-tile-56 text-secondary"></i>
                             </div>
                           </div>
                           <div class="col-7 col-md-8">
                             <div class="numbers">
-                              <p class="card-category">Orders</p>
-                              <p class="card-title"> &nbsp;</p>
-                              <p class="card-title"><%= orders %><p>
+                              <p class="card-category">Category Count</p>
+                              <p class="card-title"><%= categories %><p>
                             </div>
                           </div>
                         </div>
@@ -204,8 +201,8 @@ Coded by www.creative-tim.com
                       <div class="card-footer ">
                         <hr>
                         <div class="stats">
-                          <i class="fa fa-shopping-bag"></i>
-                          Completed Orders
+                          <i class="fa fa-ellipsis-h "></i>
+                            Category Count
                         </div>
                       </div>
                     </div>
@@ -222,7 +219,6 @@ Coded by www.creative-tim.com
                           <div class="col-7 col-md-8">
                             <div class="numbers">
                               <p class="card-category">Items Count</p>
-                              <p class="card-title"> &nbsp;</p>
                               <p class="card-title"><%= items %><p>
                             </div>
                           </div>
@@ -303,6 +299,38 @@ Coded by www.creative-tim.com
                     </div>
                   </div>
                 </div> -->
+              </div>
+
+              <div class="content-t">
+                <div class="row">
+                  <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card card-stats">
+                      <div class="card-body ">
+                        <div class="row">
+                          <div class="col-5 col-md-4">
+                            <div class="icon-big text-center icon-warning">
+                              <!-- <i class="nc-icon nc-globe text-warning"></i> -->
+                              <i class="nc-icon nc-money-coins text-success"></i>
+                            </div>
+                          </div>
+                          <div class="col-7 col-md-8">
+                            <div class="numbers">
+                              <p class="card-category">Revenue</p>
+                              <p class="card-title">S$<%= revenue.toFixed(2) %><p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-footer ">
+                        <hr>
+                        <div class="stats">
+                          <i class="fa fa-user"></i>
+                          Total Users
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
             <!--   Core JS Files   -->
