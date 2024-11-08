@@ -92,11 +92,16 @@
                 </div>
             </nav>
             <div class="content">
+                <div class="breadcrumb">
+                    <a href="/itemManagement" class="breadcrumb-link">Item Management</a>
+                    <span class="breadcrumb-separator"> → </span>
+                    <span class="breadcrumb-current">Edit Item</span>
+                </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card card-user">
                             <div class="card-header">
-                                <h5 class="card-title">Add Item</h5>
+                                <h5 class="card-title">Edit Item</h5>
                             </div>
                             <div class="card-body">
                                 <form action="/admin/editItem?id=<%= item._id %>" method="POST" enctype="multipart/form-data" novalidate>
