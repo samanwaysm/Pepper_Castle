@@ -228,3 +228,13 @@
     width: 100%;
     z-index: 1030; /* Ensures the navbar stays above other content */
 }
+
+a:hover {
+  text-decoration: none;
+}
+
+/* CSS */
+.card.card-stats:hover {
+  box-shadow: 0 8px 8px -2px #b4b4b4; /* Adjust color and shadow as needed */
+  transition: box-shadow 0.3s ease;
+}

@@ -16,225 +16,243 @@ Coded by www.creative-tim.com
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <link rel="apple-touch-icon" sizes="76x76" href="/admin/img/apple-icon.png">
-    <link rel="icon" type="image/png" href="images/fav.png">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Pepper Castle Admin</title>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
-    <!-- CSS Files -->
-    <link href="/admin/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="/admin/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
-    <!-- <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" /> -->
-    <link href="/admin/css/bootstrap.min.css" rel="stylesheet" />
-    <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link href="/admin/demo/demo.css" rel="stylesheet" />
+  <meta charset="utf-8" />
+  <link rel="apple-touch-icon" sizes="76x76" href="/admin/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="images/fav.png">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>Pepper Castle Admin</title>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+  <!-- CSS Files -->
+  <link href="/admin/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="/admin/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
+  <!-- <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" /> -->
+  <link href="/admin/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- CSS Just for demo purpose, don't include it in your project -->
+  <link href="/admin/demo/demo.css" rel="stylesheet" />
 </head>
 
 <body class="">
-    <div class="wrapper ">
-        <div class="sidebar" data-color="white" data-active-color="danger">
-            <div class="logo">
-                <a href="/adminlogin" class="simple-text logo-mini">
-                    <div class="logo-image-small">
-                        <img src="images/fav.png">
-                    </div>
-                </a>
-                <a href="/adminlogin" class="simple-text logo-normal">
-                    Pepper Castle
-                </a>
-            </div>
-            <div class="sidebar-wrapper">
-                <ul class="nav">
-                    <li class="active">
-                        <a href="/dashboard">
-                            <i class="nc-icon nc-bank"></i>
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/orderManagement">
-                            <i class="nc-icon nc-bag-16"></i>
-                            <p>Order Management</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/userManagement">
-                            <i class="nc-icon nc-single-02"></i>
-                            <p>User Management</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/categoryManagement">
-                            <i class="nc-icon nc-minimal-down"></i>
-                            <p>Category Management</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/itemManagement">
-                            <i class="nc-icon nc-tile-56"></i>
-                            <p>Item Management</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/table-management">
-                            <i class="nc-icon nc-email-85"></i>
-                            <p>Table Management</p>
-                        </a>
-                    </li>
+  <div class="wrapper ">
+    <div class="sidebar" data-color="white" data-active-color="danger">
+      <div class="logo">
+        <a href="/adminlogin" class="simple-text logo-mini">
+          <div class="logo-image-small">
+            <img src="images/fav.png">
+          </div>
+        </a>
+        <a href="/adminlogin" class="simple-text logo-normal">
+          Pepper Castle
+        </a>
+      </div>
+      <div class="sidebar-wrapper">
+        <ul class="nav">
+          <li class="active">
+            <a href="/dashboard">
+              <i class="nc-icon nc-bank"></i>
+              <p>Dashboard</p>
+            </a>
+          </li>
+          <li>
+            <a href="/orderManagement">
+              <i class="nc-icon nc-bag-16"></i>
+              <p>Order Management</p>
+            </a>
+          </li>
+          <li>
+            <a href="/userManagement">
+              <i class="nc-icon nc-single-02"></i>
+              <p>User Management</p>
+            </a>
+          </li>
+          <li>
+            <a href="/categoryManagement">
+              <i class="nc-icon nc-minimal-down"></i>
+              <p>Category Management</p>
+            </a>
+          </li>
+          <li>
+            <a href="/itemManagement">
+              <i class="nc-icon nc-tile-56"></i>
+              <p>Item Management</p>
+            </a>
+          </li>
+          <li>
+            <a href="/table-management">
+              <i class="nc-icon nc-email-85"></i>
+              <p>Table Management</p>
+            </a>
+          </li>
 
-                    <li class="active-pro">
-                        <a href="/admin/logout">
-                            <i class="nc-icon nc-simple-remove"></i>
-                            <p>Logout</p>
-                        </a>
-                    </li>
-                </ul>
+          <li class="active-pro">
+            <a href="/admin/logout">
+              <i class="nc-icon nc-simple-remove"></i>
+              <p>Logout</p>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="main-panel">
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg navbar-absolute fixed-top"
+        style="position: fixed;background-color: #fff;color:black;border-bottom: 1px solid rgb(189, 189, 189);">
+        <div class="container-fluid">
+          <div class="navbar-wrapper">
+            <div class="navbar-toggle">
+              <button type="button" class="navbar-toggler">
+                <span class="navbar-toggler-bar bar1"></span>
+                <span class="navbar-toggler-bar bar2"></span>
+                <span class="navbar-toggler-bar bar3"></span>
+              </button>
             </div>
+            <a class="navbar-brand" href="javascript:;">Admin Dashboard</a>
+          </div>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
+            aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-bar navbar-kebab"></span>
+            <span class="navbar-toggler-bar navbar-kebab"></span>
+            <span class="navbar-toggler-bar navbar-kebab"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-end" id="navigation">
+            <!-- <form>
+              <div class="input-group no-border">
+                <input type="text" value="" class="form-control" placeholder="Search...">
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <i class="nc-icon nc-zoom-split"></i>
+                  </div>
+                </div>
+              </div>
+            </form> -->
+          </div>
         </div>
-        <div class="main-panel">
-            <!-- Navbar -->
-            <nav class="navbar navbar-expand-lg navbar-absolute fixed-top" style="position: fixed;background-color: #fff;color:black;border-bottom: 1px solid rgb(189, 189, 189);">
-                <div class="container-fluid">
-                    <div class="navbar-wrapper">
-                        <div class="navbar-toggle">
-                            <button type="button" class="navbar-toggler">
-                                <span class="navbar-toggler-bar bar1"></span>
-                                <span class="navbar-toggler-bar bar2"></span>
-                                <span class="navbar-toggler-bar bar3"></span>
-                            </button>
-                        </div>
-                        <a class="navbar-brand" href="javascript:;">Admin Dashboard</a>
+      </nav>
+      <!-- End Navbar -->
+      <div class="content">
+        <div class="row">
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <a href="/userManagement">
+              <div class="card card-stats">
+                <div class="card-body ">
+                  <div class="row">
+                    <div class="col-5 col-md-4">
+                      <div class="icon-big text-center icon-warning">
+                        <!-- <i class="nc-icon nc-globe text-warning"></i> -->
+                        <i class="nc-icon nc-single-02 text-warning"></i>
+                      </div>
                     </div>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-bar navbar-kebab"></span>
-                        <span class="navbar-toggler-bar navbar-kebab"></span>
-                        <span class="navbar-toggler-bar navbar-kebab"></span>
-                    </button>
-                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
-                        <form>
-                            <div class="input-group no-border">
-                                <input type="text" value="" class="form-control" placeholder="Search...">
-                                <div class="input-group-append">
-                                    <div class="input-group-text">
-                                        <i class="nc-icon nc-zoom-split"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                    <div class="col-7 col-md-8">
+                      <div class="numbers">
+                        <p class="card-category">Users</p>
+                        <p class="card-title">
+                          <%= users %>
+                            <p>
+                      </div>
                     </div>
+                  </div>
                 </div>
-            </nav>
-            <!-- End Navbar -->
-            <div class="content">
+                <div class="card-footer ">
+                  <hr>
+                  <div class="stats">
+                    <i class="fa fa-user"></i>
+                    Total Users
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <a href="/orderManagement">
+              <div class="card card-stats">
+                <div class="card-body ">
+                  <div class="row">
+                    <div class="col-5 col-md-4">
+                      <div class="icon-big text-center icon-warning">
+                        <i class="nc-icon nc-bag-16 text-danger"></i>
+                      </div>
+                    </div>
+                    <div class="col-7 col-md-8">
+                      <div class="numbers">
+                        <p class="card-category">Orders</p>
+                        <p class="card-title">
+                          <%= orders %>
+                            <p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer ">
+                  <hr>
+                  <div class="stats">
+                    <i class="fa fa-shopping-bag"></i>
+                    Completed Orders
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <a href="/categoryManagement">
+            <div class="card card-stats">
+              <div class="card-body ">
                 <div class="row">
-                  <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="card card-stats">
-                      <div class="card-body ">
-                        <div class="row">
-                          <div class="col-5 col-md-4">
-                            <div class="icon-big text-center icon-warning">
-                              <!-- <i class="nc-icon nc-globe text-warning"></i> -->
-                              <i class="nc-icon nc-single-02 text-warning"></i>
-                            </div>
-                          </div>
-                          <div class="col-7 col-md-8">
-                            <div class="numbers">
-                              <p class="card-category">Users</p>
-                              <p class="card-title"><%= users %><p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="card-footer ">
-                        <hr>
-                        <div class="stats">
-                          <i class="fa fa-user"></i>
-                          Total Users
-                        </div>
-                      </div>
+                  <div class="col-5 col-md-4">
+                    <div class="icon-big text-center icon-warning">
+                      <i class="nc-icon nc-tile-56 text-secondary"></i>
                     </div>
                   </div>
-                  <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="card card-stats">
-                      <div class="card-body ">
-                        <div class="row">
-                          <div class="col-5 col-md-4">
-                            <div class="icon-big text-center icon-warning">
-                              <i class="nc-icon nc-bag-16 text-danger"></i>
-                            </div>
-                          </div>
-                          <div class="col-7 col-md-8">
-                            <div class="numbers">
-                              <p class="card-category">Orders</p>
-                              <p class="card-title"><%= orders %><p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="card-footer ">
-                        <hr>
-                        <div class="stats">
-                          <i class="fa fa-money"></i>
-                          Completed Orders
-                        </div>
-                      </div>
+                  <div class="col-7 col-md-8">
+                    <div class="numbers">
+                      <p class="card-category">Category Count</p>
+                      <p class="card-title">
+                        <%= categories %>
+                          <p>
                     </div>
                   </div>
-                  <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="card card-stats">
-                      <div class="card-body ">
-                        <div class="row">
-                          <div class="col-5 col-md-4">
-                            <div class="icon-big text-center icon-warning">
-                              <i class="nc-icon nc-tile-56 text-secondary"></i>
-                            </div>
-                          </div>
-                          <div class="col-7 col-md-8">
-                            <div class="numbers">
-                              <p class="card-category">Category Count</p>
-                              <p class="card-title"><%= categories %><p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="card-footer ">
-                        <hr>
-                        <div class="stats">
-                          <i class="fa fa-ellipsis-h "></i>
-                            Category Count
-                        </div>
+                </div>
+              </div>
+              <div class="card-footer ">
+                <hr>
+                <div class="stats">
+                  <i class="fa fa-ellipsis-h"></i>
+                  Category Count
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <a href="/itemManagement">
+              <div class="card card-stats">
+                <div class="card-body ">
+                  <div class="row">
+                    <div class="col-5 col-md-4">
+                      <div class="icon-big text-center icon-warning">
+                        <i class="nc-icon nc-bullet-list-67 text-primary"></i>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="card card-stats">
-                      <div class="card-body ">
-                        <div class="row">
-                          <div class="col-5 col-md-4">
-                            <div class="icon-big text-center icon-warning">
-                              <i class="nc-icon nc-bullet-list-67 text-primary"></i>
-                            </div>
-                          </div>
-                          <div class="col-7 col-md-8">
-                            <div class="numbers">
-                              <p class="card-category">Items Count</p>
-                              <p class="card-title"><%= items %><p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="card-footer ">
-                        <hr>
-                        <div class="stats">
-                          <i class="fa fa-list"></i>
-                          Items Count
-                        </div>
+                    <div class="col-7 col-md-8">
+                      <div class="numbers">
+                        <p class="card-category">Items Count</p>
+                        <p class="card-title">
+                          <%= items %>
+                            <p>
                       </div>
                     </div>
                   </div>
                 </div>
-                <!-- <div class="row">
+                <div class="card-footer ">
+                  <hr>
+                  <div class="stats">
+                    <i class="fa fa-list"></i>
+                    Items Count
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+        <!-- <div class="row">
                   <div class="col-md-12">
                     <div class="card ">
                       <div class="card-header ">
@@ -299,55 +317,56 @@ Coded by www.creative-tim.com
                     </div>
                   </div>
                 </div> -->
-              </div>
+      </div>
 
-              <div class="content-t">
+      <div class="content-t">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="card card-stats">
+              <div class="card-body ">
                 <div class="row">
-                  <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="card card-stats">
-                      <div class="card-body ">
-                        <div class="row">
-                          <div class="col-5 col-md-4">
-                            <div class="icon-big text-center icon-warning">
-                              <!-- <i class="nc-icon nc-globe text-warning"></i> -->
-                              <i class="nc-icon nc-money-coins text-success"></i>
-                            </div>
-                          </div>
-                          <div class="col-7 col-md-8">
-                            <div class="numbers">
-                              <p class="card-category">Revenue</p>
-                              <p class="card-title">S$<%= revenue.toFixed(2) %><p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="card-footer ">
-                        <hr>
-                        <div class="stats">
-                          <i class="fa fa-user"></i>
-                          Total Users
-                        </div>
-                      </div>
+                  <div class="col-5 col-md-4">
+                    <div class="icon-big text-center icon-warning">
+                      <!-- <i class="nc-icon nc-globe text-warning"></i> -->
+                      <i class="nc-icon nc-money-coins text-success"></i>
+                    </div>
+                  </div>
+                  <div class="col-7 col-md-8">
+                    <div class="numbers">
+                      <p class="card-category">Revenue</p>
+                      <p class="card-title">S$<%= revenue.toFixed(2) %>
+                          <p>
                     </div>
                   </div>
                 </div>
               </div>
+              <div class="card-footer ">
+                <hr>
+                <div class="stats">
+                  <i class="fa fa-money"></i>
+                  Total Revenue
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-            <!--   Core JS Files   -->
-            <script src="/admin/js/core/jquery.min.js"></script>
-            <script src="/admin/js/core/popper.min.js"></script>
-            <script src="/admin/js/core/bootstrap.min.js"></script>
-            <script src="/admin/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-            <!--  Google Maps Plugin    -->
-            <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-            <!-- Chart JS -->
-            <script src="/admin/js/plugins/chartjs.min.js"></script>
-            <!--  Notifications Plugin    -->
-            <script src="/admin/js/plugins/bootstrap-notify.js"></script>
-            <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
-            <script src="/admin/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script>
-            <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
-            <script src="/admin/demo/demo.js"></script>
+      <!--   Core JS Files   -->
+      <script src="/admin/js/core/jquery.min.js"></script>
+      <script src="/admin/js/core/popper.min.js"></script>
+      <script src="/admin/js/core/bootstrap.min.js"></script>
+      <script src="/admin/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+      <!--  Google Maps Plugin    -->
+      <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+      <!-- Chart JS -->
+      <script src="/admin/js/plugins/chartjs.min.js"></script>
+      <!--  Notifications Plugin    -->
+      <script src="/admin/js/plugins/bootstrap-notify.js"></script>
+      <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
+      <script src="/admin/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script>
+      <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
+      <script src="/admin/demo/demo.js"></script>
 </body>
 
 </html>
