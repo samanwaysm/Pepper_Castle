@@ -357,7 +357,7 @@
                                 <th>Status</th>
                                 <th>Total Amount</th>
                                 <th>Actions</th>
-                                <th>---</th>
+                                <th>   </th>
                             </tr>
                         </thead>
                         <tbody id="order-table-body">
@@ -404,7 +404,8 @@
                                         <a href="/orderDetail?orderId=<%= order.orderId %>"
                                             class="btn btn-info btn-sm">Order Details</a>
                                     </td>
-                                    <td>---</td>
+                                    <td><%= order.timeAgo %></td>
+                                    <!-- <td></td> -->
                                 </tr>
                                 <% }); %>
                         </tbody>
@@ -430,7 +431,7 @@
                                 tbody.empty(); // Clear the table
 
                                 if (orders.length > 0) {
-                                    orders.forEach(order => {
+                                    orders.reverse().forEach(order => {
                                         let itemsHTML = '<ul>';
                                         order.items.forEach(item => {
                                             itemsHTML += `<li>${item.itemName} x ${item.quantity}</li>`;
@@ -464,7 +465,7 @@
                                                 </td>
                                                 <td>S$${order.totalAmount.toFixed(2)}</td>
                                                 <td><a href="/orderDetail?orderId=${order.orderId}" class="btn btn-info btn-sm">Order Details</a></td>
-                                                <td>---</td>
+                                                <td>${order.timeAgo}</td>
                                             </tr>
                                         `);
                                     });

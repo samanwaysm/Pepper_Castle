@@ -772,26 +772,63 @@ exports.getAllOrders = async (req, res) => {
           items: 1,
           totalAmount: 1,
           paymentStatus: 1,
-          status: 1
+          status: 1,
+          createdAt: 1
         }
       }
     ]);
 
+    function formatTimeAgo(createdAt) {
+      const now = new Date();
+      const diffInMs = now - new Date(createdAt);
+      const diffInSec = Math.floor(diffInMs / 1000);
+      const diffInMin = Math.floor(diffInSec / 60);
+      const diffInHours = Math.floor(diffInMin / 60);
+      const diffInDays = Math.floor(diffInHours / 24);
 
-    res.status(200).json({
-      success: true,
-      orders: orders.map(order => ({
+      if (diffInDays > 0) return `${diffInDays} day${diffInDays > 1 ? 's' : ''} ago`;
+      if (diffInHours > 0) return `${diffInHours} hour${diffInHours > 1 ? 's' : ''} ago`;
+      if (diffInMin > 0) return `${diffInMin} min${diffInMin > 1 ? 's' : ''} ago`;
+      return `${diffInSec} sec${diffInSec > 1 ? 's' : ''} ago`;
+    }
+
+    const formattedOrders = orders.map(order => {
+      const timeAgo = formatTimeAgo(order.createdAt); // Get custom-formatted time difference
+      
+      return {
         orderId: order.orderId,
         username: order.username,
         items: order.items.map(item => ({
           itemName: item.item,
           quantity: item.quantity
         })),
-        paymentStatus: order.paymentStatus,
         totalAmount: order.totalAmount,
-        status: order.status
-      }))
+        status: order.status,
+        timeAgo // Add formatted time
+      };
     });
+
+    res.status(200).json({
+      success: true,
+      orders: formattedOrders
+    });
+
+
+
+    // res.status(200).json({
+    //   success: true,
+    //   orders: orders.map(order => ({
+    //     orderId: order.orderId,
+    //     username: order.username,
+    //     items: order.items.map(item => ({
+    //       itemName: item.item,
+    //       quantity: item.quantity
+    //     })),
+    //     paymentStatus: order.paymentStatus,
+    //     totalAmount: order.totalAmount,
+    //     status: order.status
+    //   }))
+    // });
   } catch (error) {
     console.error("Error fetching orders:", error);
     res.status(500).json({
@@ -807,6 +844,11 @@ exports.searchOrders = async (req, res) => {
   try {
     const orders = await Order.aggregate([
       {
+        $match: {
+          completed: true // Filter to only get orders where completed is true
+        }
+      },
+      {
         $lookup: {
           from: 'users',
           localField: 'user',
@@ -819,9 +861,16 @@ exports.searchOrders = async (req, res) => {
       },
       {
         $match: {
-          $or: [
-            { orderId: { $regex: search, $options: 'i' } },  // Search by order ID
-            { 'items.item': { $regex: search, $options: 'i' } }  // Search by item names
+          $and: [
+            {
+              $or: [
+                { orderId: { $regex: search, $options: 'i' } },  // Search by order ID
+                { 'items.item': { $regex: search, $options: 'i' } }  // Search by item names
+              ]
+            },
+            {
+              status: { $ne: null } // Filter to include only orders with a non-null status
+            }
           ]
         }
       },
@@ -831,17 +880,30 @@ exports.searchOrders = async (req, res) => {
           username: '$userDetails.username',
           items: 1,
           totalAmount: 1,
-          status: 1
+          status: 1,
+          createdAt: 1
         }
       }
     ]);
 
-    // console.log(orders);
+    function formatTimeAgo(createdAt) {
+      const now = new Date();
+      const diffInMs = now - new Date(createdAt);
+      const diffInSec = Math.floor(diffInMs / 1000);
+      const diffInMin = Math.floor(diffInSec / 60);
+      const diffInHours = Math.floor(diffInMin / 60);
+      const diffInDays = Math.floor(diffInHours / 24);
 
+      if (diffInDays > 0) return `${diffInDays} day${diffInDays > 1 ? 's' : ''} ago`;
+      if (diffInHours > 0) return `${diffInHours} hour${diffInHours > 1 ? 's' : ''} ago`;
+      if (diffInMin > 0) return `${diffInMin} min${diffInMin > 1 ? 's' : ''} ago`;
+      return `${diffInSec} sec${diffInSec > 1 ? 's' : ''} ago`;
+    }
 
-    res.status(200).json({
-      success: true,
-      orders: orders.map(order => ({
+    const formattedOrders = orders.map(order => {
+      const timeAgo = formatTimeAgo(order.createdAt); // Get custom-formatted time difference
+      
+      return {
         orderId: order.orderId,
         username: order.username,
         items: order.items.map(item => ({
@@ -849,9 +911,29 @@ exports.searchOrders = async (req, res) => {
           quantity: item.quantity
         })),
         totalAmount: order.totalAmount,
-        status: order.status
-      }))
+        status: order.status,
+        timeAgo // Add formatted time
+      };
     });
+
+    res.status(200).json({
+      success: true,
+      orders: formattedOrders
+    });
+
+    // res.status(200).json({
+    //   success: true,
+    //   orders: orders.map(order => ({
+    //     orderId: order.orderId,
+    //     username: order.username,
+    //     items: order.items.map(item => ({
+    //       itemName: item.item,
+    //       quantity: item.quantity
+    //     })),
+    //     totalAmount: order.totalAmount,
+    //     status: order.status
+    //   }))
+    // });
   } catch (error) {
     console.error("Error fetching search results:", error);
     res.status(500).json({
@@ -860,6 +942,64 @@ exports.searchOrders = async (req, res) => {
     });
   }
 };
+
+
+// exports.searchOrders = async (req, res) => {
+//   const search = req.query.search || '';
+
+//   try {
+//     const orders = await Order.aggregate([
+//       {
+//         $lookup: {
+//           from: 'users',
+//           localField: 'user',
+//           foreignField: '_id',
+//           as: 'userDetails'
+//         }
+//       },
+//       {
+//         $unwind: '$userDetails'
+//       },
+//       {
+//         $match: {
+//           $or: [
+//             { orderId: { $regex: search, $options: 'i' } },  // Search by order ID
+//             { 'items.item': { $regex: search, $options: 'i' } }  // Search by item names
+//           ]
+//         }
+//       },
+//       {
+//         $project: {
+//           orderId: 1,
+//           username: '$userDetails.username',
+//           items: 1,
+//           totalAmount: 1,
+//           status: 1
+//         }
+//       }
+//     ]);
+
+//     res.status(200).json({
+//       success: true,
+//       orders: orders.map(order => ({
+//         orderId: order.orderId,
+//         username: order.username,
+//         items: order.items.map(item => ({
+//           itemName: item.item,
+//           quantity: item.quantity
+//         })),
+//         totalAmount: order.totalAmount,
+//         status: order.status
+//       }))
+//     });
+//   } catch (error) {
+//     console.error("Error fetching search results:", error);
+//     res.status(500).json({
+//       success: false,
+//       message: "Failed to fetch search results"
+//     });
+//   }
+// };
 
 
 exports.getOrderDetails = async (req, res) => {

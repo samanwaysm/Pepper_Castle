@@ -563,8 +563,39 @@
         //     }
         // }
 
+        function checkDeliveryArea() {
+            const pincode = 670691;
+
+            if (latitude && longitude) {
+                $.ajax({
+                    url: '/api/getGoogleMaplocation',
+                    method: 'POST',
+                    data: { pincode },
+                    success: function (response) {
+                        console.log(response);
+
+                        if (response) {
+                            console.log(response);
+
+                            submitOrder(); // Call submitOrder only if delivery is available
+                        } else {
+                            console.log(response);
+                            // alert('Delivery is not available in your area.');
+                            submitOrder();
+                        }
+                    },
+                    error: function () {
+                        console.error("Error while checking delivery area");
+                    }
+                });
+            } else {
+                alert('Unable to retrieve your location. Please enable location services.');
+            }
+        }
+
         $(document).ready(function () {
             updateCartCount();
+            checkDeliveryArea();
         });
         function updateCartCount() {
             const userId = `<%= userId %>`;  // Make sure userId is defined here

@@ -1213,7 +1213,7 @@ exports.changeProfile = async (req, res) => {
 
 exports.getGoogleMaplocation = async (req, res) => {
   const { pincode } = req.body;
-  // console.log(pincode);
+  console.log('pincode : ',pincode);
   
   if (!pincode) {
     return res.status(400).json({ message: 'Pincode is required' });
@@ -1221,7 +1221,7 @@ exports.getGoogleMaplocation = async (req, res) => {
 
   try {
     // Use Google Maps Geocoding API to get latitude and longitude from pincode
-    const apiKey = 'AIzaSyDrI6NNSHKGcRHyaxv3UnjfjUAmt07DlJ8'; // Replace with your actual API key
+    const apiKey = 'AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg'; // Replace with your actual API key
     const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${pincode}&key=${apiKey}`;
     // console.log(geocodeUrl);
     

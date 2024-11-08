@@ -206,7 +206,7 @@ exports.getAddress = async (req, res) => {
 
 exports.updateAddress = async (req, res) => {    
     const userId = req.query.userId;
-    console.log(req.body);
+    // console.log(req.body);
     
     const { addressId, updatedData } = req.body;
     const { username, phone, street, block, unitnum, postal } = updatedData;
