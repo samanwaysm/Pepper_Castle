@@ -20,7 +20,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        .user-table {
+        /* .user-table {
             width: 100%;
             margin-top: 20px;
         }
@@ -42,7 +42,48 @@
 
         .mng-btn {
             width: 80px;
+        } */
+
+        .order-status-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
+
+        .status-select {
+            border-radius: 5px;
+            padding: 0.375rem 0.75rem;
+            max-width: 125px;
+        }
+
+        .update-button {
+            border-radius: 5px;
+            padding: 0.375rem 0.75rem;
+        }
+
+        .order-management-container {
+            margin-top: 20px;
+        }
+
+        .table th,
+        .table td {
+            vertical-align: middle;
+        }
+
+        h4 {
+            margin-bottom: 20px;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+
+        .nav {
+            margin-top: 1rem;
+            margin-bottom: 1rem
+        }
+        
     </style>
 </head>
 
@@ -161,7 +202,7 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="order-table-body">
                         <% users.forEach(user=> { %>
                             <tr>
                                 <td>1</td>
